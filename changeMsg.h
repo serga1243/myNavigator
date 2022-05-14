@@ -2,6 +2,9 @@
 
 #include "myNavigator.h"
 
+struct MyNavigator;
+struct Coordinate;
+
 
 void changeMsg(struct MyNavigator*, unsigned char[]);
 

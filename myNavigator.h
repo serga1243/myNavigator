@@ -1,5 +1,5 @@
 #pragma once
-//#include <cstdio>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -15,6 +15,7 @@
 #include "overwritePrevPos.h"
 #include "char2int.h"
 
+#define Cpp
 #define msgMaxLen 1024
 #define PreviosPosLen 3
 #define logInfoArrLen 16
@@ -34,10 +35,12 @@
 //// Параметры квадратичного фильтра
 //#define minQuadFiltering
 
+#ifdef Cpp
 const double startCoordinates[] = { 5010.88431, 12805.33476, 100.0 };
 const double latIntPartLimits[] = { -9000.00000, 9000.00000 };
 const double lonIntPartLimits[] = { -18000.00000, 18000.00000 };
 const double altIntPartLimits[] = { 0, 99999.99 };
+#endif
 
 
 // Буффер хранения предыдущих нефильтрованных значений координаты
@@ -183,8 +186,6 @@ typedef struct MyNavigator
 	MsgData msgData;
 	unsigned char logInfo[logInfoArrLen];
 } MyNavigator;
-
-
 
 
 void myNavigatorInit(struct MyNavigator*);

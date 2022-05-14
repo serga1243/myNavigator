@@ -1,5 +1,6 @@
 #include "getGCS.h"
 
+
 extern const double latIntPartLimits[];
 extern const double lonIntPartLimits[];
 extern const double altIntPartLimits[];
@@ -143,6 +144,7 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 	if (myNavigator->msgData.id[4] == 0)
 	{
 		myNavigator->coordinates.alt.decodedPos.value = myNavigator->coordinates.alt.previosPos.value[PreviosPosLen - 1];
+		logInfo[2] = 0;
 	}
 	else
 	{

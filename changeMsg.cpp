@@ -97,13 +97,21 @@ void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endP
 	*logInfo = 5;
 
 	// Целая часть числа
+#ifdef Cpp
 	_itoa_s((int)valueIntPart, dataBufferInt, 12, 10);
+#else
+	itoa((int)valueIntPart, dataBufferInt, 10);
+#endif
 	*logInfo = 4;
 	coordinate->filteredPos.intLength = getNumLen(dataBufferInt);
 	*logInfo = 3;
 
 	// Дробная часть числа
+#ifdef Cpp
 	_itoa_s((int)valuefloatPartBig, dataBufferFlo, 12, 10);
+#else
+	itoa((int)valuefloatPartBig, dataBufferFlo, 10);
+#endif
 	*logInfo = 2;
 	coordinate->filteredPos.floatLength = getNumLen(dataBufferFlo) - 2;
 	*logInfo = 1;

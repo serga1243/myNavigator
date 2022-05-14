@@ -18,7 +18,11 @@ void getXOR(struct MyNavigator* myNavigator, unsigned char* logInfo)
 	*logInfo = 4;
 
 	// Получаем КС
+#ifdef Cpp
 	_itoa_s(hash, dataArr, 4, 16);
+#else
+	itoa(hash, dataArr, 16);
+#endif
 	*logInfo = 3;
 
 	// Перезаписываем массив с КС

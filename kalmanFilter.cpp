@@ -130,12 +130,12 @@ void kalmanFilterInit(struct KalmanFilterCoordinate* kalmanFilterCoordinate, con
     kalmanFilterCoordinate->_err_estimate = 0;
     kalmanFilterCoordinate->_q = 0;
     kalmanFilterCoordinate->_last_estimate = 0;
-    for (char i = 0; i < 9; i++)
+    for (unsigned short i = 0; i < 9; i++)
     {
         kalmanFilterCoordinate->p_est[i] = 0;
     }
     kalmanFilterCoordinate->x_est[0] = startCoordinate;
-    for (char i = 1; i < 3; i++)
+    for (unsigned short i = 1; i < 3; i++)
     {
         kalmanFilterCoordinate->x_est[i] = 0;
     }

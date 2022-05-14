@@ -109,12 +109,12 @@ typedef struct MsgData
 //
 typedef struct MinQuadFilterCoordinate
 {
-	double sumX = 0;
-	double sumY = 0;
-	double sumX2 = 0;
-	double sumXY = 0;
-	double a = 0;
-	double b = 0;
+	double sumX;
+	double sumY;
+	double sumX2;
+	double sumXY;
+	double a;
+	double b;
 } MinQuadFilterCoordinate;
 
 //

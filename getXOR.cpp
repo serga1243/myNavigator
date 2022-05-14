@@ -1,28 +1,20 @@
 #include "getXOR.h"
 
-void getXOR(struct MyNavigator* myNavigator, unsigned char* logInfo)
+void getXOR(char data[], char XORarray[], unsigned short length, unsigned char* logInfo)
 {
-	*logInfo = 6;
-	unsigned short length = myNavigator->msgIn.len - 6;
 	char dataArr[] = { '\0', '\0', '\0', '\0' };
 	unsigned char hash = 0x00;
-	unsigned short i = 1;
+	unsigned short i = 0;
 	*logInfo = 5;
-
 	// Вычисление хэш-функции
-	while (length--) 
-	{
-		hash ^= myNavigator->msgIn.msg[i];
+	while (length--) {
+		hash ^= data[i];
 		i++;
 	}
 	*logInfo = 4;
 
 	// Получаем КС
-#ifdef Cpp
 	_itoa_s(hash, dataArr, 4, 16);
-#else
-	itoa(hash, dataArr, 16);
-#endif
 	*logInfo = 3;
 
 	// Перезаписываем массив с КС
@@ -43,41 +35,41 @@ void getXOR(struct MyNavigator* myNavigator, unsigned char* logInfo)
 		dataArr[1] != 'e' &&
 		dataArr[1] != 'f')
 	{
-		myNavigator->msgData.checkDataCond[0] = '0';
-		myNavigator->msgData.checkDataCond[1] = dataArr[0];
+		XORarray[0] = '0';
+		XORarray[1] = dataArr[0];
 	}
 	else
 	{
-		myNavigator->msgData.checkDataCond[0] = dataArr[0];
-		myNavigator->msgData.checkDataCond[1] = dataArr[1];
+		XORarray[0] = dataArr[0];
+		XORarray[1] = dataArr[1];
 	}
 	*logInfo = 2;
 
 	// Исправляем регистр 1 символа
-	switch (myNavigator->msgData.checkDataCond[0])
+	switch (XORarray[0])
 	{
 	case 'a':
-		myNavigator->msgData.checkDataCond[0] = 'A';
+		XORarray[0] = 'A';
 		break;
 
 	case 'b':
-		myNavigator->msgData.checkDataCond[0] = 'B';
+		XORarray[0] = 'B';
 		break;
 
 	case 'c':
-		myNavigator->msgData.checkDataCond[0] = 'C';
+		XORarray[0] = 'C';
 		break;
 
 	case 'd':
-		myNavigator->msgData.checkDataCond[0] = 'D';
+		XORarray[0] = 'D';
 		break;
 
 	case 'e':
-		myNavigator->msgData.checkDataCond[0] = 'E';
+		XORarray[0] = 'E';
 		break;
 
 	case 'f':
-		myNavigator->msgData.checkDataCond[0] = 'F';
+		XORarray[0] = 'F';
 		break;
 
 	default:
@@ -86,30 +78,30 @@ void getXOR(struct MyNavigator* myNavigator, unsigned char* logInfo)
 	*logInfo = 1;
 
 	// Исправляем регистр 2 символа
-	switch (myNavigator->msgData.checkDataCond[1])
+	switch (XORarray[1])
 	{
 	case 'a':
-		myNavigator->msgData.checkDataCond[1] = 'A';
+		XORarray[1] = 'A';
 		break;
 
 	case 'b':
-		myNavigator->msgData.checkDataCond[1] = 'B';
+		XORarray[1] = 'B';
 		break;
 
 	case 'c':
-		myNavigator->msgData.checkDataCond[1] = 'C';
+		XORarray[1] = 'C';
 		break;
 
 	case 'd':
-		myNavigator->msgData.checkDataCond[1] = 'D';
+		XORarray[1] = 'D';
 		break;
 
 	case 'e':
-		myNavigator->msgData.checkDataCond[1] = 'E';
+		XORarray[1] = 'E';
 		break;
 
 	case 'f':
-		myNavigator->msgData.checkDataCond[1] = 'F';
+		XORarray[1] = 'F';
 		break;
 
 	default:

@@ -43,7 +43,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 		myNavigator->msgData.idData[2] = myNavigator->msgIn.msg[5];
 
 		// условие, что сообщение пришло верно :
-		getXOR(myNavigator, &myNavigator->logInfo[2]);
+		getXOR(&myNavigator->msgIn.msg[1], myNavigator->msgData.checkDataCond, myNavigator->msgIn.len - 6, &myNavigator->logInfo[2]);
 		myNavigator->logInfo[1] = 7;
 
 		// сравнение дешифрованной КС и полученной :
@@ -196,7 +196,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 	myNavigator->logInfo[1] = 1;
 
 	// Вычисление новой КС для измененного сообщения :
-	getXOR(myNavigator, &myNavigator->logInfo[12]);
+	getXOR(&myNavigator->msgOut.msg[1], &myNavigator->msgOut.msg[myNavigator->msgIn.len - 4], myNavigator->msgOut.len - 6, &myNavigator->logInfo[12]);
 	myNavigator->logInfo[1] = 0;
 
 	myNavigator->logInfo[0] = 0;

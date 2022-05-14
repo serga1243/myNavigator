@@ -1,52 +1,46 @@
-//#pragma comment(linker, "/STACK:58733786")
-
 #include <iostream>
 #include "myNavigator.h"
 
 #define MSG true
-#define _CRT_SECURE_NO_WARNINGS 1
 using namespace std;
-
 
 
 int main()
 {
 	setlocale(LC_ALL, "Russian_Russia.1251");
-
-	 //Объявление структур
-	struct MyNavigator mynavigator;
-	//struct Msg msgIn;
-	//struct Msg msgOut;
-	//struct Coordinate GCS;
-	//struct MedianFilter medianFilter;
-	//struct KalmanFilter kalmanFilter;
-	//struct MinQuadFilter minQuadFilter;
-
-
-	// Инициализация функции фильтрации :
-	myNavigatorInit(&mynavigator);
-
-	// Инициализация медианного фильтра :
-	medianFilterInit(&mynavigator.filters.medianFilter.lat, startCoordinates[0]);	// Широта
-	medianFilterInit(&mynavigator.filters.medianFilter.lon, startCoordinates[1]);	// Долгота
-	medianFilterInit(&mynavigator.filters.medianFilter.alt, startCoordinates[2]);	// Высота
-
-	// Инициализацияя фильтра Калмана :
-	kalmanFilterInit(&mynavigator.filters.kalmanFilter.lat, startCoordinates[0]);
-	kalmanFilterInit(&mynavigator.filters.kalmanFilter.lon, startCoordinates[1]);
-	kalmanFilterInit(&mynavigator.filters.kalmanFilter.alt, startCoordinates[2]);
-
-	// Инициализация лучшего фильтра :
-	minQuadFilterInit(&mynavigator.filters.minQuadFilter.lat);
-	minQuadFilterInit(&mynavigator.filters.minQuadFilter.lon);
-	minQuadFilterInit(&mynavigator.filters.minQuadFilter.alt);
-
+	bool isRestart = true;
 	char buf[msgMaxLen] = "", * p = NULL;
+
+	 //Объявление фильтра :
+	struct MyNavigator mynavigator;
 
 	while (true)
 	{
 		// Сброс буфера вывода :
 		fflush(stdout);
+
+		if (isRestart)
+		{
+			// Инициализация функции фильтрации :
+			myNavigatorInit(&mynavigator);
+
+			// Инициализация медианного фильтра :
+			medianFilterInit(&mynavigator.filters.medianFilter.lat, startCoordinates[0]);
+			medianFilterInit(&mynavigator.filters.medianFilter.lon, startCoordinates[1]);
+			medianFilterInit(&mynavigator.filters.medianFilter.alt, startCoordinates[2]);
+
+			// Инициализацияя фильтра Калмана :
+			kalmanFilterInit(&mynavigator.filters.kalmanFilter.lat, startCoordinates[0]);
+			kalmanFilterInit(&mynavigator.filters.kalmanFilter.lon, startCoordinates[1]);
+			kalmanFilterInit(&mynavigator.filters.kalmanFilter.alt, startCoordinates[2]);
+
+			// Инициализация лучшего фильтра :
+			minQuadFilterInit(&mynavigator.filters.minQuadFilter.lat);
+			minQuadFilterInit(&mynavigator.filters.minQuadFilter.lon);
+			minQuadFilterInit(&mynavigator.filters.minQuadFilter.alt);
+
+			isRestart = false;
+		}
 
 #ifdef MSG
 		cout << "На фильтр: " << ends;
@@ -63,6 +57,12 @@ int main()
 			if (buf[0] == 's' && buf[1] == 't' && buf[2] == 'o' && buf[3] == 'p')
 			{
 				break;
+			}
+			if (buf[0] == 'r' && buf[1] == 'e' && buf[2] == 's' && buf[3] == 't' && buf[4] == 'a' && buf[5] == 'r' && buf[6] == 't')
+			{
+				cout << endl;
+				isRestart = true;
+				continue;
 			}
 			// Записываем строку в входной массив :
 			for (unsigned int i = 0; i < (unsigned int)len; i++)

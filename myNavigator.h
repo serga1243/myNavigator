@@ -64,9 +64,9 @@ typedef struct DecodedPos
 typedef struct FilteredPos
 {
 	double value;
-	unsigned short intPosition;
-	unsigned short floatPosition;
-	unsigned short length;
+	//unsigned short intPosition;
+	//unsigned short floatPosition;
+	//unsigned short length;
 	unsigned short intLength;
 	unsigned short floatLength;
 } FilteredPos;

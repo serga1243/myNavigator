@@ -120,6 +120,8 @@ void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endP
 		i < endPos;
 		i++)
 	{
+		if (i >= msgMaxLen) break;
+
 		if (str[i] == ',')
 		{
 			break;
@@ -152,8 +154,6 @@ void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endP
 			str[i] = '0';
 			continue;
 		}
-
-		if (i >= msgMaxLen) break;
 	}
 	*logInfo = 0;
 }

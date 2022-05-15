@@ -30,7 +30,7 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 		// Если обнаружили точку
 		if (myNavigator->msgIn.msg[i] == '.')
 		{
-			myNavigator->coordinates.lat.decodedPos.intLength = myNavigator->coordinates.lat.decodedPos.length--;
+			//myNavigator->coordinates.lat.decodedPos.intLength = myNavigator->coordinates.lat.decodedPos.length--;
 			myNavigator->coordinates.lat.decodedPos.floatPosition = i + 1;
 			logInfo[0] = 4;
 			continue;
@@ -93,7 +93,7 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 		// Если обнаружили точку
 		if (myNavigator->msgIn.msg[i] == '.')
 		{
-			myNavigator->coordinates.lon.decodedPos.intLength = myNavigator->coordinates.lon.decodedPos.length--;
+			//myNavigator->coordinates.lon.decodedPos.intLength = myNavigator->coordinates.lon.decodedPos.length--;
 			myNavigator->coordinates.lon.decodedPos.floatPosition = i + 1;
 			logInfo[1] = 4;
 			continue;
@@ -164,7 +164,7 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 			// Если обнаружили точку
 			if (myNavigator->msgIn.msg[i] == '.')
 			{
-				myNavigator->coordinates.alt.decodedPos.intLength = myNavigator->coordinates.alt.decodedPos.length--;
+				//myNavigator->coordinates.alt.decodedPos.intLength = myNavigator->coordinates.alt.decodedPos.length--;
 				myNavigator->coordinates.alt.decodedPos.floatPosition = i + 1;
 				logInfo[2] = 3;
 				continue;

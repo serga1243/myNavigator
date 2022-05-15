@@ -151,6 +151,11 @@ void myNavigator(struct MyNavigator* myNavigator)
 		kalmanFilter(&myNavigator->filters.kalmanFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
 		isInvalidData(&myNavigator->coordinates.alt.filteredPos.value, altIntPartLimits, &myNavigator->coordinates.alt.decodedPos.value);
 	}
+	else
+	{
+		myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
+		myNavigator->logInfo[15] = 0;
+	}
 
 #elif defined( medianFiltering )
 	// Медианный фильтр :
@@ -159,6 +164,11 @@ void myNavigator(struct MyNavigator* myNavigator)
 	{
 		medianFilter(&myNavigator->filters.medianFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
 		isInvalidData(&myNavigator->coordinates.alt.filteredPos.value, altIntPartLimits, &myNavigator->coordinates.alt.decodedPos.value);
+	}
+	else
+	{
+		myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
+		myNavigator->logInfo[15] = 0;
 	}
 
 #elif defined( minQuadFiltering )
@@ -169,15 +179,16 @@ void myNavigator(struct MyNavigator* myNavigator)
 		minQuadFilter(&myNavigator->filters.minQuadFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
 		isInvalidData(&myNavigator->coordinates.alt.filteredPos.value, altIntPartLimits, &myNavigator->coordinates.alt.decodedPos.value);
 	}
-
-#else
-	// Если без фильтра :
-	myNavigator->logInfo[15] = 0;
-	if (myNavigator->msgData.id[4] != 0)
+	else
 	{
 		myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
 		myNavigator->logInfo[15] = 0;
 	}
+
+#else
+	// Если без фильтра :
+	myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
+	myNavigator->logInfo[15] = 0;
 
 #endif
 

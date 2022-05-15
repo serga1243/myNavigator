@@ -17,7 +17,7 @@
 
 #define Cpp
 #define msgMaxLen 1024
-#define PreviosPosLen 3
+#define PreviosPosLen 20
 #define logInfoArrLen 16
 #define medianFilteringBufferLength 5
 
@@ -26,14 +26,14 @@
 #define includeAlt
 
 // Параметры фильтра Калмана
-#define standartkalmanFilter
-#define kalmanFiltering
+//#define standartkalmanFilter
+//#define kalmanFiltering
 
 //// Параметры медианного фильтра
 //#define medianFiltering
 
 //// Параметры квадратичного фильтра
-//#define minQuadFiltering
+#define minQuadFiltering
 
 #ifdef Cpp
 const double startCoordinates[] = { 5010.88431, 12805.33476, 100.0 };

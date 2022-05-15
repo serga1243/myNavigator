@@ -29,6 +29,8 @@ void minQuadFilter(struct MinQuadFilterCoordinate* minQuadFilterCoordinate, stru
 
 void minQuadFilterInit(struct MinQuadFilterCoordinate* minQuadFilterCoordinate)
 {
+	minQuadFilterCoordinate->sumX = 0;
+	minQuadFilterCoordinate->sumX2 = 0;
 	for (int i = 0; i < PreviosPosLen; i++)
 	{
 		minQuadFilterCoordinate->sumX += i;

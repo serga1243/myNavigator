@@ -15,35 +15,32 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 	// Выходное сообщение :
 	myNavigator->msgOut.len = myNavigator->msgIn.len < msgMaxLen ? myNavigator->msgIn.len : msgMaxLen;
-	for (unsigned short i = 0; i < myNavigator->msgOut.len; i++)
-	{
-		myNavigator->msgOut.msg[i] = myNavigator->msgIn.msg[i];
-	}
+	memcpy(myNavigator->msgOut.msg, myNavigator->msgIn.msg, myNavigator->msgOut.len);
 	myNavigator->logInfo[1] = 9;
 
 	// Получение координат из сообщения :
 	// Проверка сообщения на стандарт NMEA-0183 :
-	if (myNavigator->msgIn.msg[0] == '$' &&
-		myNavigator->msgIn.msg[myNavigator->msgIn.len - 1] == '\n' &&
-		myNavigator->msgIn.msg[myNavigator->msgIn.len - 2] == '\r' &&
-		myNavigator->msgIn.msg[myNavigator->msgIn.len - 5] == '*')
+	if (myNavigator->msgOut.msg[0] == '$' &&
+		myNavigator->msgOut.msg[myNavigator->msgOut.len - 1] == '\n' &&
+		myNavigator->msgOut.msg[myNavigator->msgOut.len - 2] == '\r' &&
+		myNavigator->msgOut.msg[myNavigator->msgOut.len - 5] == '*')
 	{
 		// контрольная сумма :
-		myNavigator->msgData.checkData[0] = myNavigator->msgIn.msg[myNavigator->msgIn.len - 4];
-		myNavigator->msgData.checkData[1] = myNavigator->msgIn.msg[myNavigator->msgIn.len - 3];
+		myNavigator->msgData.checkData[0] = myNavigator->msgOut.msg[myNavigator->msgOut.len - 4];
+		myNavigator->msgData.checkData[1] = myNavigator->msgOut.msg[myNavigator->msgOut.len - 3];
 		myNavigator->logInfo[1] = 8;
 
 		// инфо о стране спутниковой ГНСС :
-		myNavigator->msgData.countryData[0] = myNavigator->msgIn.msg[1];
-		myNavigator->msgData.countryData[1] = myNavigator->msgIn.msg[2];
+		myNavigator->msgData.countryData[0] = myNavigator->msgOut.msg[1];
+		myNavigator->msgData.countryData[1] = myNavigator->msgOut.msg[2];
 
 		// идентификатор строки :
-		myNavigator->msgData.idData[0] = myNavigator->msgIn.msg[3];
-		myNavigator->msgData.idData[1] = myNavigator->msgIn.msg[4];
-		myNavigator->msgData.idData[2] = myNavigator->msgIn.msg[5];
+		myNavigator->msgData.idData[0] = myNavigator->msgOut.msg[3];
+		myNavigator->msgData.idData[1] = myNavigator->msgOut.msg[4];
+		myNavigator->msgData.idData[2] = myNavigator->msgOut.msg[5];
 
 		// условие, что сообщение пришло верно :
-		getXOR(&myNavigator->msgIn.msg[1], myNavigator->msgData.checkDataCond, myNavigator->msgIn.len - 6, &myNavigator->logInfo[2]);
+		getXOR(&myNavigator->msgOut.msg[1], myNavigator->msgData.checkDataCond, myNavigator->msgOut.len - 6, &myNavigator->logInfo[2]);
 		myNavigator->logInfo[1] = 7;
 
 		// сравнение дешифрованной КС и полученной :
@@ -207,7 +204,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 	myNavigator->logInfo[1] = 1;
 
 	// Вычисление новой КС для измененного сообщения :
-	getXOR(&myNavigator->msgOut.msg[1], &myNavigator->msgOut.msg[myNavigator->msgIn.len - 4], myNavigator->msgOut.len - 6, &myNavigator->logInfo[12]);
+	getXOR(&myNavigator->msgOut.msg[1], &myNavigator->msgOut.msg[myNavigator->msgOut.len - 4], myNavigator->msgOut.len - 6, &myNavigator->logInfo[12]);
 	myNavigator->logInfo[1] = 0;
 
 	myNavigator->logInfo[0] = 0;

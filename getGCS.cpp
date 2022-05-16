@@ -56,10 +56,8 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 	logInfo[0] = 2;
 
 	// Если не север и не восток, то меняем знак на -
-	myNavigator->coordinates.lat.decodedPos.value = 
-		myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[1]] + 1] == 'N' ?
-		myfabs(myNavigator->coordinates.lat.decodedPos.value) :
-		-myNavigator->coordinates.lat.decodedPos.value;
+	if (myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[1]] + 1] == 'S')
+		myNavigator->coordinates.lat.decodedPos.value = -myNavigator->coordinates.lat.decodedPos.value;
 	logInfo[0] = 1;
 
 	// Проверям, что декодированная координата в реальном диапазоне
@@ -119,10 +117,8 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 	logInfo[1] = 2;
 
 	// Если не север и не восток, то меняем знак на -
-	myNavigator->coordinates.lon.decodedPos.value =
-		myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[3]] + 1] == 'E' ?
-		myfabs(myNavigator->coordinates.lon.decodedPos.value) :
-		-myNavigator->coordinates.lon.decodedPos.value;
+	if (myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[3]] + 1] == 'W')
+		myNavigator->coordinates.lon.decodedPos.value = -myNavigator->coordinates.lon.decodedPos.value;	
 	logInfo[1] = 1;
 
 	// Проверям, что декодированная координата в реальном диапазоне

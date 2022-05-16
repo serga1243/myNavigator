@@ -54,21 +54,18 @@ int main()
 				buf[len - 1] = '\0';
 			}
 
-			if (buf[0] == 's' && buf[1] == 't' && buf[2] == 'o' && buf[3] == 'p')
+			if (strncmp(buf, "stop", 4) == 0)
 			{
 				break;
 			}
-			if (buf[0] == 'r' && buf[1] == 'e' && buf[2] == 's' && buf[3] == 't' && buf[4] == 'a' && buf[5] == 'r' && buf[6] == 't')
+			if (strncmp(buf, "restart", 7) == 0)
 			{
 				cout << endl;
 				isRestart = true;
 				continue;
 			}
 			// Записываем строку в входной массив :
-			for (unsigned int i = 0; i < (unsigned int)len; i++)
-			{
-				mynavigator.msgIn.msg[i] = buf[i];
-			}
+			memcpy(mynavigator.msgIn.msg, buf, len);
 			mynavigator.msgIn.len = (unsigned int)len;
 			mynavigator.msgIn.msg[mynavigator.msgIn.len] = '\n';
 			mynavigator.msgIn.msg[mynavigator.msgIn.len - 1] = '\r';

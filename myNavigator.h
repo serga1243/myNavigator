@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #include "utilitiesFuncs.h"
 #include "getGCS.h"
 #include "getXOR.h"

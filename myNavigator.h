@@ -12,42 +12,63 @@
 #include "medianFilter.h"
 #include "kalmanFilter.h"
 #include "minQuadFilter.h"
+#include "alphaBetaFilter.h"
 #include "changeMsg.h"
 #include "overwritePrevPos.h"
 #include "char2int.h"
 
-#define Cpp
-#define msgMaxLen 1024
-#define PreviosPosLen 20
-#define logInfoArrLen 16
-#define medianFilteringBufferLength 5
+#define Cpp								// если язык c++, а не си
+#define msgMaxLen 1024					// максимальная длина сообщений
+#define previosPosLen 20				// число хранимых предыдущих значений
+#define logInfoArrLen 16				// длина массива логов
 
+// Какие координаты фильтровать?
 #define includeLat
 #define includeLon
 #define includeAlt
 
 // Параметры фильтра Калмана
-//#define standartkalmanFilter
+//#define simpleKalmanFilter
+//#define standartKalmanFilter
 //#define kalmanFiltering
 
-//// Параметры медианного фильтра
+// Параметры медианного фильтра
 //#define medianFiltering
 
-//// Параметры квадратичного фильтра
-#define minQuadFiltering
+// Параметры квадратичного фильтра
+//#define minQuadFiltering
+
+// Параметры альфа-бета фильтра
+#define alphaBetaFiltering
 
 #ifdef Cpp
+
+// Начальные координаты
 const double startCoordinates[] = { 5010.88431, 12805.33476, 100.0 };
+
+// Пределы значений геодезических координат
 const double latIntPartLimits[] = { -9000.00000, 9000.00000 };
 const double lonIntPartLimits[] = { -18000.00000, 18000.00000 };
-const double altIntPartLimits[] = { 0, 99999.99 };
+const double altIntPartLimits[] = { 0.0, 99999.99 };
+
+// Параметры медианного Калмана
+const unsigned int medianFilteringBufferLength = 5;
+
+// Параметры фильтра Калмана
+const double kalmanFilterR[] = { 50000.0, 50000.0 , 50000.0 };
+
+// Параметры альфа-бета фильтра
+const double alphaBetaFilterT[] = { 0.1, 0.1 , 0.1 };
+const double alphaBetaFilterSp[] = { 0.1, 0.1, 0.1 };
+const double alphaBetaFilterSn[] = { 3.0, 3.0, 3.0 };
+
 #endif
 
 
 // Буффер хранения предыдущих нефильтрованных значений координаты
 typedef struct PreviosPos
 {
-	double value[PreviosPosLen];
+	double value[previosPosLen];
 } PreviosPos;
 
 // Декодированная координата из сообщения
@@ -95,7 +116,7 @@ typedef struct Msg
 	unsigned short len;
 } Msg;
 
-//
+// Хранение
 typedef struct MsgData
 {
 	char checkData[2];
@@ -107,7 +128,7 @@ typedef struct MsgData
 	unsigned short id[6];
 } MsgData;
 
-//
+// Статистический фильтр для 1 координаты
 typedef struct MinQuadFilterCoordinate
 {
 	double sumX;
@@ -118,7 +139,7 @@ typedef struct MinQuadFilterCoordinate
 	double b;
 } MinQuadFilterCoordinate;
 
-//
+// Статистический фильтр
 typedef struct MinQuadFilter
 {
 	MinQuadFilterCoordinate lat;
@@ -126,7 +147,7 @@ typedef struct MinQuadFilter
 	MinQuadFilterCoordinate alt;
 } MinQuadFilter;
 
-//
+// Медианный фильтр для 1 координаты
 typedef struct MedianFilterCoordinate
 {
 	double buffer[medianFilteringBufferLength * medianFilteringBufferLength];
@@ -137,7 +158,7 @@ typedef struct MedianFilterCoordinate
 	unsigned int filterCntrs[medianFilteringBufferLength - 2];
 } MedianFilterCoordinate;
 
-//
+// Медианный фильтр
 typedef struct MedianFilter
 {
 	MedianFilterCoordinate lat;
@@ -145,8 +166,7 @@ typedef struct MedianFilter
 	MedianFilterCoordinate alt;
 } MedianFilter;
 
-
-
+// Фильтр Калмана для 1 координаты
 typedef struct KalmanFilterCoordinate
 {
 	// Простой фильтр Калмана:
@@ -161,6 +181,7 @@ typedef struct KalmanFilterCoordinate
 	double p_est[9];
 } KalmanFilterCoordinate;
 
+// Фильтр Калмана
 typedef struct KalmanFilter
 {
 	KalmanFilterCoordinate lat;
@@ -168,16 +189,38 @@ typedef struct KalmanFilter
 	KalmanFilterCoordinate alt;
 } KalmanFilter;
 
+// Альфа-бета фильтр для 1 координаты
+typedef struct AlphaBetaFilterCoordinate
+{
+	unsigned int Step;
+	double Tob;
+	double Predel;
+	double Kb;
+	double Ka;
+	double Kg;
+	double Az;
+	double Vz;
+	double fZ;
+} AlphaBetaFilterCoordinate;
 
-//
+// Альфа-бета фильтр
+typedef struct AlphaBetaFilter
+{
+	AlphaBetaFilterCoordinate lat;
+	AlphaBetaFilterCoordinate lon;
+	AlphaBetaFilterCoordinate alt;
+} AlphaBetaFilter;
+
+// Все фильтры в 1 месте
 typedef struct Filters
 {
+	AlphaBetaFilter alphaBetaFilter;
 	MinQuadFilter minQuadFilter;
 	MedianFilter medianFilter;
 	KalmanFilter kalmanFilter;
 } Filters;
 
-//
+// Все данные в 1 месте
 typedef struct MyNavigator
 {
 	Msg msgIn;
@@ -189,5 +232,6 @@ typedef struct MyNavigator
 } MyNavigator;
 
 
+// Прототипы функции
 void myNavigatorInit(struct MyNavigator*);
 void myNavigator(struct MyNavigator*);

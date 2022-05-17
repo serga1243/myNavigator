@@ -3,9 +3,9 @@
 void overwritePrevPos(struct MyNavigator* myNavigator, unsigned char* logInfo)
 {
 	*logInfo = 1;
-	for (unsigned short i = 0; i < PreviosPosLen; i++)
+	for (unsigned short i = 0; i < previosPosLen; i++)
 	{
-		if (i < PreviosPosLen - 1)
+		if (i < previosPosLen - 1)
 		{
 #ifdef includeLat
 			myNavigator->coordinates.lat.previosPos.value[i] = myNavigator->coordinates.lat.previosPos.value[i + 1];

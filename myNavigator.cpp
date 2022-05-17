@@ -93,6 +93,11 @@ void myNavigator(struct MyNavigator* myNavigator)
 	minQuadFilter(&myNavigator->filters.minQuadFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
 	isInvalidData(&myNavigator->coordinates.lat.filteredPos.value, latIntPartLimits, &myNavigator->coordinates.lat.decodedPos.value);
 
+#elif defined( alphaBetaFiltering )
+	// Альфа-бета фильтр :
+	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
+	isInvalidData(&myNavigator->coordinates.lat.filteredPos.value, latIntPartLimits, &myNavigator->coordinates.lat.decodedPos.value);
+
 #else
 	// Если без фильтра :
 	myNavigator->coordinates.lat.filteredPos.value = myNavigator->coordinates.lat.decodedPos.value;
@@ -122,6 +127,11 @@ void myNavigator(struct MyNavigator* myNavigator)
 #elif defined( minQuadFiltering )
 	// Минимальный квадрат фильтр :
 	minQuadFilter(&myNavigator->filters.minQuadFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
+	isInvalidData(&myNavigator->coordinates.lon.filteredPos.value, lonIntPartLimits, &myNavigator->coordinates.lon.decodedPos.value);
+
+#elif defined( alphaBetaFiltering )
+// Альфа-бета фильтр :
+	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
 	isInvalidData(&myNavigator->coordinates.lon.filteredPos.value, lonIntPartLimits, &myNavigator->coordinates.lon.decodedPos.value);
 
 #else
@@ -182,6 +192,20 @@ void myNavigator(struct MyNavigator* myNavigator)
 		myNavigator->logInfo[15] = 0;
 	}
 
+#elif defined( alphaBetaFiltering )
+	// Альфа-бета фильтр :
+	myNavigator->logInfo[15] = 0;
+	if (myNavigator->msgData.id[4] != 0)
+	{
+		alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
+		isInvalidData(&myNavigator->coordinates.alt.filteredPos.value, altIntPartLimits, &myNavigator->coordinates.alt.decodedPos.value);
+	}
+	else
+	{
+		myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
+		myNavigator->logInfo[15] = 0;
+	}
+
 #else
 	// Если без фильтра :
 	myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
@@ -214,11 +238,67 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 void myNavigatorInit(struct MyNavigator* myNavigator)
 {
-	for (unsigned short i = 0; i < PreviosPosLen; i++)
+	for (unsigned short i = 0; i < previosPosLen; i++)
 	{
 		myNavigator->coordinates.lat.previosPos.value[i] = startCoordinates[0];
 		myNavigator->coordinates.lon.previosPos.value[i] = startCoordinates[1];
 		myNavigator->coordinates.alt.previosPos.value[i] = startCoordinates[2];
 	}
-	
+
+	for (unsigned short i = 0; i < msgMaxLen; i++)
+	{
+		myNavigator->msgIn.msg[i] = '0';
+		myNavigator->msgOut.msg[i] = '0';
+		myNavigator->msgData.parId[i] = 0;
+	}
+	myNavigator->msgIn.len = 0;
+	myNavigator->msgOut.len = 0;
+	myNavigator->msgData.parIdLen = 0;
+
+	myNavigator->msgData.checkData[0] = '0';
+	myNavigator->msgData.checkData[1] = '0';
+	myNavigator->msgData.checkDataCond[0] = '0';
+	myNavigator->msgData.checkDataCond[1] = '0';
+	myNavigator->msgData.countryData[0] = '0';
+	myNavigator->msgData.countryData[1] = '0';
+	myNavigator->msgData.idData[0] = '0';
+	myNavigator->msgData.idData[1] = '0';
+	myNavigator->msgData.idData[2] = '0';
+
+	for (unsigned short i = 0; i < 6; i++)
+	{
+		myNavigator->msgData.id[0] = 0;
+	}
+
+	myNavigator->coordinates.lat.decodedPos.value = 0;
+	myNavigator->coordinates.lat.decodedPos.intPosition = 0;
+	myNavigator->coordinates.lat.decodedPos.floatPosition = 0;
+	myNavigator->coordinates.lat.decodedPos.length = 0;
+	myNavigator->coordinates.lat.decodedPos.intLength = 0;
+	myNavigator->coordinates.lat.decodedPos.floatLength = 0;
+	myNavigator->coordinates.lat.filteredPos.value = 0;
+	myNavigator->coordinates.lat.filteredPos.intLength = 0;
+	myNavigator->coordinates.lat.filteredPos.floatLength = 0;
+
+	myNavigator->coordinates.lon.decodedPos.value = 0;
+	myNavigator->coordinates.lon.decodedPos.intPosition = 0;
+	myNavigator->coordinates.lon.decodedPos.floatPosition = 0;
+	myNavigator->coordinates.lon.decodedPos.length = 0;
+	myNavigator->coordinates.lon.decodedPos.intLength = 0;
+	myNavigator->coordinates.lon.decodedPos.floatLength = 0;
+	myNavigator->coordinates.lon.filteredPos.value = 0;
+	myNavigator->coordinates.lon.filteredPos.intLength = 0;
+	myNavigator->coordinates.lon.filteredPos.floatLength = 0;
+
+	myNavigator->coordinates.alt.decodedPos.value = 0;
+	myNavigator->coordinates.alt.decodedPos.intPosition = 0;
+	myNavigator->coordinates.alt.decodedPos.floatPosition = 0;
+	myNavigator->coordinates.alt.decodedPos.length = 0;
+	myNavigator->coordinates.alt.decodedPos.intLength = 0;
+	myNavigator->coordinates.alt.decodedPos.floatLength = 0;
+	myNavigator->coordinates.alt.filteredPos.value = 0;
+	myNavigator->coordinates.alt.filteredPos.intLength = 0;
+	myNavigator->coordinates.alt.filteredPos.floatLength = 0;
+
+	return;
 }

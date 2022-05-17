@@ -8,7 +8,7 @@ static const signed char iv[3] = { 1, 0, 0 };
 
 void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct Coordinate* coordinate, unsigned char* logInfo)
 {
-#if defined( simplekalmanFilter )
+#if defined( simpleKalmanFilter )
 
     double _kalman_gain = 0;
     double _current_estimate = 0;
@@ -33,7 +33,7 @@ void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct 
     coordinate->filteredPos.value = _current_estimate;
     *logInfo = 0;
 
-#elif defined( standartkalmanFilter )
+#elif defined( standartKalmanFilter )
 
     double b_a[9];
     double p_prd[9];
@@ -124,7 +124,7 @@ void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct 
 
 
 
-void kalmanFilterInit(struct KalmanFilterCoordinate* kalmanFilterCoordinate, const double startCoordinate)
+void kalmanFilterInit(struct KalmanFilterCoordinate* kalmanFilterCoordinate, const double startCoordinate, const double R)
 {
     kalmanFilterCoordinate->_err_measure = 0;
     kalmanFilterCoordinate->_err_estimate = 0;
@@ -139,7 +139,7 @@ void kalmanFilterInit(struct KalmanFilterCoordinate* kalmanFilterCoordinate, con
     {
         kalmanFilterCoordinate->x_est[i] = 0;
     }
-    kalmanFilterCoordinate->R = 50000;
+    kalmanFilterCoordinate->R = R;
 
     return;
 }

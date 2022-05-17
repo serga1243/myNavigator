@@ -13,10 +13,6 @@ int char2int(char str[], unsigned short strLen)
 	{
 		switch (str[i])
 		{
-		case '0':
-			a = 0;
-			break;
-
 		case '1':
 			a = 1;
 			break;

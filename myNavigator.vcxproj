@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="alphaBetaFilter.cpp" />
     <ClCompile Include="changeMsg.cpp" />
     <ClCompile Include="char2int.cpp" />
     <ClCompile Include="chooseId.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="utilitiesFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="alphaBetaFilter.h" />
     <ClInclude Include="changeMsg.h" />
     <ClInclude Include="char2int.h" />
     <ClInclude Include="chooseId.h" />

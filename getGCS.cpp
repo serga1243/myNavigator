@@ -61,11 +61,11 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 	logInfo[0] = 1;
 
 	// Проверям, что декодированная координата в реальном диапазоне
-	isInvalidData(&myNavigator->coordinates.lat.decodedPos.value, latIntPartLimits, &myNavigator->coordinates.lat.previosPos.value[PreviosPosLen - 1]);
+	isInvalidData(&myNavigator->coordinates.lat.decodedPos.value, latIntPartLimits, &myNavigator->coordinates.lat.previosPos.value[previosPosLen - 1]);
 	logInfo[0] = 0;
 
 #else
-	myNavigator->coordinates.lat.decodedPos.value = myNavigator->coordinates.lat.previosPos.value[PreviosPosLen - 1];
+	myNavigator->coordinates.lat.decodedPos.value = myNavigator->coordinates.lat.previosPos.value[previosPosLen - 1];
 	logInfo[0] = 0;
 #endif
 
@@ -122,11 +122,11 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 	logInfo[1] = 1;
 
 	// Проверям, что декодированная координата в реальном диапазоне
-	isInvalidData(&myNavigator->coordinates.lon.decodedPos.value, lonIntPartLimits, &myNavigator->coordinates.lon.previosPos.value[PreviosPosLen - 1]);
+	isInvalidData(&myNavigator->coordinates.lon.decodedPos.value, lonIntPartLimits, &myNavigator->coordinates.lon.previosPos.value[previosPosLen - 1]);
 	logInfo[1] = 0;
 
 #else
-	myNavigator->coordinates.lon.decodedPos.value = myNavigator->coordinates.lon.previosPos.value[PreviosPosLen - 1];
+	myNavigator->coordinates.lon.decodedPos.value = myNavigator->coordinates.lon.previosPos.value[previosPosLen - 1];
 	logInfo[1] = 0;
 #endif
 
@@ -138,7 +138,7 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 
 	if (myNavigator->msgData.id[4] == 0)
 	{
-		myNavigator->coordinates.alt.decodedPos.value = myNavigator->coordinates.alt.previosPos.value[PreviosPosLen - 1];
+		myNavigator->coordinates.alt.decodedPos.value = myNavigator->coordinates.alt.previosPos.value[previosPosLen - 1];
 		logInfo[2] = 0;
 	}
 	else
@@ -186,12 +186,12 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 		logInfo[2] = 1;
 
 		// Проверям, что декодированная координата в реальном диапазоне
-		isInvalidData(&myNavigator->coordinates.alt.decodedPos.value, altIntPartLimits, &myNavigator->coordinates.alt.previosPos.value[PreviosPosLen - 1]);
+		isInvalidData(&myNavigator->coordinates.alt.decodedPos.value, altIntPartLimits, &myNavigator->coordinates.alt.previosPos.value[previosPosLen - 1]);
 		logInfo[2] = 0;
 	}
 
 #else
-	myNavigator->coordinates.alt.decodedPos.value = myNavigator->coordinates.alt.previosPos.value[PreviosPosLen - 1];
+	myNavigator->coordinates.alt.decodedPos.value = myNavigator->coordinates.alt.previosPos.value[previosPosLen - 1];
 	logInfo[2] = 0;
 #endif
 

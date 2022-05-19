@@ -16,7 +16,10 @@
 #include "changeMsg.h"
 #include "overwritePrevPos.h"
 #include "char2int.h"
+#include "writeInROM.h"
 
+//#define RELEASE
+#define DEBUG
 #define Cpp								// если язык c++, а не си
 #define msgMaxLen 1024					// максимальная длина сообщений
 #define previosPosLen 20				// число хранимых предыдущих значений
@@ -28,18 +31,25 @@
 #define includeAlt
 
 // Параметры фильтра Калмана
+//#define kalmanFiltering
 //#define simpleKalmanFilter
 //#define standartKalmanFilter
-//#define kalmanFiltering
+
 
 // Параметры медианного фильтра
 //#define medianFiltering
 
 // Параметры квадратичного фильтра
-//#define minQuadFiltering
+//#define minQuadFiltering 
 
 // Параметры альфа-бета фильтра
 #define alphaBetaFiltering
+
+// ##########################################################################################
+// 
+// -----------------------------------  Начальные условия  ----------------------------------
+// 
+// ##########################################################################################
 
 #ifdef Cpp
 
@@ -65,6 +75,13 @@ const double alphaBetaFilterSn[] = { 3.0, 3.0, 3.0 };
 #endif
 
 
+// ##########################################################################################
+// 
+// --------------------------------------  Координаты  --------------------------------------
+// 
+// ##########################################################################################
+
+
 // Буффер хранения предыдущих нефильтрованных значений координаты
 typedef struct PreviosPos
 {
@@ -86,11 +103,12 @@ typedef struct DecodedPos
 typedef struct FilteredPos
 {
 	double value;
-	//unsigned short intPosition;
-	//unsigned short floatPosition;
-	//unsigned short length;
 	unsigned short intLength;
 	unsigned short floatLength;
+	// Если тестируем все фильтры одновременно
+#ifdef DEBUG
+	double allFilteredValues[4];
+#endif
 } FilteredPos;
 
 // Один тип координат
@@ -108,6 +126,14 @@ typedef struct Coordinates
 	Coordinate lon;
 	Coordinate alt;
 } Coordinates;
+
+
+// ##########################################################################################
+// 
+// ---------------------------------  Сообщения с приемника  --------------------------------
+// 
+// ##########################################################################################
+
 
 // Сообщения
 typedef struct Msg
@@ -127,6 +153,14 @@ typedef struct MsgData
 	unsigned short parIdLen;
 	unsigned short id[6];
 } MsgData;
+
+
+// ##########################################################################################
+// 
+// ----------------------------------------  Фильтры  ---------------------------------------
+// 
+// ##########################################################################################
+
 
 // Статистический фильтр для 1 координаты
 typedef struct MinQuadFilterCoordinate
@@ -170,15 +204,19 @@ typedef struct MedianFilter
 typedef struct KalmanFilterCoordinate
 {
 	// Простой фильтр Калмана:
+#if defined(simpleKalmanFilter)
 	double _err_measure;
 	double _err_estimate;
 	double _q;
 	double _last_estimate;
 
 	// Нормальный фильтр Калмана
+#elif defined(standartKalmanFilter)
 	double R;
 	double x_est[3];
 	double p_est[9];
+#endif
+
 } KalmanFilterCoordinate;
 
 // Фильтр Калмана
@@ -219,6 +257,14 @@ typedef struct Filters
 	MedianFilter medianFilter;
 	KalmanFilter kalmanFilter;
 } Filters;
+
+
+// ##########################################################################################
+// 
+// ------------------------------------  Общая структура  -----------------------------------
+// 
+// ##########################################################################################
+
 
 // Все данные в 1 месте
 typedef struct MyNavigator

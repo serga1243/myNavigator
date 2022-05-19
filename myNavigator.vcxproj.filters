@@ -57,6 +57,9 @@
     <ClCompile Include="alphaBetaFilter.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
+    <ClCompile Include="writeInROM.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="myNavigator.h">
@@ -96,6 +99,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="alphaBetaFilter.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="writeInROM.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -71,14 +71,32 @@ void myNavigator(struct MyNavigator* myNavigator)
 		myNavigator->logInfo[0] = 1;
 		return;
 	}
-	// Перевод координат из символьного вида в целочисленный :
+	// Перевод координат из символьного вида в числовой :
 	getGCS(myNavigator, &myNavigator->logInfo[5]);
 	myNavigator->logInfo[1] = 4;
 
 	// Фильтрация широты:
 #ifdef includeLat
 
-#if defined( kalmanFiltering )
+#if defined( DEBUG )
+
+	kalmanFilter(&myNavigator->filters.kalmanFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
+	myNavigator->coordinates.lat.filteredPos.allFilteredValues[0] = myNavigator->coordinates.lat.filteredPos.value;
+
+	medianFilter(&myNavigator->filters.medianFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
+	myNavigator->coordinates.lat.filteredPos.allFilteredValues[1] = myNavigator->coordinates.lat.filteredPos.value;
+
+	minQuadFilter(&myNavigator->filters.minQuadFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
+	myNavigator->coordinates.lat.filteredPos.allFilteredValues[2] = myNavigator->coordinates.lat.filteredPos.value;
+
+	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
+	myNavigator->coordinates.lat.filteredPos.allFilteredValues[3] = myNavigator->coordinates.lat.filteredPos.value;
+
+	myNavigator->coordinates.lat.filteredPos.value = myNavigator->coordinates.lat.decodedPos.value;
+
+#elif defined( RELEASE )
+
+#if defined(kalmanFiltering)
 	// Фильтр Калмана :
 	kalmanFilter(&myNavigator->filters.kalmanFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
 	isInvalidData(&myNavigator->coordinates.lat.filteredPos.value, latIntPartLimits, &myNavigator->coordinates.lat.decodedPos.value);
@@ -105,6 +123,8 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #endif
 
+#endif
+
 #else
 	myNavigator->logInfo[13] = 0;
 #endif
@@ -113,6 +133,24 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 	// Фильтрация долготы:
 #ifdef includeLon
+
+#if defined( DEBUG )
+
+	kalmanFilter(&myNavigator->filters.kalmanFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
+	myNavigator->coordinates.lon.filteredPos.allFilteredValues[0] = myNavigator->coordinates.lon.filteredPos.value;
+
+	medianFilter(&myNavigator->filters.medianFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
+	myNavigator->coordinates.lon.filteredPos.allFilteredValues[1] = myNavigator->coordinates.lon.filteredPos.value;
+
+	minQuadFilter(&myNavigator->filters.minQuadFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
+	myNavigator->coordinates.lon.filteredPos.allFilteredValues[2] = myNavigator->coordinates.lon.filteredPos.value;
+
+	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
+	myNavigator->coordinates.lon.filteredPos.allFilteredValues[3] = myNavigator->coordinates.lon.filteredPos.value;
+
+	myNavigator->coordinates.lon.filteredPos.value = myNavigator->coordinates.lon.decodedPos.value;
+
+#elif defined( RELEASE )
 
 #if defined( kalmanFiltering )
 	// Фильтр Калмана :
@@ -141,6 +179,8 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #endif
 
+#endif
+
 #else
 	myNavigator->logInfo[14] = 0;
 #endif
@@ -150,9 +190,28 @@ void myNavigator(struct MyNavigator* myNavigator)
 	// Фильтрация высоты:
 #ifdef includeLat
 
+#if defined( DEBUG )
+
+	if (myNavigator->msgData.id[4] == 0)
+	{
+		kalmanFilter(&myNavigator->filters.kalmanFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
+		myNavigator->coordinates.alt.filteredPos.allFilteredValues[0] = myNavigator->coordinates.alt.filteredPos.value;
+
+		medianFilter(&myNavigator->filters.medianFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
+		myNavigator->coordinates.alt.filteredPos.allFilteredValues[1] = myNavigator->coordinates.alt.filteredPos.value;
+
+		minQuadFilter(&myNavigator->filters.minQuadFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
+		myNavigator->coordinates.alt.filteredPos.allFilteredValues[2] = myNavigator->coordinates.alt.filteredPos.value;
+
+		alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
+		myNavigator->coordinates.alt.filteredPos.allFilteredValues[3] = myNavigator->coordinates.alt.filteredPos.value;
+	}
+	myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
+
+#elif defined( RELEASE )
+
 #if defined( kalmanFiltering )
 	// Фильтр Калмана :
-	myNavigator->logInfo[15] = 0;
 	if (myNavigator->msgData.id[4] != 0)
 	{
 		kalmanFilter(&myNavigator->filters.kalmanFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
@@ -166,7 +225,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #elif defined( medianFiltering )
 	// Медианный фильтр :
-	myNavigator->logInfo[15] = 0;
 	if (myNavigator->msgData.id[4] != 0)
 	{
 		medianFilter(&myNavigator->filters.medianFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
@@ -180,7 +238,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #elif defined( minQuadFiltering )
 	// Минимальный квадрат фильтр :
-	myNavigator->logInfo[15] = 0;
 	if (myNavigator->msgData.id[4] != 0)
 	{
 		minQuadFilter(&myNavigator->filters.minQuadFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
@@ -194,7 +251,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #elif defined( alphaBetaFiltering )
 	// Альфа-бета фильтр :
-	myNavigator->logInfo[15] = 0;
 	if (myNavigator->msgData.id[4] != 0)
 	{
 		alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
@@ -213,10 +269,18 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #endif
 
+#endif
+
 #else
 	myNavigator->logInfo[15] = 0;
 #endif
 
+
+
+	// Запись в постоянную память координат :
+#if defined( DEBUG )
+	writeInROM(&myNavigator->coordinates);
+#endif
 	myNavigator->logInfo[1] = 3;
 
 	// Перезапись массива с предыдущими координатами :
@@ -238,6 +302,15 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 void myNavigatorInit(struct MyNavigator* myNavigator)
 {
+#ifdef DEBUG
+	for (unsigned short i = 0; i < 4; i++)
+	{
+		myNavigator->coordinates.lat.filteredPos.allFilteredValues[i] = 0;
+		myNavigator->coordinates.lon.filteredPos.allFilteredValues[i] = 0;
+		myNavigator->coordinates.alt.filteredPos.allFilteredValues[i] = 0;
+	}
+#endif
+
 	for (unsigned short i = 0; i < previosPosLen; i++)
 	{
 		myNavigator->coordinates.lat.previosPos.value[i] = startCoordinates[0];
@@ -299,6 +372,26 @@ void myNavigatorInit(struct MyNavigator* myNavigator)
 	myNavigator->coordinates.alt.filteredPos.value = 0;
 	myNavigator->coordinates.alt.filteredPos.intLength = 0;
 	myNavigator->coordinates.alt.filteredPos.floatLength = 0;
+
+	// Инициализация медианного фильтра :
+	medianFilterInit(&myNavigator->filters.medianFilter.lat, startCoordinates[0]);
+	medianFilterInit(&myNavigator->filters.medianFilter.lon, startCoordinates[1]);
+	medianFilterInit(&myNavigator->filters.medianFilter.alt, startCoordinates[2]);
+
+	// Инициализацияя фильтра Калмана :
+	kalmanFilterInit(&myNavigator->filters.kalmanFilter.lat, startCoordinates[0], kalmanFilterR[0]);
+	kalmanFilterInit(&myNavigator->filters.kalmanFilter.lon, startCoordinates[1], kalmanFilterR[1]);
+	kalmanFilterInit(&myNavigator->filters.kalmanFilter.alt, startCoordinates[2], kalmanFilterR[2]);
+
+	// Инициализация лучшего фильтра :
+	minQuadFilterInit(&myNavigator->filters.minQuadFilter.lat);
+	minQuadFilterInit(&myNavigator->filters.minQuadFilter.lon);
+	minQuadFilterInit(&myNavigator->filters.minQuadFilter.alt);
+
+	// Инициализация альфа-бета фильтра :
+	alphaBetaFilterInit(&myNavigator->filters.alphaBetaFilter.lat, alphaBetaFilterT[0], alphaBetaFilterSp[0], alphaBetaFilterSn[0]);
+	alphaBetaFilterInit(&myNavigator->filters.alphaBetaFilter.lon, alphaBetaFilterT[1], alphaBetaFilterSp[1], alphaBetaFilterSn[1]);
+	alphaBetaFilterInit(&myNavigator->filters.alphaBetaFilter.alt, alphaBetaFilterT[2], alphaBetaFilterSp[2], alphaBetaFilterSn[2]);
 
 	return;
 }

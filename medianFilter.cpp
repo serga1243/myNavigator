@@ -6,11 +6,11 @@ void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct 
 
 #if medianFilteringBufferLength == 3
 
-	coordinate->filteredPos.value = (coordinate->previosPos.value[0] < coordinate->previosPos.value[1])
-		? ((coordinate->previosPos.value[1] < coordinate->previosPos.value[2]) ? coordinate->previosPos.value[1]
-		: ((coordinate->previosPos.value[2] < coordinate->previosPos.value[0]) ? coordinate->previosPos.value[1] : coordinate->previosPos.value[2]))
-		: ((coordinate->previosPos.value[0] < coordinate->previosPos.value[2]) ? coordinate->previosPos.value[0]
-		: ((coordinate->previosPos.value[2] < coordinate->previosPos.value[1]) ? coordinate->previosPos.value[1] : coordinate->previosPos.value[2]));
+	coordinate->filteredPos.value = (coordinate->previosPos.value[1] < coordinate->previosPos.value[2])
+		? ((coordinate->previosPos.value[2] < coordinate->decodedPos.value) ? coordinate->previosPos.value[2]
+		: ((coordinate->decodedPos.value < coordinate->previosPos.value[1]) ? coordinate->previosPos.value[2] : coordinate->decodedPos.value))
+		: ((coordinate->previosPos.value[1] < coordinate->decodedPos.value) ? coordinate->previosPos.value[1]
+		: ((coordinate->decodedPos.value < coordinate->previosPos.value[2]) ? coordinate->previosPos.value[2] : coordinate->decodedPos.value));
 
 #else
 

@@ -23,27 +23,6 @@ int main()
 		{
 			// Инициализация функции фильтрации :
 			myNavigatorInit(&mynavigator);
-
-			// Инициализация медианного фильтра :
-			medianFilterInit(&mynavigator.filters.medianFilter.lat, startCoordinates[0]);
-			medianFilterInit(&mynavigator.filters.medianFilter.lon, startCoordinates[1]);
-			medianFilterInit(&mynavigator.filters.medianFilter.alt, startCoordinates[2]);
-
-			// Инициализацияя фильтра Калмана :
-			kalmanFilterInit(&mynavigator.filters.kalmanFilter.lat, startCoordinates[0], kalmanFilterR[0]);
-			kalmanFilterInit(&mynavigator.filters.kalmanFilter.lon, startCoordinates[1], kalmanFilterR[1]);
-			kalmanFilterInit(&mynavigator.filters.kalmanFilter.alt, startCoordinates[2], kalmanFilterR[2]);
-
-			// Инициализация лучшего фильтра :
-			minQuadFilterInit(&mynavigator.filters.minQuadFilter.lat);
-			minQuadFilterInit(&mynavigator.filters.minQuadFilter.lon);
-			minQuadFilterInit(&mynavigator.filters.minQuadFilter.alt);
-
-			// Инициализация альфа-бета фильтра :
-			alphaBetaFilterInit(&mynavigator.filters.alphaBetaFilter.lat, alphaBetaFilterT[0], alphaBetaFilterSp[0], alphaBetaFilterSn[0]);
-			alphaBetaFilterInit(&mynavigator.filters.alphaBetaFilter.lon, alphaBetaFilterT[1], alphaBetaFilterSp[1], alphaBetaFilterSn[1]);
-			alphaBetaFilterInit(&mynavigator.filters.alphaBetaFilter.alt, alphaBetaFilterT[2], alphaBetaFilterSp[2], alphaBetaFilterSn[2]);
-
 			isRestart = false;
 		}
 

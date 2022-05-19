@@ -126,10 +126,15 @@ void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct 
 
 void kalmanFilterInit(struct KalmanFilterCoordinate* kalmanFilterCoordinate, const double startCoordinate, const double R)
 {
+ #if defined(simpleKalmanFilter)
+    // Простой фильтр Калмана
     kalmanFilterCoordinate->_err_measure = 0;
     kalmanFilterCoordinate->_err_estimate = 0;
     kalmanFilterCoordinate->_q = 0;
-    kalmanFilterCoordinate->_last_estimate = 0;
+    kalmanFilterCoordinate->_last_estimate = startCoordinate;
+
+#elif defined(standartKalmanFilter)
+    // Стандартный фильтр Калмана
     for (unsigned short i = 0; i < 9; i++)
     {
         kalmanFilterCoordinate->p_est[i] = 0;
@@ -140,6 +145,8 @@ void kalmanFilterInit(struct KalmanFilterCoordinate* kalmanFilterCoordinate, con
         kalmanFilterCoordinate->x_est[i] = 0;
     }
     kalmanFilterCoordinate->R = R;
+
+#endif
 
     return;
 }

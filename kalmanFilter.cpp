@@ -8,32 +8,6 @@ static const signed char iv[3] = { 1, 0, 0 };
 
 void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct Coordinate* coordinate, unsigned char* logInfo)
 {
-#if defined( simpleKalmanFilter )
-
-    double _kalman_gain = 0;
-    double _current_estimate = 0;
-    *logInfo = 5;
-
-    _kalman_gain = kalmanFilterCoordinate->_err_estimate /
-        (kalmanFilterCoordinate->_err_estimate + kalmanFilterCoordinate->_err_measure);
-    *logInfo = 4;
-
-    _current_estimate = kalmanFilterCoordinate->_last_estimate + _kalman_gain *
-        (coordinate->decodedPos.value - kalmanFilterCoordinate->_last_estimate);
-    *logInfo = 3;
-
-    kalmanFilterCoordinate->_err_estimate = (1 - _kalman_gain) *
-        kalmanFilterCoordinate->_err_estimate + myfabs(kalmanFilterCoordinate->_last_estimate - _current_estimate) *
-        kalmanFilterCoordinate->_q;
-    *logInfo = 2;
-
-    kalmanFilterCoordinate->_last_estimate = _current_estimate;
-    *logInfo = 1;
-
-    coordinate->filteredPos.value = _current_estimate;
-    *logInfo = 0;
-
-#elif defined( standartKalmanFilter )
 
     double b_a[9];
     double p_prd[9];
@@ -112,13 +86,6 @@ void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct 
     coordinate->filteredPos.value = kalmanFilterCoordinate->x_est[0];
     *logInfo = 0;
 
-#else
-
-    coordinate->filteredPos.value = coordinate->decodedPos.value;
-    *logInfo = 0;
-
-#endif
-
     return;
 }
 
@@ -126,14 +93,8 @@ void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct 
 
 void kalmanFilterInit(struct KalmanFilterCoordinate* kalmanFilterCoordinate, const double startCoordinate, const double R)
 {
- #if defined(simpleKalmanFilter)
-    // Простой фильтр Калмана
-    kalmanFilterCoordinate->_err_measure = 0;
-    kalmanFilterCoordinate->_err_estimate = 0;
-    kalmanFilterCoordinate->_q = 0;
-    kalmanFilterCoordinate->_last_estimate = startCoordinate;
 
-#elif defined(standartKalmanFilter)
+
     // Стандартный фильтр Калмана
     for (unsigned short i = 0; i < 9; i++)
     {
@@ -146,7 +107,6 @@ void kalmanFilterInit(struct KalmanFilterCoordinate* kalmanFilterCoordinate, con
     }
     kalmanFilterCoordinate->R = R;
 
-#endif
 
     return;
 }

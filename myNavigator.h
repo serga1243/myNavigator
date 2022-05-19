@@ -32,9 +32,6 @@
 
 // Параметры фильтра Калмана
 //#define kalmanFiltering
-//#define simpleKalmanFilter
-//#define standartKalmanFilter
-
 
 // Параметры медианного фильтра
 //#define medianFiltering
@@ -203,20 +200,9 @@ typedef struct MedianFilter
 // Фильтр Калмана для 1 координаты
 typedef struct KalmanFilterCoordinate
 {
-	// Простой фильтр Калмана:
-#if defined(simpleKalmanFilter)
-	double _err_measure;
-	double _err_estimate;
-	double _q;
-	double _last_estimate;
-
-	// Нормальный фильтр Калмана
-#elif defined(standartKalmanFilter)
 	double R;
 	double x_est[3];
 	double p_est[9];
-#endif
-
 } KalmanFilterCoordinate;
 
 // Фильтр Калмана

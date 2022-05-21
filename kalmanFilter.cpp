@@ -6,22 +6,6 @@ static const signed char Q[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
 static const signed char d_a[3] = { 1, 0, 0 };
 static const signed char iv[3] = { 1, 0, 0 };
 
-//static double b_a[9];
-//static double p_prd[9];
-//static double b_B[3];
-//static double x_prd[3];
-//static double b;
-//static double d;
-//static double d1;
-//static double d2;
-//static double d3;
-//static double d4;
-//static int i;
-//static int i1;
-//static int x_prd_tmp;
-//static double B = 0;
-//static double a = 0;
-
 void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct Coordinate* coordinate, unsigned char* logInfo)
 {
 

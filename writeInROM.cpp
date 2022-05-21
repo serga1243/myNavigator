@@ -3,7 +3,7 @@
 void writeInROM(struct Coordinates* coordinates)
 {
 
-#if defined( DEBUG )
+#if defined( WriteCoordsInFlash )
 
 	// write in FLASH
 	&coordinates->lat.filteredPos.value;

@@ -14,8 +14,8 @@ void geo2decart(double* lat, double* lon)
 	B = *lat;
 	L = *lon;
 
-	n;
-	modf((6.0 + L) / 6.0, &n);
+	n = (double)((int)((6.0 + L) / 6.0));
+	//modf((6.0 + L) / 6.0, &n);
 
 	l = (L - (3.0 + 6.0 * (n - 1.0))) / 57.29577951;
 

@@ -19,8 +19,8 @@ void decart2geo(double* lat, double* lon)
 	x = *lat;
 	y = *lon;
 
-	n;
-	modf(y * 0.000001, &n);
+	n = (double)((int)(y * 0.000001));
+	//modf(y * 0.000001, &n);
 
 	beta = x / 6367558.4968;
 	sin_beta = sin(beta);

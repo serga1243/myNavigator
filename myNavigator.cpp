@@ -80,6 +80,8 @@ void myNavigator(struct MyNavigator* myNavigator)
 	geo2decart(&myNavigator->coordinates.lat.filteredPos.value, &myNavigator->coordinates.lon.filteredPos.value);
 #endif
 
+
+
 	// Фильтрация широты:
 #ifdef includeLat
 
@@ -193,7 +195,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 
 	// Фильтрация высоты:
-#ifdef includeLat
+#ifdef includeAlt
 
 #if defined( DEBUG )
 
@@ -280,16 +282,16 @@ void myNavigator(struct MyNavigator* myNavigator)
 	myNavigator->logInfo[15] = 0;
 #endif
 
+
+
 	// Преобразование плоских прямоугольных координат в проекции Гаусса-Крюгера 
 	// на эллипсоиде Красовского в геодезические координаты :
 #ifdef TransformCoords
 	decart2geo(&myNavigator->coordinates.lat.filteredPos.value, &myNavigator->coordinates.lon.filteredPos.value);
 #endif
 
-
-
 	// Запись в постоянную память координат :
-#if defined( DEBUG )
+#if defined( WriteCoordsInFlash )
 	writeInROM(&myNavigator->coordinates);
 #endif
 	myNavigator->logInfo[1] = 3;

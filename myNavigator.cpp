@@ -75,6 +75,11 @@ void myNavigator(struct MyNavigator* myNavigator)
 	getGCS(myNavigator, &myNavigator->logInfo[5]);
 	myNavigator->logInfo[1] = 4;
 
+	// Преобразование геодезических координат в плоские прямоугольные координаты :
+#ifdef TransformCoords
+	geo2decart(&myNavigator->coordinates.lat.filteredPos.value, &myNavigator->coordinates.lon.filteredPos.value);
+#endif
+
 	// Фильтрация широты:
 #ifdef includeLat
 
@@ -273,6 +278,12 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #else
 	myNavigator->logInfo[15] = 0;
+#endif
+
+	// Преобразование плоских прямоугольных координат в проекции Гаусса-Крюгера 
+	// на эллипсоиде Красовского в геодезические координаты :
+#ifdef TransformCoords
+	decart2geo(&myNavigator->coordinates.lat.filteredPos.value, &myNavigator->coordinates.lon.filteredPos.value);
 #endif
 
 

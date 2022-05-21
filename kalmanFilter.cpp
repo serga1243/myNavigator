@@ -6,6 +6,22 @@ static const signed char Q[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
 static const signed char d_a[3] = { 1, 0, 0 };
 static const signed char iv[3] = { 1, 0, 0 };
 
+//static double b_a[9];
+//static double p_prd[9];
+//static double b_B[3];
+//static double x_prd[3];
+//static double b;
+//static double d;
+//static double d1;
+//static double d2;
+//static double d3;
+//static double d4;
+//static int i;
+//static int i1;
+//static int x_prd_tmp;
+//static double B = 0;
+//static double a = 0;
+
 void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct Coordinate* coordinate, unsigned char* logInfo)
 {
 
@@ -96,14 +112,14 @@ void kalmanFilterInit(struct KalmanFilterCoordinate* kalmanFilterCoordinate, con
 
 
     // Стандартный фильтр Калмана
-    for (unsigned short i = 0; i < 9; i++)
+    for (unsigned short j = 0; j < 9; j++)
     {
-        kalmanFilterCoordinate->p_est[i] = 0;
+        kalmanFilterCoordinate->p_est[j] = 0;
     }
     kalmanFilterCoordinate->x_est[0] = startCoordinate;
-    for (unsigned short i = 1; i < 3; i++)
+    for (unsigned short j = 1; j < 3; j++)
     {
-        kalmanFilterCoordinate->x_est[i] = 0;
+        kalmanFilterCoordinate->x_est[j] = 0;
     }
     kalmanFilterCoordinate->R = R;
 

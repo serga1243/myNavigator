@@ -1,5 +1,7 @@
 #include "medianFilter.h"
 
+static double buff = 0;
+
 void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct Coordinate* coordinate, unsigned char* logInfo)
 {
 	*logInfo = 4;
@@ -38,7 +40,7 @@ void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct 
 
 double findMedianNFast(double buffer[], double newVal, unsigned int* cntr, unsigned int* len, unsigned char* logInfo)
 {
-	double buff = 0;
+	buff = 0;
 	buffer[*cntr] = newVal;
 	if ((*cntr < *len - 1) && (buffer[*cntr] > buffer[*cntr + 1])) {
 		for (unsigned int i = *cntr; i < *len - 1; i++) {

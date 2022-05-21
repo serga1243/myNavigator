@@ -17,9 +17,12 @@
 #include "overwritePrevPos.h"
 #include "char2int.h"
 #include "writeInROM.h"
+#include "geo2decart.h"
+#include "decart2geo.h"
 
-//#define RELEASE
-#define DEBUG
+#define RELEASE
+//#define DEBUG
+#define TransformCoords
 #define Cpp								// если язык c++, а не си
 #define msgMaxLen 1024					// максимальная длина сообщений
 #define previosPosLen 20				// число хранимых предыдущих значений
@@ -31,7 +34,7 @@
 #define includeAlt
 
 // Параметры фильтра Калмана
-//#define kalmanFiltering
+#define kalmanFiltering
 
 // Параметры медианного фильтра
 //#define medianFiltering
@@ -40,7 +43,7 @@
 //#define minQuadFiltering 
 
 // Параметры альфа-бета фильтра
-#define alphaBetaFiltering
+//#define alphaBetaFiltering
 
 // ##########################################################################################
 // 

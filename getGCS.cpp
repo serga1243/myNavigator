@@ -5,11 +5,10 @@ extern const double latIntPartLimits[];
 extern const double lonIntPartLimits[];
 extern const double altIntPartLimits[];
 
+static unsigned short i;
 
 void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 {
-	unsigned short i = 0;
-
 	// Широта
 #ifdef includeLat
 

@@ -1,20 +1,27 @@
 #include "getXOR.h"
 
+static char dataArr[4];
+static unsigned char hash;
+static unsigned short i;
+
 void getXOR(char data[], char XORarray[], unsigned short length, unsigned char* logInfo)
 {
-	char dataArr[] = { '\0', '\0', '\0', '\0' };
-	unsigned char hash = 0x00;
-	unsigned short i = 0;
+	hash = 0x00;
+	i = 0;
+
 	*logInfo = 5;
 	// Вычисление хэш-функции
 	while (length--) {
-		hash ^= data[i];
-		i++;
+		hash ^= data[i++];
 	}
 	*logInfo = 4;
 
 	// Получаем КС
+#ifdef Cpp
 	_itoa_s(hash, dataArr, 4, 16);
+#else
+	itoa(hash, dataArr, 16);
+#endif
 	*logInfo = 3;
 
 	// Перезаписываем массив с КС

@@ -5,10 +5,12 @@ extern const double lonIntPartLimits[];
 extern const double altIntPartLimits[];
 extern const double startCoordinates[];
 
+static unsigned short i;
+
 void myNavigator(struct MyNavigator* myNavigator)
 {
 	// Логи :
-	for (unsigned short i = 0; i < logInfoArrLen; i++)
+	for (i = 0; i < logInfoArrLen; i++)
 	{
 		myNavigator->logInfo[i] = 85;
 	}
@@ -316,7 +318,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 void myNavigatorInit(struct MyNavigator* myNavigator)
 {
 #ifdef DEBUG
-	for (unsigned short i = 0; i < 4; i++)
+	for (i = 0; i < 4; i++)
 	{
 		myNavigator->coordinates.lat.filteredPos.allFilteredValues[i] = 0;
 		myNavigator->coordinates.lon.filteredPos.allFilteredValues[i] = 0;
@@ -324,14 +326,14 @@ void myNavigatorInit(struct MyNavigator* myNavigator)
 	}
 #endif
 
-	for (unsigned short i = 0; i < previosPosLen; i++)
+	for (i = 0; i < previosPosLen; i++)
 	{
 		myNavigator->coordinates.lat.previosPos.value[i] = startCoordinates[0];
 		myNavigator->coordinates.lon.previosPos.value[i] = startCoordinates[1];
 		myNavigator->coordinates.alt.previosPos.value[i] = startCoordinates[2];
 	}
 
-	for (unsigned short i = 0; i < msgMaxLen; i++)
+	for (i = 0; i < msgMaxLen; i++)
 	{
 		myNavigator->msgIn.msg[i] = '0';
 		myNavigator->msgOut.msg[i] = '0';
@@ -351,7 +353,7 @@ void myNavigatorInit(struct MyNavigator* myNavigator)
 	myNavigator->msgData.idData[1] = '0';
 	myNavigator->msgData.idData[2] = '0';
 
-	for (unsigned short i = 0; i < 6; i++)
+	for (i = 0; i < 6; i++)
 	{
 		myNavigator->msgData.id[0] = 0;
 	}

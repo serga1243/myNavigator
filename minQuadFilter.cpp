@@ -1,12 +1,13 @@
 #include "minQuadFilter.h"
 
+static unsigned short i;
 
 void minQuadFilter(struct MinQuadFilterCoordinate* minQuadFilterCoordinate, struct Coordinate* coordinate, unsigned char* logInfo)
 {
 	*logInfo = 3;
 	minQuadFilterCoordinate->sumY = 0;
 	minQuadFilterCoordinate->sumXY = 0;
-	for (int i = 0; i < previosPosLen - 1; i++)
+	for (i = 0; i < previosPosLen - 1; i++)
 	{
 		minQuadFilterCoordinate->sumY += coordinate->previosPos.value[i + 1];
 		minQuadFilterCoordinate->sumXY += (double)i * (coordinate->previosPos.value[i + 1]);
@@ -31,10 +32,10 @@ void minQuadFilterInit(struct MinQuadFilterCoordinate* minQuadFilterCoordinate)
 {
 	minQuadFilterCoordinate->sumX = 0;
 	minQuadFilterCoordinate->sumX2 = 0;
-	for (int i = 0; i < previosPosLen; i++)
+	for (i = 0; i < previosPosLen; i++)
 	{
-		minQuadFilterCoordinate->sumX += i;
-		minQuadFilterCoordinate->sumX2 += i * i;
+		minQuadFilterCoordinate->sumX += (double)i;
+		minQuadFilterCoordinate->sumX2 += (double)i * (double)i;
 	}
 	minQuadFilterCoordinate->sumY = 0;
 	minQuadFilterCoordinate->sumXY = 0;

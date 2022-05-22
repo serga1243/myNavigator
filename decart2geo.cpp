@@ -71,7 +71,10 @@ void decart2geo(double* lat, double* lon)
 						0.0482 * sin_pow4 +
 						0.0032 * sin_pow6)))));
 
+	// Широта :
 	*lat = B0 + dB;
+
+	// Долгота :
 	*lon = 6.0 * (n - 0.5) / 57.29577951 + l;
 
 	return;

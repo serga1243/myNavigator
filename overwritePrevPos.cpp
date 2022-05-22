@@ -1,9 +1,11 @@
 #include "overwritePrevPos.h"
 
+static unsigned short i;
+
 void overwritePrevPos(struct MyNavigator* myNavigator, unsigned char* logInfo)
 {
 	*logInfo = 1;
-	for (unsigned short i = 0; i < previosPosLen; i++)
+	for (i = 0; i < previosPosLen; i++)
 	{
 		if (i < previosPosLen - 1)
 		{

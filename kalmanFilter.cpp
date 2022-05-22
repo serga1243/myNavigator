@@ -6,24 +6,27 @@ static const signed char Q[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
 static const signed char d_a[3] = { 1, 0, 0 };
 static const signed char iv[3] = { 1, 0, 0 };
 
+static double b_a[9];
+static double p_prd[9];
+static double b_B[3];
+static double x_prd[3];
+static double b;
+static double d;
+static double d1;
+static double d2;
+static double d3;
+static double d4;
+static int x_prd_tmp;
+static double B;
+static double a;
+static unsigned short i;
+static unsigned short i1;
+static unsigned short j;
+
 void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct Coordinate* coordinate, unsigned char* logInfo)
 {
-
-    double b_a[9];
-    double p_prd[9];
-    double b_B[3];
-    double x_prd[3];
-    double b;
-    double d;
-    double d1;
-    double d2;
-    double d3;
-    double d4;
-    int i;
-    int i1;
-    int x_prd_tmp;
-    double B = 0;
-    double a = 0;
+    B = 0;
+    a = 0;
     *logInfo = 4;
     /*  Initialize measurement matrix */
     /*  Predicted state and covariance */
@@ -96,12 +99,12 @@ void kalmanFilterInit(struct KalmanFilterCoordinate* kalmanFilterCoordinate, con
 
 
     // Стандартный фильтр Калмана
-    for (unsigned short j = 0; j < 9; j++)
+    for (j = 0; j < 9; j++)
     {
         kalmanFilterCoordinate->p_est[j] = 0;
     }
     kalmanFilterCoordinate->x_est[0] = startCoordinate;
-    for (unsigned short j = 1; j < 3; j++)
+    for (j = 1; j < 3; j++)
     {
         kalmanFilterCoordinate->x_est[j] = 0;
     }

@@ -1,6 +1,17 @@
 #include "changeMsg.h"
 //#include <iostream>
 
+static unsigned short i;
+static unsigned short j;
+static unsigned short k;
+static short l;
+static short len;
+static double valueIntPart;
+static double valuefloatPartBig;
+static double valuefloatPartSmall;
+static char dataBufferInt[12];
+static char dataBufferFlo[12];
+
 void changeMsg(struct MyNavigator* myNavigator, unsigned char logInfo[])
 {
 
@@ -80,15 +91,13 @@ void changeMsg(struct MyNavigator* myNavigator, unsigned char logInfo[])
 
 void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endPos, unsigned char* logInfo)
 {
-	unsigned short i = 0;
-	unsigned short j = 0;
-	unsigned short k = 0;
-	short l = 0;
-	double valueIntPart = 0;
-	double valuefloatPartBig = 0;
-	double valuefloatPartSmall = 0;
-	char dataBufferInt[] = { '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0' };
-	char dataBufferFlo[] = { '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0' };
+	i = 0;
+	j = 0;
+	k = 0;
+	l = 0;
+	valueIntPart = 0;
+	valuefloatPartBig = 0;
+	valuefloatPartSmall = 0;
 	*logInfo = 7;
 
 	valuefloatPartSmall = modf(myfabs(coordinate->filteredPos.value), &valueIntPart);
@@ -161,8 +170,8 @@ void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endP
 
 unsigned short getNumLen(char dataBuffer[])
 {
-	unsigned short len = 0;
-	for (unsigned short i = 0; i < 12; i++)
+	len = 0;
+	for (i = 0; i < 12; i++)
 	{
 		switch (dataBuffer[i])
 		{

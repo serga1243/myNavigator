@@ -24,6 +24,7 @@ void geo2decart(double* lat, double* lon)
 	sin_pow4 = pow(sin(B), 4.0);
 	sin_pow6 = pow(sin(B), 6.0);
 
+	// Абсцисса :
 	*lat = 6367558.4968 * B -
 		sin(2.0 * B * (16002.8900 +
 			66.9607 * sin_pow2 +
@@ -45,8 +46,7 @@ void geo2decart(double* lat, double* lon)
 							836700.0 * sin_pow4 -
 							398600.0 * sin_pow6))))));
 
-
-
+	// Ордината :
 	*lon = (5.0 + 10.0 * n) * 100000.0 +
 		l * cos(B * (6378245.0 +
 			21346.1415 * sin_pow2 +

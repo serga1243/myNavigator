@@ -1,9 +1,12 @@
 #include "alphaBetaFilter.h"
 
+static double Zeks;
+static double L;
+static double r;
 
 void alphaBetaFilter(struct AlphaBetaFilterCoordinate* alphaBetaFilterCoordinate, struct Coordinate* coordinate, unsigned char* logInfo)
 {
-    double Zeks = 0;
+    Zeks = 0;
     alphaBetaFilterCoordinate->Step++;
 
     if (alphaBetaFilterCoordinate->Step == 1)
@@ -48,8 +51,6 @@ void alphaBetaFilter(struct AlphaBetaFilterCoordinate* alphaBetaFilterCoordinate
 
 void alphaBetaFilterInit(struct AlphaBetaFilterCoordinate* alphaBetaFilterCoordinate, const double T, const double Sp, const double Sn)
 {
-    double L;
-    double r;
     //double Sp = 0.1;//дисперсия координаты
     //double Sn = 3.0;//дисперсия шума
     alphaBetaFilterCoordinate->Tob = T;

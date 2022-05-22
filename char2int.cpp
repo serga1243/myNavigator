@@ -1,13 +1,16 @@
 #include "char2int.h"
 #include "utilitiesFuncs.h"
 
+static int val;
+static int a;
+static unsigned short i;
+static unsigned short power;
 
 int char2int(char str[], unsigned short strLen)
 {
-	int val = 0;
-	int a = 0;
-	unsigned short i = 0;
-	unsigned short power = 0;
+	val = 0;
+	a = 0;
+	power = 0;
 
 	for (i = 0, power = 0; i < strLen + 1; i++, power++)
 	{

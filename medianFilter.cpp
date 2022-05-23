@@ -4,6 +4,7 @@ static double buff;
 static unsigned short bufferCntr = 0;
 static unsigned short bufferCntrs = 0;
 static int i;
+static int ii;
 static unsigned short j;
 
 void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct Coordinate* coordinate, unsigned char* logInfo)
@@ -47,21 +48,21 @@ double findMedianNFast(double buffer[], double newVal, unsigned int* cntr, unsig
 	buff = 0;
 	buffer[*cntr] = newVal;
 	if ((*cntr < *len - 1) && (buffer[*cntr] > buffer[*cntr + 1])) {
-		for (unsigned int i = *cntr; i < *len - 1; i++) {
-			if (buffer[i] > buffer[i + 1]) {
-				buff = buffer[i];
-				buffer[i] = buffer[i + 1];
-				buffer[i + 1] = buff;
+		for (ii = *cntr; ii < *len - 1; ii++) {
+			if (buffer[ii] > buffer[ii + 1]) {
+				buff = buffer[ii];
+				buffer[ii] = buffer[ii + 1];
+				buffer[ii + 1] = buff;
 			}
 		}
 	}
 	else {
 		if ((*cntr > 0) && (buffer[*cntr - 1] > buffer[*cntr])) {
-			for (int i = *cntr; i > 0; i--) {
-				if (buffer[i] < buffer[i - 1]) {
-					buff = buffer[i];
-					buffer[i] = buffer[i - 1];
-					buffer[i - 1] = buff;
+			for (ii = *cntr; ii > 0; ii--) {
+				if (buffer[ii] < buffer[ii - 1]) {
+					buff = buffer[ii];
+					buffer[ii] = buffer[ii - 1];
+					buffer[ii - 1] = buff;
 				}
 			}
 		}

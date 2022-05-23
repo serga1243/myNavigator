@@ -25,7 +25,7 @@
 #define RELEASE
 //#define DEBUG
 
-#define TransformCoords					// если необходимо преобразовывать гео координаты в декартовы
+//#define TransformCoords					// если необходимо преобразовывать гео координаты в декартовы
 #define WriteCoordsInFlash				// записывать ли координаты во флеш память?
 #define Cpp								// если язык c++, а не си
 #define msgMaxLen 1024					// максимальная длина сообщений
@@ -65,7 +65,7 @@ const double latIntPartLimits[] = { -9000.00000, 9000.00000 };
 const double lonIntPartLimits[] = { -18000.00000, 18000.00000 };
 const double altIntPartLimits[] = { 0.0, 99999.99 };
 
-// Параметры медианного Калмана :
+// Параметры медианного фильтра :
 const unsigned int medianFilteringBufferLength = 5;
 
 // Параметры фильтра Калмана :

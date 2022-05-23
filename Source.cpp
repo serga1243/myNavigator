@@ -12,10 +12,10 @@ int main()
 	bool isRestart = true;
 	char buf[msgMaxLen] = "", * p = NULL;
 
-	double aa = 4535.3245677;
-	double bb = 13423.234758697;
-	geo2decart(&aa, &bb);
-	decart2geo(&aa, &bb);
+	//double aa = 4535.3245677;
+	//double bb = 13423.234758697;
+	//geo2decart(&aa, &bb);
+	//decart2geo(&aa, &bb);
 
 	 //ќбъ€вление фильтра :
 	struct MyNavigator mynavigator;

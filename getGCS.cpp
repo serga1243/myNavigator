@@ -1,6 +1,5 @@
 #include "getGCS.h"
 
-
 extern const double latIntPartLimits[];
 extern const double lonIntPartLimits[];
 extern const double altIntPartLimits[];
@@ -51,7 +50,7 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 	// Делим дробное число на 10 в степени цифр после запятой
 	myNavigator->coordinates.lat.decodedPos.floatLength = myNavigator->msgData.parId[myNavigator->msgData.id[0] + 1] -
 		myNavigator->coordinates.lat.decodedPos.floatPosition;
-	myNavigator->coordinates.lat.decodedPos.value /= (double)intPower(10, myNavigator->coordinates.lat.decodedPos.floatLength);
+	myNavigator->coordinates.lat.decodedPos.value *= pow(10, -myNavigator->coordinates.lat.decodedPos.floatLength);
 	logInfo[0] = 2;
 
 	// Если не север и не восток, то меняем знак на -
@@ -112,7 +111,7 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 	// Делим дробное число на 10 в степени цифр после запятой
 	myNavigator->coordinates.lon.decodedPos.floatLength = myNavigator->msgData.parId[myNavigator->msgData.id[2] + 1] -
 		myNavigator->coordinates.lon.decodedPos.floatPosition;
-	myNavigator->coordinates.lon.decodedPos.value /= (double)intPower(10, myNavigator->coordinates.lon.decodedPos.floatLength);
+	myNavigator->coordinates.lon.decodedPos.value *= pow(10, -myNavigator->coordinates.lon.decodedPos.floatLength);
 	logInfo[1] = 2;
 
 	// Если не север и не восток, то меняем знак на -
@@ -181,7 +180,7 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 		// Делим дробное число на 10 в степени цифр после запятой
 		myNavigator->coordinates.alt.decodedPos.floatLength = myNavigator->msgData.parId[myNavigator->msgData.id[4] + 1] -
 			myNavigator->coordinates.alt.decodedPos.floatPosition;
-		myNavigator->coordinates.alt.decodedPos.value /= (double)intPower(10, myNavigator->coordinates.alt.decodedPos.floatLength);
+		myNavigator->coordinates.alt.decodedPos.value *= pow(10, -myNavigator->coordinates.alt.decodedPos.floatLength);
 		logInfo[2] = 1;
 
 		// Проверям, что декодированная координата в реальном диапазоне

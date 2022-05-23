@@ -13,28 +13,29 @@ static double sin_pow4;
 static double sin_pow6;
 static double dB;
 static double l;
+static double Dfloor;
 
 void decart2geo(double* lat, double* lon)
 {
 	x = *lat;
 	y = *lon;
 
-	n = (double)((int)(y * 0.000001));
-	//modf(y * 0.000001, &n);
+	// Преобразование координат :
+	n = floor(y * 0.000001);
 
-	beta = x / 6367558.4968;
+	beta = x * 1.570460641237214E-7;
 	sin_beta = sin(beta);
 	B0 = beta + sin(2.0 * beta * (
 		0.00252588685 - 0.00001491860 * pow(sin_beta, 2.0) +
 		0.00000011904 * pow(sin_beta, 4.0)));
-	z0 = (y - (10.0 * n + 5.0) * 100000.0) / (6378245.0 * cos(B0));
+	z0 = (y - (10.0 * n + 5.0) * 100000.0) * 1.567829395076545E-07 * pow(cos(B0), -1);
 
 	z0_pow2 = pow(z0, 2.0);
 	sin_pow2 = pow(sin(B0), 2.0);
 	sin_pow4 = pow(sin(B0), 4.0);
 	sin_pow6 = pow(sin(B0), 6.0);
 
-	dB = -z0_pow2 * sin(2.0 * B0 * (0.251684631 -
+	dB = -z0_pow2 * sin(2.0 * B0) * (0.251684631 -
 		0.003369263 * sin_pow2 +
 		0.000011276 * sin_pow4 -
 		z0_pow2 * (0.10500614 -
@@ -48,7 +49,7 @@ void decart2geo(double* lat, double* lon)
 				z0_pow2 * (0.01672 -
 					0.00630 * sin_pow2 +
 					0.01188 * sin_pow4 -
-					0.00328 * sin_pow6)))));
+					0.00328 * sin_pow6))));
 
 	l = z0 * (1.0 -
 		0.0033467108 * sin_pow2 -
@@ -75,7 +76,17 @@ void decart2geo(double* lat, double* lon)
 	*lat = B0 + dB;
 
 	// Долгота :
-	*lon = 6.0 * (n - 0.5) / 57.29577951 + l;
+	*lon = 0.104719755125293 * (n - 0.5) + l;
+
+	// Из десятичных градусов в градусы-десятичные минуты :
+	*lat = degrees2dm(*lat);
+	*lon = degrees2dm(*lon);
 
 	return;
+}
+
+double degrees2dm(double D)
+{
+	Dfloor = floor(D);
+	return Dfloor * 100.0 + (D - Dfloor) * 60.0;
 }

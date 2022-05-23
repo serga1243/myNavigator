@@ -8,16 +8,24 @@ static double l_pow2;
 static double sin_pow2;
 static double sin_pow4;
 static double sin_pow6;
+static double SGN;
 
 void geo2decart(double* lat, double* lon)
 {
 	B = *lat;
 	L = *lon;
 
-	n = (double)((int)((6.0 + L) / 6.0));
-	//modf((6.0 + L) / 6.0, &n);
+	// Из градусов-десятичных минут в десятичные градусы :
+	B = floor(B / 100.0);
+	B = dm2degrees(B, *lat - B * 100.0);
 
-	l = (L - (3.0 + 6.0 * (n - 1.0))) / 57.29577951;
+	L = floor(L / 100.0);
+	L = dm2degrees(L, *lon - L * 100.0);
+
+	// Преобразование координат :
+	n = floor((6.0 + L) * 0.166666666666667);
+
+	l = (L - (3.0 + 6.0 * (n - 1.0))) * 0.017453292520882;
 
 	l_pow2 = pow(l, 2.0);
 	sin_pow2 = pow(sin(B), 2.0);
@@ -26,7 +34,7 @@ void geo2decart(double* lat, double* lon)
 
 	// Абсцисса :
 	*lat = 6367558.4968 * B -
-		sin(2.0 * B * (16002.8900 +
+		sin(2.0 * B) * (16002.8900 +
 			66.9607 * sin_pow2 +
 			0.3515 * sin_pow4 -
 			l_pow2 * (1594561.25 +
@@ -44,11 +52,11 @@ void geo2decart(double* lat, double* lon)
 						l_pow2 * (109500.0 -
 							574700.0 * sin_pow2 +
 							836700.0 * sin_pow4 -
-							398600.0 * sin_pow6))))));
+							398600.0 * sin_pow6)))));
 
 	// Ордината :
 	*lon = (5.0 + 10.0 * n) * 100000.0 +
-		l * cos(B * (6378245.0 +
+		l * cos(B) * (6378245.0 +
 			21346.1415 * sin_pow2 +
 			107.1590 * sin_pow4 +
 			0.5977 * sin_pow6 +
@@ -63,7 +71,13 @@ void geo2decart(double* lat, double* lon)
 					l_pow2 * (79690.0 -
 						866190.0 * sin_pow2 +
 						1730360.0 * sin_pow4 -
-						945460.0 * sin_pow6)))));
+						945460.0 * sin_pow6))));
 
 	return;
+}
+
+double dm2degrees(double D, double M)
+{
+	SGN = D >= 0.0 && M >= 0.0 ? 1.0 : -1.0;
+	return SGN * (myfabs(D) + myfabs(M) / 60.0);
 }

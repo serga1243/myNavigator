@@ -10,7 +10,6 @@ int char2int(char str[], unsigned short strLen)
 {
 	val = 0;
 	a = 0;
-	power = 0;
 
 	for (i = 0, power = 0; i < strLen + 1; i++, power++)
 	{

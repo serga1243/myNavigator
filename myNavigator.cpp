@@ -79,7 +79,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 	// ѕреобразование геодезических координат в плоские пр€моугольные координаты :
 #ifdef TransformCoords
-	geo2decart(&myNavigator->coordinates.lat.filteredPos.value, &myNavigator->coordinates.lon.filteredPos.value);
+	geo2decart(&myNavigator->coordinates.lat.decodedPos.value, &myNavigator->coordinates.lon.decodedPos.value);
 #endif
 
 

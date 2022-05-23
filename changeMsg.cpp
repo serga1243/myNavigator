@@ -1,5 +1,4 @@
 #include "changeMsg.h"
-//#include <iostream>
 
 static unsigned short i;
 static unsigned short j;
@@ -95,15 +94,9 @@ void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endP
 	j = 0;
 	k = 0;
 	l = 0;
-	valueIntPart = 0;
-	valuefloatPartBig = 0;
-	valuefloatPartSmall = 0;
-	*logInfo = 7;
 
 	valuefloatPartSmall = modf(myfabs(coordinate->filteredPos.value), &valueIntPart);
-	*logInfo = 6;
-	valuefloatPartBig = valuefloatPartSmall * pow(10, coordinate->decodedPos.floatLength + 2);
-	*logInfo = 5;
+	valuefloatPartBig = valuefloatPartSmall * 1000000000;
 
 	// Целая часть числа
 #ifdef Cpp
@@ -111,9 +104,7 @@ void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endP
 #else
 	itoa((int)valueIntPart, dataBufferInt, 10);
 #endif
-	*logInfo = 4;
 	coordinate->filteredPos.intLength = getNumLen(dataBufferInt);
-	*logInfo = 3;
 
 	// Дробная часть числа
 #ifdef Cpp
@@ -121,9 +112,7 @@ void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endP
 #else
 	itoa((int)valuefloatPartBig, dataBufferFlo, 10);
 #endif
-	*logInfo = 2;
-	coordinate->filteredPos.floatLength = getNumLen(dataBufferFlo) - 2;
-	*logInfo = 1;
+	coordinate->filteredPos.floatLength = getNumLen(dataBufferFlo);
 
 	for (i = coordinate->decodedPos.intPosition;
 		i < endPos;

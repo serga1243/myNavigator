@@ -34,7 +34,7 @@ void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct 
 		*logInfo = 2;
 	}
 	*logInfo = 1;
-	coordinate->filteredPos.value /= medianFilterCoordinate->normFuncSum;
+	coordinate->filteredPos.value *= medianFilterCoordinate->normFuncSum;
 
 #endif
 
@@ -96,6 +96,6 @@ void medianFilterInit(struct MedianFilterCoordinate* medianFilterCoordinate, con
 		
 
 	}
-
+	medianFilterCoordinate->normFuncSum = 1 / medianFilterCoordinate->normFuncSum;
 	return;
 }

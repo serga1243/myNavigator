@@ -28,10 +28,6 @@ void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct 
     B = 0;
     a = 0;
     *logInfo = 4;
-    /*  Initialize measurement matrix */
-    /*  Predicted state and covariance */
-    /*  Estimation */
-    /*  Estimated state and covariance */
     for (i = 0; i < 3; i++) {
         d = 0.0;
         for (i1 = 0; i1 < 3; i1++) {

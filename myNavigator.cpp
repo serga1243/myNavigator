@@ -73,14 +73,13 @@ void myNavigator(struct MyNavigator* myNavigator)
 		myNavigator->logInfo[0] = 1;
 		return;
 	}
+
 	// Перевод координат из символьного вида в числовой :
 	getGCS(myNavigator, &myNavigator->logInfo[5]);
 	myNavigator->logInfo[1] = 4;
 
-	// Преобразование геодезических координат в плоские прямоугольные координаты :
-#ifdef TransformCoords
+	// Перевод координат из геовида в прямоугольный :
 	geo2decart(&myNavigator->coordinates.lat.decodedPos.value, &myNavigator->coordinates.lon.decodedPos.value);
-#endif
 
 
 
@@ -286,6 +285,10 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 
 
+	// Перезапись массива с предыдущими координатами :
+	overwritePrevPos(myNavigator, &myNavigator->logInfo[8]);
+	myNavigator->logInfo[1] = 2;
+
 	// Преобразование плоских прямоугольных координат в проекции Гаусса-Крюгера 
 	// на эллипсоиде Красовского в геодезические координаты :
 #ifdef TransformCoords
@@ -297,10 +300,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 	writeInROM(&myNavigator->coordinates);
 #endif
 	myNavigator->logInfo[1] = 3;
-
-	// Перезапись массива с предыдущими координатами :
-	overwritePrevPos(myNavigator, &myNavigator->logInfo[8]);
-	myNavigator->logInfo[1] = 2;
 
 	// Перезапись сообщения с новыми координатами :
 	changeMsg(myNavigator, &myNavigator->logInfo[9]);

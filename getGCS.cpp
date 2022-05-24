@@ -60,10 +60,7 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 
 	// Проверям, что декодированная координата в реальном диапазоне
 	isInvalidData(&myNavigator->coordinates.lat.decodedPos.value, latIntPartLimits, &myNavigator->coordinates.lat.previosPos.value[previosPosLen - 1]);
-	logInfo[0] = 0;
 
-#else
-	myNavigator->coordinates.lat.decodedPos.value = myNavigator->coordinates.lat.previosPos.value[previosPosLen - 1];
 	logInfo[0] = 0;
 #endif
 
@@ -121,10 +118,7 @@ void getGCS(struct MyNavigator* myNavigator, unsigned char logInfo[])
 
 	// Проверям, что декодированная координата в реальном диапазоне
 	isInvalidData(&myNavigator->coordinates.lon.decodedPos.value, lonIntPartLimits, &myNavigator->coordinates.lon.previosPos.value[previosPosLen - 1]);
-	logInfo[1] = 0;
 
-#else
-	myNavigator->coordinates.lon.decodedPos.value = myNavigator->coordinates.lon.previosPos.value[previosPosLen - 1];
 	logInfo[1] = 0;
 #endif
 

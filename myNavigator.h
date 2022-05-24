@@ -25,7 +25,7 @@
 #define RELEASE
 //#define DEBUG
 
-//#define TransformCoords					// если необходимо преобразовывать гео координаты в декартовы
+#define TransformCoords					// если необходимо преобразовывать гео координаты в декартовы
 #define WriteCoordsInFlash				// записывать ли координаты во флеш пам€ть?
 #define Cpp								// если €зык c++, а не си
 #define msgMaxLen 1024					// максимальна€ длина сообщений
@@ -58,11 +58,27 @@
 #ifdef Cpp
 
 // Ќачальные координаты :
+//#ifdef TransformCoords
+//geo2decart(&startCoordinates[0], &startCoordinates[1]);
+//latIntPartLimits[0] = -100000000.0;
+//latIntPartLimits[1] = 100000000.0;
+//lonIntPartLimits[0] = -100000000.0;
+//lonIntPartLimits[1] = 100000000.0;
+//#endif
+#ifdef TransformCoords
+const double startCoordinates[] = { 5561520.0722118802, 22434924.431076400, 100.0 };
+#else
 const double startCoordinates[] = { 5010.88431, 12805.33476, 100.0 };
+#endif
 
 // ѕределы значений геодезических координат :
+#ifdef TransformCoords
+const double latIntPartLimits[] = { -100000000.0, 100000000.0 };
+const double lonIntPartLimits[] = { -100000000.0, 100000000.0 };
+#else
 const double latIntPartLimits[] = { -9000.00000, 9000.00000 };
 const double lonIntPartLimits[] = { -18000.00000, 18000.00000 };
+#endif
 const double altIntPartLimits[] = { 0.0, 99999.99 };
 
 // ѕараметры медианного фильтра :

@@ -14,9 +14,12 @@ void chooseId(struct MyNavigator* myNavigator)
 			myNavigator->msgData.id[3] = 5;
 			myNavigator->msgData.id[4] = 6;
 			myNavigator->msgData.id[5] = 0;
+			myNavigator->logInfo[0] = 0;
+			return;
 		}
 		else
 		{
+			myNavigator->logInfo[0] = 2;
 			return;
 		}
 	}
@@ -32,9 +35,12 @@ void chooseId(struct MyNavigator* myNavigator)
 			myNavigator->msgData.id[3] = 4;
 			myNavigator->msgData.id[4] = 8;
 			myNavigator->msgData.id[5] = 0;
+			myNavigator->logInfo[0] = 0;
+			return;
 		}
 		else
 		{
+			myNavigator->logInfo[0] = 2;
 			return;
 		}
 	}
@@ -50,9 +56,12 @@ void chooseId(struct MyNavigator* myNavigator)
 			myNavigator->msgData.id[3] = 3;
 			myNavigator->msgData.id[4] = 0;
 			myNavigator->msgData.id[5] = 4;
+			myNavigator->logInfo[0] = 0;
+			return;
 		}
 		else
 		{
+			myNavigator->logInfo[0] = 2;
 			return;
 		}
 	}
@@ -68,9 +77,12 @@ void chooseId(struct MyNavigator* myNavigator)
 			myNavigator->msgData.id[3] = 4;
 			myNavigator->msgData.id[4] = 0;
 			myNavigator->msgData.id[5] = 0;
+			myNavigator->logInfo[0] = 0;
+			return;
 		}
 		else
 		{
+			myNavigator->logInfo[0] = 2;
 			return;
 		}
 	}
@@ -86,9 +98,12 @@ void chooseId(struct MyNavigator* myNavigator)
 			myNavigator->msgData.id[3] = 5;
 			myNavigator->msgData.id[4] = 0;
 			myNavigator->msgData.id[5] = 0;
+			myNavigator->logInfo[0] = 0;
+			return;
 		}
 		else
 		{
+			myNavigator->logInfo[0] = 2;
 			return;
 		}
 	}
@@ -104,9 +119,12 @@ void chooseId(struct MyNavigator* myNavigator)
 			myNavigator->msgData.id[3] = 3;
 			myNavigator->msgData.id[4] = 0;
 			myNavigator->msgData.id[5] = 0;
+			myNavigator->logInfo[0] = 0;
+			return;
 		}
 		else
 		{
+			myNavigator->logInfo[0] = 2;
 			return;
 		}
 	}
@@ -122,9 +140,12 @@ void chooseId(struct MyNavigator* myNavigator)
 			myNavigator->msgData.id[3] = 8;
 			myNavigator->msgData.id[4] = 0;
 			myNavigator->msgData.id[5] = 0;
+			myNavigator->logInfo[0] = 0;
+			return;
 		}
 		else
 		{
+			myNavigator->logInfo[0] = 2;
 			return;
 		}
 	}
@@ -140,14 +161,18 @@ void chooseId(struct MyNavigator* myNavigator)
 			myNavigator->msgData.id[3] = 3;
 			myNavigator->msgData.id[4] = 0;
 			myNavigator->msgData.id[5] = 0;
+			myNavigator->logInfo[0] = 0;
+			return;
 		}
 		else
 		{
+			myNavigator->logInfo[0] = 2;
 			return;
 		}
 	}
 	else
 	{
+		myNavigator->logInfo[0] = 1;
 		return;
 	}
 

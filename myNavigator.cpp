@@ -15,7 +15,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 	// Выходное сообщение :
 	myNavigator->msgOut.len = myNavigator->msgIn.len < msgMaxLen ? myNavigator->msgIn.len : msgMaxLen;
 	memcpy(myNavigator->msgOut.msg, myNavigator->msgIn.msg, myNavigator->msgOut.len);
-	myNavigator->logInfo[1] = 9;
 
 	// Получение координат из сообщения :
 	// Проверка сообщения на стандарт NMEA-0183 :
@@ -27,7 +26,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 		// контрольная сумма :
 		myNavigator->msgData.checkData[0] = myNavigator->msgOut.msg[myNavigator->msgOut.len - 4];
 		myNavigator->msgData.checkData[1] = myNavigator->msgOut.msg[myNavigator->msgOut.len - 3];
-		myNavigator->logInfo[1] = 8;
 
 		// инфо о стране спутниковой ГНСС :
 		myNavigator->msgData.countryData[0] = myNavigator->msgOut.msg[1];
@@ -40,7 +38,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 		// условие, что сообщение пришло верно :
 		getXOR(&myNavigator->msgOut.msg[1], myNavigator->msgData.checkDataCond, myNavigator->msgOut.len - 6);
-		myNavigator->logInfo[1] = 7;
 
 		// сравнение дешифрованной КС и полученной :
 		if (myNavigator->msgData.checkDataCond[0] == myNavigator->msgData.checkData[0] &&
@@ -48,12 +45,10 @@ void myNavigator(struct MyNavigator* myNavigator)
 		{
 			// Разделение сообщения на запятые и поиск их :
 			myNavigator->msgData.parIdLen = findCommas(myNavigator);
-			myNavigator->logInfo[1] = 6;
 
 			// Идентификатор строки :
 			chooseId(myNavigator);
-			myNavigator->logInfo[1] = 5;
-			if (myNavigator->logInfo[4] != 0)
+			if (myNavigator->logInfo[0] != 0)
 			{
 				myNavigator->logInfo[0] = 3;
 				return;
@@ -73,7 +68,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 	// Перевод координат из символьного вида в числовой :
 	getGCS(myNavigator);
-	myNavigator->logInfo[1] = 4;
 
 	// Перевод координат из геовида в прямоугольный :
 	geo2decart(&myNavigator->coordinates.lat.decodedPos.value, &myNavigator->coordinates.lon.decodedPos.value);
@@ -129,7 +123,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 #else
 	// Если без фильтра :
 	myNavigator->coordinates.lat.filteredPos.value = myNavigator->coordinates.lat.decodedPos.value;
-	myNavigator->logInfo[13] = 0;
 
 #endif
 
@@ -183,7 +176,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 #else
 	// Если без фильтра :
 	myNavigator->coordinates.lon.filteredPos.value = myNavigator->coordinates.lon.decodedPos.value;
-	myNavigator->logInfo[14] = 0;
 
 #endif
 
@@ -278,7 +270,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 	// Перезапись массива с предыдущими координатами :
 	overwritePrevPos(myNavigator);
-	myNavigator->logInfo[1] = 2;
 
 	// Преобразование плоских прямоугольных координат в проекции Гаусса-Крюгера 
 	// на эллипсоиде Красовского в геодезические координаты :
@@ -290,17 +281,13 @@ void myNavigator(struct MyNavigator* myNavigator)
 #if defined( WriteCoordsInFlash )
 	writeInROM(&myNavigator->coordinates);
 #endif
-	myNavigator->logInfo[1] = 3;
 
 	// Перезапись сообщения с новыми координатами :
 	changeMsg(myNavigator);
-	myNavigator->logInfo[1] = 1;
 
 	// Вычисление новой КС для измененного сообщения :
 	getXOR(&myNavigator->msgOut.msg[1], &myNavigator->msgOut.msg[myNavigator->msgOut.len - 4], myNavigator->msgOut.len - 6);
-	myNavigator->logInfo[1] = 0;
 
-	myNavigator->logInfo[0] = 0;
 	return;
 }
 

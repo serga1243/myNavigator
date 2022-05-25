@@ -2,9 +2,8 @@
 
 static unsigned short i;
 
-void minQuadFilter(struct MinQuadFilterCoordinate* minQuadFilterCoordinate, struct Coordinate* coordinate, unsigned char* logInfo)
+void minQuadFilter(struct MinQuadFilterCoordinate* minQuadFilterCoordinate, struct Coordinate* coordinate)
 {
-	*logInfo = 3;
 	minQuadFilterCoordinate->sumY = 0;
 	minQuadFilterCoordinate->sumXY = 0;
 	for (i = 0; i < previosPosLen - 1; i++)
@@ -12,18 +11,14 @@ void minQuadFilter(struct MinQuadFilterCoordinate* minQuadFilterCoordinate, stru
 		minQuadFilterCoordinate->sumY += coordinate->previosPos.value[i + 1];
 		minQuadFilterCoordinate->sumXY += (double)i * (coordinate->previosPos.value[i + 1]);
 	}
-	*logInfo = 2;
 	minQuadFilterCoordinate->sumY += coordinate->decodedPos.value;
 	minQuadFilterCoordinate->sumXY += (previosPosLen - 1) * coordinate->decodedPos.value;
 	minQuadFilterCoordinate->a = previosPosLen * minQuadFilterCoordinate->sumXY;
 	minQuadFilterCoordinate->a -= minQuadFilterCoordinate->sumX * minQuadFilterCoordinate->sumY;
 	minQuadFilterCoordinate->a /= previosPosLen * minQuadFilterCoordinate->sumX2 - minQuadFilterCoordinate->sumX * minQuadFilterCoordinate->sumX;
-	*logInfo = 1;
 	minQuadFilterCoordinate->b = (minQuadFilterCoordinate->sumY - minQuadFilterCoordinate->a * minQuadFilterCoordinate->sumX) / previosPosLen;
 	minQuadFilterCoordinate->a *= previosPosLen;
 	coordinate->filteredPos.value = minQuadFilterCoordinate->a + minQuadFilterCoordinate->b;
-
-	*logInfo = 0;
 
 	return;
 }

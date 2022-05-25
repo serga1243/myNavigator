@@ -6,9 +6,9 @@
 struct MedianFilterCoordinate;
 struct Coordinate;
 
-void medianFilter(struct MedianFilterCoordinate*, struct Coordinate*, unsigned char*);
+void medianFilter(struct MedianFilterCoordinate*, struct Coordinate*);
 
-double findMedianNFast(double[], double, unsigned int*, unsigned int*, unsigned char*);
+double findMedianNFast(double[], double, unsigned int*, unsigned int*);
 
 
 void medianFilterInit(struct MedianFilterCoordinate*, const double);

@@ -5,4 +5,4 @@
 
 struct MyNavigator;
 
-void getGCS(struct MyNavigator*, unsigned char[]);
+void getGCS(struct MyNavigator*);

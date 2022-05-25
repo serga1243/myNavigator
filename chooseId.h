@@ -4,4 +4,4 @@
 
 struct MyNavigator;
 
-void chooseId(struct MyNavigator*, unsigned char*);
+void chooseId(struct MyNavigator*);

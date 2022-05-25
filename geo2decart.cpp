@@ -12,19 +12,19 @@ static double SGN;
 
 void geo2decart(double* lat, double* lon)
 {
-	B = *lat;
-	L = *lon;
+	B = myfabs(*lat);
+	L = myfabs(*lon);
 
 	// Из градусов-десятичных минут в десятичные градусы :
 	B = floor(B / 100.0);
-	B = dm2degrees(B, *lat - B * 100.0);
+	B = dm2degrees(B, myfabs(*lat) - B * 100.0);
 	B *= 0.017453292519943295;
 
 	L = floor(L / 100.0);
-	L = dm2degrees(L, *lon - L * 100.0);
+	L = dm2degrees(L, myfabs(*lon) - L * 100.0);
 
 	// Преобразование координат :
-	n = floor((6.0 + L) * 0.16666666666666667);
+	n = (double)((int)((6.0 + L) * 0.16666666666666667));
 
 	l = (L - (3.0 + 6.0 * (n - 1.0))) * 0.017453292519943295;
 
@@ -54,7 +54,7 @@ void geo2decart(double* lat, double* lon)
 							574700.0 * sin_pow2 +
 							836700.0 * sin_pow4 -
 							398600.0 * sin_pow6)))));
-	
+
 	// Ордината :
 	*lon = (5.0 + 10.0 * n) * 100000.0 +
 		l * cos(B) * (6378245.0 +
@@ -80,5 +80,5 @@ void geo2decart(double* lat, double* lon)
 double dm2degrees(double D, double M)
 {
 	SGN = D >= 0.0 && M >= 0.0 ? 1.0 : -1.0;
-	return SGN * (myfabs(D) + myfabs(M) / 60.0);
+	return SGN * (myfabs(D) + myfabs(M) * 0.01666666666666667);
 }

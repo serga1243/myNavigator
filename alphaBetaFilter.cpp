@@ -4,7 +4,7 @@ static double Zeks;
 static double L;
 static double r;
 
-void alphaBetaFilter(struct AlphaBetaFilterCoordinate* alphaBetaFilterCoordinate, struct Coordinate* coordinate, unsigned char* logInfo)
+void alphaBetaFilter(struct AlphaBetaFilterCoordinate* alphaBetaFilterCoordinate, struct Coordinate* coordinate)
 {
     Zeks = 0;
     alphaBetaFilterCoordinate->Step++;

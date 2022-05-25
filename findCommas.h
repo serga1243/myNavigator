@@ -4,4 +4,4 @@
 
 struct MyNavigator;
 
-unsigned short findCommas(struct MyNavigator*, unsigned char*);
+unsigned short findCommas(struct MyNavigator*);

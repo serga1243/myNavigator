@@ -7,9 +7,8 @@ static int i;
 static int ii;
 static unsigned short j;
 
-void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct Coordinate* coordinate, unsigned char* logInfo)
+void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct Coordinate* coordinate)
 {
-	*logInfo = 4;
 
 #if medianFilteringBufferLength == 3
 
@@ -24,17 +23,13 @@ void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct 
 	coordinate->filteredPos.value = 0;
 	for (i = 0; i < medianFilteringBufferLength - 2; i++)
 	{
-		*logInfo = 3;
 		coordinate->filteredPos.value +=
 			findMedianNFast(&medianFilterCoordinate->buffer[medianFilterCoordinate->bufferCntrs[i]],
 			coordinate->decodedPos.value,
 			&medianFilterCoordinate->filterCntrs[i],
-			&medianFilterCoordinate->bufferLens[i],
-			logInfo)
+			&medianFilterCoordinate->bufferLens[i])
 			* medianFilterCoordinate->normFunc[i];
-		*logInfo = 2;
 	}
-	*logInfo = 1;
 	coordinate->filteredPos.value *= medianFilterCoordinate->normFuncSum;
 
 #endif
@@ -43,7 +38,7 @@ void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct 
 }
 
 
-double findMedianNFast(double buffer[], double newVal, unsigned int* cntr, unsigned int* len, unsigned char* logInfo)
+double findMedianNFast(double buffer[], double newVal, unsigned int* cntr, unsigned int* len)
 {
 	buff = 0;
 	buffer[*cntr] = newVal;

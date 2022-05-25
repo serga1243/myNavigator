@@ -10,10 +10,7 @@ static unsigned short i;
 void myNavigator(struct MyNavigator* myNavigator)
 {
 	// Логи :
-	for (i = 0; i < logInfoArrLen; i++)
-	{
-		myNavigator->logInfo[i] = 85;
-	}
+	myNavigator->logInfo[0] = 85;
 
 	// Выходное сообщение :
 	myNavigator->msgOut.len = myNavigator->msgIn.len < msgMaxLen ? myNavigator->msgIn.len : msgMaxLen;
@@ -42,7 +39,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 		myNavigator->msgData.idData[2] = myNavigator->msgOut.msg[5];
 
 		// условие, что сообщение пришло верно :
-		getXOR(&myNavigator->msgOut.msg[1], myNavigator->msgData.checkDataCond, myNavigator->msgOut.len - 6, &myNavigator->logInfo[2]);
+		getXOR(&myNavigator->msgOut.msg[1], myNavigator->msgData.checkDataCond, myNavigator->msgOut.len - 6);
 		myNavigator->logInfo[1] = 7;
 
 		// сравнение дешифрованной КС и полученной :
@@ -50,11 +47,11 @@ void myNavigator(struct MyNavigator* myNavigator)
 			myNavigator->msgData.checkDataCond[1] == myNavigator->msgData.checkData[1])
 		{
 			// Разделение сообщения на запятые и поиск их :
-			myNavigator->msgData.parIdLen = findCommas(myNavigator, &myNavigator->logInfo[3]);
+			myNavigator->msgData.parIdLen = findCommas(myNavigator);
 			myNavigator->logInfo[1] = 6;
 
 			// Идентификатор строки :
-			chooseId(myNavigator, &myNavigator->logInfo[4]);
+			chooseId(myNavigator);
 			myNavigator->logInfo[1] = 5;
 			if (myNavigator->logInfo[4] != 0)
 			{
@@ -75,11 +72,16 @@ void myNavigator(struct MyNavigator* myNavigator)
 	}
 
 	// Перевод координат из символьного вида в числовой :
-	getGCS(myNavigator, &myNavigator->logInfo[5]);
+	getGCS(myNavigator);
 	myNavigator->logInfo[1] = 4;
 
 	// Перевод координат из геовида в прямоугольный :
 	geo2decart(&myNavigator->coordinates.lat.decodedPos.value, &myNavigator->coordinates.lon.decodedPos.value);
+
+	// Проверям, что декодированные координаты в реальном диапазоне :
+	isInvalidData(&myNavigator->coordinates.lat.decodedPos.value, latIntPartLimits, &myNavigator->coordinates.lat.previosPos.value[previosPosLen - 1]);
+	isInvalidData(&myNavigator->coordinates.lon.decodedPos.value, lonIntPartLimits, &myNavigator->coordinates.lon.previosPos.value[previosPosLen - 1]);
+	isInvalidData(&myNavigator->coordinates.alt.decodedPos.value, altIntPartLimits, &myNavigator->coordinates.alt.previosPos.value[previosPosLen - 1]);
 
 
 
@@ -88,16 +90,16 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #if defined( DEBUG )
 
-	kalmanFilter(&myNavigator->filters.kalmanFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
+	kalmanFilter(&myNavigator->filters.kalmanFilter.lat, &myNavigator->coordinates.lat);
 	myNavigator->coordinates.lat.filteredPos.allFilteredValues[0] = myNavigator->coordinates.lat.filteredPos.value;
 
-	medianFilter(&myNavigator->filters.medianFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
+	medianFilter(&myNavigator->filters.medianFilter.lat, &myNavigator->coordinates.lat);
 	myNavigator->coordinates.lat.filteredPos.allFilteredValues[1] = myNavigator->coordinates.lat.filteredPos.value;
 
-	minQuadFilter(&myNavigator->filters.minQuadFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
+	minQuadFilter(&myNavigator->filters.minQuadFilter.lat, &myNavigator->coordinates.lat);
 	myNavigator->coordinates.lat.filteredPos.allFilteredValues[2] = myNavigator->coordinates.lat.filteredPos.value;
 
-	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
+	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lat, &myNavigator->coordinates.lat);
 	myNavigator->coordinates.lat.filteredPos.allFilteredValues[3] = myNavigator->coordinates.lat.filteredPos.value;
 
 	myNavigator->coordinates.lat.filteredPos.value = myNavigator->coordinates.lat.decodedPos.value;
@@ -106,22 +108,22 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #if defined(kalmanFiltering)
 	// Фильтр Калмана :
-	kalmanFilter(&myNavigator->filters.kalmanFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
+	kalmanFilter(&myNavigator->filters.kalmanFilter.lat, &myNavigator->coordinates.lat);
 	isInvalidData(&myNavigator->coordinates.lat.filteredPos.value, latIntPartLimits, &myNavigator->coordinates.lat.decodedPos.value);
 
 #elif defined( medianFiltering )
 	// Медианный фильтр :
-	medianFilter(&myNavigator->filters.medianFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
+	medianFilter(&myNavigator->filters.medianFilter.lat, &myNavigator->coordinates.lat);
 	isInvalidData(&myNavigator->coordinates.lat.filteredPos.value, latIntPartLimits, &myNavigator->coordinates.lat.decodedPos.value);
 
 #elif defined( minQuadFiltering )
 	// Минимальный квадрат фильтр :
-	minQuadFilter(&myNavigator->filters.minQuadFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
+	minQuadFilter(&myNavigator->filters.minQuadFilter.lat, &myNavigator->coordinates.lat);
 	isInvalidData(&myNavigator->coordinates.lat.filteredPos.value, latIntPartLimits, &myNavigator->coordinates.lat.decodedPos.value);
 
 #elif defined( alphaBetaFiltering )
 	// Альфа-бета фильтр :
-	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lat, &myNavigator->coordinates.lat, &myNavigator->logInfo[13]);
+	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lat, &myNavigator->coordinates.lat);
 	isInvalidData(&myNavigator->coordinates.lat.filteredPos.value, latIntPartLimits, &myNavigator->coordinates.lat.decodedPos.value);
 
 #else
@@ -133,8 +135,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #endif
 
-#else
-	myNavigator->logInfo[13] = 0;
 #endif
 
 
@@ -144,16 +144,16 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #if defined( DEBUG )
 
-	kalmanFilter(&myNavigator->filters.kalmanFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
+	kalmanFilter(&myNavigator->filters.kalmanFilter.lon, &myNavigator->coordinates.lon);
 	myNavigator->coordinates.lon.filteredPos.allFilteredValues[0] = myNavigator->coordinates.lon.filteredPos.value;
 
-	medianFilter(&myNavigator->filters.medianFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
+	medianFilter(&myNavigator->filters.medianFilter.lon, &myNavigator->coordinates.lon);
 	myNavigator->coordinates.lon.filteredPos.allFilteredValues[1] = myNavigator->coordinates.lon.filteredPos.value;
 
-	minQuadFilter(&myNavigator->filters.minQuadFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
+	minQuadFilter(&myNavigator->filters.minQuadFilter.lon, &myNavigator->coordinates.lon);
 	myNavigator->coordinates.lon.filteredPos.allFilteredValues[2] = myNavigator->coordinates.lon.filteredPos.value;
 
-	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
+	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lon, &myNavigator->coordinates.lon);
 	myNavigator->coordinates.lon.filteredPos.allFilteredValues[3] = myNavigator->coordinates.lon.filteredPos.value;
 
 	myNavigator->coordinates.lon.filteredPos.value = myNavigator->coordinates.lon.decodedPos.value;
@@ -162,22 +162,22 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #if defined( kalmanFiltering )
 	// Фильтр Калмана :
-	kalmanFilter(&myNavigator->filters.kalmanFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
+	kalmanFilter(&myNavigator->filters.kalmanFilter.lon, &myNavigator->coordinates.lon);
 	isInvalidData(&myNavigator->coordinates.lon.filteredPos.value, latIntPartLimits, &myNavigator->coordinates.lon.decodedPos.value);
 
 #elif defined( medianFiltering )
 	// Медианный фильтр :
-	medianFilter(&myNavigator->filters.medianFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
+	medianFilter(&myNavigator->filters.medianFilter.lon, &myNavigator->coordinates.lon);
 	isInvalidData(&myNavigator->coordinates.lon.filteredPos.value, lonIntPartLimits, &myNavigator->coordinates.lon.decodedPos.value);
 
 #elif defined( minQuadFiltering )
 	// Минимальный квадрат фильтр :
-	minQuadFilter(&myNavigator->filters.minQuadFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
+	minQuadFilter(&myNavigator->filters.minQuadFilter.lon, &myNavigator->coordinates.lon);
 	isInvalidData(&myNavigator->coordinates.lon.filteredPos.value, lonIntPartLimits, &myNavigator->coordinates.lon.decodedPos.value);
 
 #elif defined( alphaBetaFiltering )
 // Альфа-бета фильтр :
-	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lon, &myNavigator->coordinates.lon, &myNavigator->logInfo[14]);
+	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lon, &myNavigator->coordinates.lon);
 	isInvalidData(&myNavigator->coordinates.lon.filteredPos.value, lonIntPartLimits, &myNavigator->coordinates.lon.decodedPos.value);
 
 #else
@@ -189,8 +189,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #endif
 
-#else
-	myNavigator->logInfo[14] = 0;
 #endif
 
 
@@ -202,16 +200,16 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 	if (myNavigator->msgData.id[4] == 0)
 	{
-		kalmanFilter(&myNavigator->filters.kalmanFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
+		kalmanFilter(&myNavigator->filters.kalmanFilter.alt, &myNavigator->coordinates.alt);
 		myNavigator->coordinates.alt.filteredPos.allFilteredValues[0] = myNavigator->coordinates.alt.filteredPos.value;
 
-		medianFilter(&myNavigator->filters.medianFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
+		medianFilter(&myNavigator->filters.medianFilter.alt, &myNavigator->coordinates.alt);
 		myNavigator->coordinates.alt.filteredPos.allFilteredValues[1] = myNavigator->coordinates.alt.filteredPos.value;
 
-		minQuadFilter(&myNavigator->filters.minQuadFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
+		minQuadFilter(&myNavigator->filters.minQuadFilter.alt, &myNavigator->coordinates.alt);
 		myNavigator->coordinates.alt.filteredPos.allFilteredValues[2] = myNavigator->coordinates.alt.filteredPos.value;
 
-		alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
+		alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.alt, &myNavigator->coordinates.alt);
 		myNavigator->coordinates.alt.filteredPos.allFilteredValues[3] = myNavigator->coordinates.alt.filteredPos.value;
 	}
 	myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
@@ -222,71 +220,64 @@ void myNavigator(struct MyNavigator* myNavigator)
 	// Фильтр Калмана :
 	if (myNavigator->msgData.id[4] != 0)
 	{
-		kalmanFilter(&myNavigator->filters.kalmanFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
+		kalmanFilter(&myNavigator->filters.kalmanFilter.alt, &myNavigator->coordinates.alt);
 		isInvalidData(&myNavigator->coordinates.alt.filteredPos.value, altIntPartLimits, &myNavigator->coordinates.alt.decodedPos.value);
 	}
 	else
 	{
 		myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
-		myNavigator->logInfo[15] = 0;
 	}
 
 #elif defined( medianFiltering )
 	// Медианный фильтр :
 	if (myNavigator->msgData.id[4] != 0)
 	{
-		medianFilter(&myNavigator->filters.medianFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
+		medianFilter(&myNavigator->filters.medianFilter.alt, &myNavigator->coordinates.alt);
 		isInvalidData(&myNavigator->coordinates.alt.filteredPos.value, altIntPartLimits, &myNavigator->coordinates.alt.decodedPos.value);
 	}
 	else
 	{
 		myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
-		myNavigator->logInfo[15] = 0;
 	}
 
 #elif defined( minQuadFiltering )
 	// Минимальный квадрат фильтр :
 	if (myNavigator->msgData.id[4] != 0)
 	{
-		minQuadFilter(&myNavigator->filters.minQuadFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
+		minQuadFilter(&myNavigator->filters.minQuadFilter.alt, &myNavigator->coordinates.alt);
 		isInvalidData(&myNavigator->coordinates.alt.filteredPos.value, altIntPartLimits, &myNavigator->coordinates.alt.decodedPos.value);
 	}
 	else
 	{
 		myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
-		myNavigator->logInfo[15] = 0;
 	}
 
 #elif defined( alphaBetaFiltering )
 	// Альфа-бета фильтр :
 	if (myNavigator->msgData.id[4] != 0)
 	{
-		alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.alt, &myNavigator->coordinates.alt, &myNavigator->logInfo[15]);
+		alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.alt, &myNavigator->coordinates.alt);
 		isInvalidData(&myNavigator->coordinates.alt.filteredPos.value, altIntPartLimits, &myNavigator->coordinates.alt.decodedPos.value);
 	}
 	else
 	{
 		myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
-		myNavigator->logInfo[15] = 0;
 	}
 
 #else
 	// Если без фильтра :
 	myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
-	myNavigator->logInfo[15] = 0;
 
 #endif
 
 #endif
 
-#else
-	myNavigator->logInfo[15] = 0;
 #endif
 
 
 
 	// Перезапись массива с предыдущими координатами :
-	overwritePrevPos(myNavigator, &myNavigator->logInfo[8]);
+	overwritePrevPos(myNavigator);
 	myNavigator->logInfo[1] = 2;
 
 	// Преобразование плоских прямоугольных координат в проекции Гаусса-Крюгера 
@@ -302,11 +293,11 @@ void myNavigator(struct MyNavigator* myNavigator)
 	myNavigator->logInfo[1] = 3;
 
 	// Перезапись сообщения с новыми координатами :
-	changeMsg(myNavigator, &myNavigator->logInfo[9]);
+	changeMsg(myNavigator);
 	myNavigator->logInfo[1] = 1;
 
 	// Вычисление новой КС для измененного сообщения :
-	getXOR(&myNavigator->msgOut.msg[1], &myNavigator->msgOut.msg[myNavigator->msgOut.len - 4], myNavigator->msgOut.len - 6, &myNavigator->logInfo[12]);
+	getXOR(&myNavigator->msgOut.msg[1], &myNavigator->msgOut.msg[myNavigator->msgOut.len - 4], myNavigator->msgOut.len - 6);
 	myNavigator->logInfo[1] = 0;
 
 	myNavigator->logInfo[0] = 0;

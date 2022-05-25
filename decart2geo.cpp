@@ -21,14 +21,14 @@ void decart2geo(double* lat, double* lon)
 	y = *lon;
 
 	// Преобразование координат :
-	n = floor(y * 0.000001);
+	n = (double)((int)(y * 0.000001));
 
-	beta = x * 1.570460641237214E-7;
+	beta = x * 1.5704606412372143E-07;
 	sin_beta = sin(beta);
 	B0 = beta + sin(2.0 * beta) * (
 		0.00252588685 - 0.00001491860 * pow(sin_beta, 2.0) +
 		0.00000011904 * pow(sin_beta, 4.0));
-	z0 = (y - (10.0 * n + 5.0) * 100000.0) * 1.567829395076545E-07 / cos(B0);
+	z0 = (y - (10.0 * n + 5.0) * 100000.0) * 1.5678293950765453E-07 / cos(B0);
 
 	z0_pow2 = pow(z0, 2.0);
 	sin_pow2 = pow(sin(B0), 2.0);

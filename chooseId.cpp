@@ -1,6 +1,6 @@
 #include "chooseId.h"
 
-void chooseId(struct MyNavigator* myNavigator, unsigned char* logInfo)
+void chooseId(struct MyNavigator* myNavigator)
 {
 	if (myNavigator->msgData.idData[0] == 'P' &&
 		myNavigator->msgData.idData[1] == 'U' &&
@@ -14,11 +14,9 @@ void chooseId(struct MyNavigator* myNavigator, unsigned char* logInfo)
 			myNavigator->msgData.id[3] = 5;
 			myNavigator->msgData.id[4] = 6;
 			myNavigator->msgData.id[5] = 0;
-			*logInfo = 0;
 		}
 		else
 		{
-			*logInfo = 2;
 			return;
 		}
 	}
@@ -34,11 +32,9 @@ void chooseId(struct MyNavigator* myNavigator, unsigned char* logInfo)
 			myNavigator->msgData.id[3] = 4;
 			myNavigator->msgData.id[4] = 8;
 			myNavigator->msgData.id[5] = 0;
-			*logInfo = 0;
 		}
 		else
 		{
-			*logInfo = 2;
 			return;
 		}
 	}
@@ -54,11 +50,9 @@ void chooseId(struct MyNavigator* myNavigator, unsigned char* logInfo)
 			myNavigator->msgData.id[3] = 3;
 			myNavigator->msgData.id[4] = 0;
 			myNavigator->msgData.id[5] = 4;
-			*logInfo = 0;
 		}
 		else
 		{
-			*logInfo = 2;
 			return;
 		}
 	}
@@ -74,11 +68,9 @@ void chooseId(struct MyNavigator* myNavigator, unsigned char* logInfo)
 			myNavigator->msgData.id[3] = 4;
 			myNavigator->msgData.id[4] = 0;
 			myNavigator->msgData.id[5] = 0;
-			*logInfo = 0;
 		}
 		else
 		{
-			*logInfo = 2;
 			return;
 		}
 	}
@@ -94,11 +86,9 @@ void chooseId(struct MyNavigator* myNavigator, unsigned char* logInfo)
 			myNavigator->msgData.id[3] = 5;
 			myNavigator->msgData.id[4] = 0;
 			myNavigator->msgData.id[5] = 0;
-			*logInfo = 0;
 		}
 		else
 		{
-			*logInfo = 2;
 			return;
 		}
 	}
@@ -114,11 +104,9 @@ void chooseId(struct MyNavigator* myNavigator, unsigned char* logInfo)
 			myNavigator->msgData.id[3] = 3;
 			myNavigator->msgData.id[4] = 0;
 			myNavigator->msgData.id[5] = 0;
-			*logInfo = 0;
 		}
 		else
 		{
-			*logInfo = 2;
 			return;
 		}
 	}
@@ -134,11 +122,9 @@ void chooseId(struct MyNavigator* myNavigator, unsigned char* logInfo)
 			myNavigator->msgData.id[3] = 8;
 			myNavigator->msgData.id[4] = 0;
 			myNavigator->msgData.id[5] = 0;
-			*logInfo = 0;
 		}
 		else
 		{
-			*logInfo = 2;
 			return;
 		}
 	}
@@ -154,17 +140,14 @@ void chooseId(struct MyNavigator* myNavigator, unsigned char* logInfo)
 			myNavigator->msgData.id[3] = 3;
 			myNavigator->msgData.id[4] = 0;
 			myNavigator->msgData.id[5] = 0;
-			*logInfo = 0;
 		}
 		else
 		{
-			*logInfo = 2;
 			return;
 		}
 	}
 	else
 	{
-		*logInfo = 1;
 		return;
 	}
 

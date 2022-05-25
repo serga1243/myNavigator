@@ -4,17 +4,15 @@ static char dataArr[4];
 static unsigned char hash;
 static unsigned short i;
 
-void getXOR(char data[], char XORarray[], unsigned short length, unsigned char* logInfo)
+void getXOR(char data[], char XORarray[], unsigned short length)
 {
 	hash = 0x00;
 	i = 0;
 
-	*logInfo = 5;
 	// Вычисление хэш-функции
 	while (length--) {
 		hash ^= data[i++];
 	}
-	*logInfo = 4;
 
 	// Получаем КС
 #ifdef Cpp
@@ -22,7 +20,6 @@ void getXOR(char data[], char XORarray[], unsigned short length, unsigned char* 
 #else
 	itoa(hash, dataArr, 16);
 #endif
-	*logInfo = 3;
 
 	// Перезаписываем массив с КС
 	if (dataArr[1] != '0' &&
@@ -50,7 +47,6 @@ void getXOR(char data[], char XORarray[], unsigned short length, unsigned char* 
 		XORarray[0] = dataArr[0];
 		XORarray[1] = dataArr[1];
 	}
-	*logInfo = 2;
 
 	// Исправляем регистр 1 символа
 	switch (XORarray[0])
@@ -82,7 +78,6 @@ void getXOR(char data[], char XORarray[], unsigned short length, unsigned char* 
 	default:
 		break;
 	}
-	*logInfo = 1;
 
 	// Исправляем регистр 2 символа
 	switch (XORarray[1])
@@ -114,7 +109,6 @@ void getXOR(char data[], char XORarray[], unsigned short length, unsigned char* 
 	default:
 		break;
 	}
-	*logInfo = 0;
 
 	return;
 }

@@ -30,7 +30,7 @@
 #define Cpp								// если язык c++, а не си
 #define msgMaxLen 1024					// максимальная длина сообщений
 #define previosPosLen 20				// число хранимых предыдущих значений
-#define logInfoArrLen 16				// длина массива логов
+#define logInfoArrLen 1					// длина массива логов
 
 // Какие координаты фильтровать? :
 #define includeLat

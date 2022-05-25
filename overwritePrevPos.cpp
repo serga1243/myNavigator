@@ -2,9 +2,8 @@
 
 static unsigned short i;
 
-void overwritePrevPos(struct MyNavigator* myNavigator, unsigned char* logInfo)
+void overwritePrevPos(struct MyNavigator* myNavigator)
 {
-	*logInfo = 1;
 #ifdef includeLat
 	memcpy(myNavigator->coordinates.lat.previosPos.value, &myNavigator->coordinates.lat.previosPos.value[1], (previosPosLen - 1) * 8);
 	myNavigator->coordinates.lat.previosPos.value[previosPosLen - 1] = myNavigator->coordinates.lat.decodedPos.value;
@@ -19,7 +18,6 @@ void overwritePrevPos(struct MyNavigator* myNavigator, unsigned char* logInfo)
 	memcpy(myNavigator->coordinates.alt.previosPos.value, &myNavigator->coordinates.alt.previosPos.value[1], (previosPosLen - 1) * 8);
 	myNavigator->coordinates.alt.previosPos.value[previosPosLen - 1] = myNavigator->coordinates.alt.decodedPos.value;
 #endif
-	*logInfo = 0;
 
 	return;
 }

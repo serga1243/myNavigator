@@ -11,14 +11,12 @@ static double valuefloatPartSmall;
 static char dataBufferInt[12];
 static char dataBufferFlo[12];
 
-void changeMsg(struct MyNavigator* myNavigator, unsigned char logInfo[])
+void changeMsg(struct MyNavigator* myNavigator)
 {
 
 	// Широта
 #ifdef includeLat
-	logInfo[0] = 8;
-	overwriteStr(&myNavigator->coordinates.lat, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[1]], &logInfo[0]);
-	logInfo[0] = 1;
+	overwriteStr(&myNavigator->coordinates.lat, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[1]]);
 
 	// Меняем направление координаты в зависимости от знака координаты
 	if (myNavigator->coordinates.lat.filteredPos.value < 0)
@@ -35,17 +33,12 @@ void changeMsg(struct MyNavigator* myNavigator, unsigned char logInfo[])
 			break;
 		}
 	}
-	logInfo[0] = 0;
-#else
-	logInfo[0] = 0;
 #endif
 
 
 	// Долгота
 #ifdef includeLon
-	logInfo[1] = 8;
-	overwriteStr(&myNavigator->coordinates.lon, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[3]], &logInfo[1]);
-	logInfo[1] = 1;
+	overwriteStr(&myNavigator->coordinates.lon, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[3]]);
 
 	// Меняем направление координаты в зависимости от знака координаты
 	if (myNavigator->coordinates.lon.filteredPos.value < 0)
@@ -62,9 +55,6 @@ void changeMsg(struct MyNavigator* myNavigator, unsigned char logInfo[])
 			break;
 		}
 	}
-	logInfo[1] = 0;
-#else
-	logInfo[1] = 0;
 #endif
 
 
@@ -72,23 +62,15 @@ void changeMsg(struct MyNavigator* myNavigator, unsigned char logInfo[])
 #ifdef includeAlt
 	if (myNavigator->msgData.id[4] == 0)
 	{
-		logInfo[2] = 0;
+		overwriteStr(&myNavigator->coordinates.alt, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[5]]);
 	}
-	else
-	{
-		logInfo[2] = 8;
-		overwriteStr(&myNavigator->coordinates.alt, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[5]], &logInfo[2]);
-		logInfo[2] = 1;
-	}
-#else
-	logInfo[2] = 0;
 #endif
 	
 	return;
 }
 
 
-void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endPos, unsigned char* logInfo)
+void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endPos)
 {
 	i = 0;
 	j = 0;
@@ -96,7 +78,7 @@ void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endP
 	l = 0;
 
 	valuefloatPartSmall = modf(myfabs(coordinate->filteredPos.value), &valueIntPart);
-	valuefloatPartBig = valuefloatPartSmall * 1000000000;
+	valuefloatPartBig = valuefloatPartSmall * 1000000000.0;
 
 	// Целая часть числа
 #ifdef Cpp
@@ -136,7 +118,7 @@ void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endP
 		}
 		else if (k < coordinate->filteredPos.floatLength)
 		{
-			if (valuefloatPartSmall < pow(10, (double)--l))
+			if (valuefloatPartSmall < pow(10.0, (double)--l))
 			{
 				str[i] = '0';
 				continue;
@@ -153,7 +135,6 @@ void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endP
 			continue;
 		}
 	}
-	*logInfo = 0;
 }
 
 

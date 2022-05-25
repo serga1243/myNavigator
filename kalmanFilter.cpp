@@ -23,11 +23,10 @@ static unsigned short i;
 static unsigned short i1;
 static unsigned short j;
 
-void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct Coordinate* coordinate, unsigned char* logInfo)
+void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct Coordinate* coordinate)
 {
     B = 0;
     a = 0;
-    *logInfo = 4;
     for (i = 0; i < 3; i++) {
         d = 0.0;
         for (i1 = 0; i1 < 3; i1++) {
@@ -53,7 +52,6 @@ void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct 
         B += d3 * (double)iv[i];
         a += (double)d_a[i] * d;
     }
-    *logInfo = 3;
     B += kalmanFilterCoordinate->R;
     b = coordinate->decodedPos.value - a;
     d = b_B[0] / B;
@@ -62,7 +60,6 @@ void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct 
     kalmanFilterCoordinate->x_est[1] = x_prd[1] + d1 * b;
     d2 = b_B[2] / B;
     kalmanFilterCoordinate->x_est[2] = x_prd[2] + d2 * b;
-    *logInfo = 2;
     for (i = 0; i < 3; i++) {
         x_prd_tmp = d_a[i];
         b_a[3 * i] = d * (double)x_prd_tmp;
@@ -80,10 +77,8 @@ void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct 
                     d2 * p_prd[3 * i1 + 2]);
         }
     }
-    *logInfo = 1;
 
     coordinate->filteredPos.value = kalmanFilterCoordinate->x_est[0];
-    *logInfo = 0;
 
     return;
 }

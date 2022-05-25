@@ -6,8 +6,8 @@ struct MyNavigator;
 struct Coordinate;
 
 
-void changeMsg(struct MyNavigator*, unsigned char[]);
+void changeMsg(struct MyNavigator*);
 
-void overwriteStr(struct Coordinate*, char[], unsigned short, unsigned char*);
+void overwriteStr(struct Coordinate*, char[], unsigned short);
 
 unsigned short getNumLen(char[]);

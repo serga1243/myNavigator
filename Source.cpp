@@ -13,7 +13,7 @@ int main()
 	char buf[msgMaxLen] = "", * p = NULL;
 
 	double aa = 5010.88431;
-	double bb = 1205.33476;
+	double bb = 12405.33476;
 	geo2decart(&aa, &bb);
 	decart2geo(&aa, &bb);
 

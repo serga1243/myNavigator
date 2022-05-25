@@ -4,4 +4,4 @@
 
 struct MyNavigator;
 
-void overwritePrevPos(struct MyNavigator*, unsigned char*);
+void overwritePrevPos(struct MyNavigator*);

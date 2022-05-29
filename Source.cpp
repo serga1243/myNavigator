@@ -12,15 +12,11 @@ int main()
 	bool isRestart = true;
 	char buf[msgMaxLen] = "", * p = NULL;
 
-	double aa = 5010.88431;
-	double bb = 12405.33476;
-	geo2decart(&aa, &bb);
-	decart2geo(&aa, &bb);
-
 	 //Объявление фильтра :
 	struct MyNavigator mynavigator;
+	
 
-	while (true)
+	while (false)
 	{
 		// Сброс буфера вывода :
 		fflush(stdout);
@@ -87,44 +83,3 @@ int main()
 	// Выход
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

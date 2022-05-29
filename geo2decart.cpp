@@ -77,7 +77,7 @@ void geo2decart(double* lat, double* lon)
 	return;
 }
 
-double dm2degrees(double D, double M)
+inline double dm2degrees(double D, double M)
 {
 	SGN = D >= 0.0 && M >= 0.0 ? 1.0 : -1.0;
 	return SGN * (myfabs(D) + myfabs(M) * 0.01666666666666667);

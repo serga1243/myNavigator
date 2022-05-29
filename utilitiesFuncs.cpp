@@ -1,10 +1,5 @@
 #include "utilitiesFuncs.h"
 
-void isInvalidData(double* data, const double limits[], double* correctData)
-{
-	*data = (*data > limits[0]) && (*data < limits[1]) ? *data : *correctData;
-	return;
-}
 
 int intPower(unsigned short x, unsigned short n)
 {

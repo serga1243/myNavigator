@@ -296,3 +296,4 @@ typedef struct MyNavigator
 // Прототипы функции :
 void myNavigatorInit(struct MyNavigator*);
 void myNavigator(struct MyNavigator*);
+inline void isInvalidData(double*, const double[], double*);

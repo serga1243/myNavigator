@@ -387,3 +387,10 @@ void myNavigatorInit(struct MyNavigator* myNavigator)
 
 	return;
 }
+
+
+inline void isInvalidData(double* data, const double limits[], double* correctData)
+{
+	*data = (*data > limits[0]) && (*data < limits[1]) ? *data : *correctData;
+	return;
+}

@@ -5,6 +5,7 @@ static double y;
 static double n;
 static double beta;
 static double sin_beta;
+static double sin_B0;
 static double B0;
 static double z0;
 static double z0_pow2;
@@ -31,9 +32,10 @@ void decart2geo(double* lat, double* lon)
 	z0 = (y - (10.0 * n + 5.0) * 100000.0) * 1.5678293950765453E-07 / cos(B0);
 
 	z0_pow2 = pow(z0, 2.0);
-	sin_pow2 = pow(sin(B0), 2.0);
-	sin_pow4 = pow(sin(B0), 4.0);
-	sin_pow6 = pow(sin(B0), 6.0);
+	sin_B0 = sin(B0);
+	sin_pow2 = pow(sin_B0, 2.0);
+	sin_pow4 = pow(sin_B0, 4.0);
+	sin_pow6 = pow(sin_B0, 6.0);
 
 	dB = -z0_pow2 * sin(2.0 * B0) * (0.251684631 -
 		0.003369263 * sin_pow2 +
@@ -87,7 +89,7 @@ void decart2geo(double* lat, double* lon)
 	return;
 }
 
-double degrees2dm(double D)
+inline double degrees2dm(double D)
 {
 	Dfloor = floor(D);
 	return Dfloor * 100.0 + (D - Dfloor) * 60.0;

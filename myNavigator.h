@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
@@ -58,13 +57,6 @@
 #ifdef Cpp
 
 // Начальные координаты :
-//#ifdef TransformCoords
-//geo2decart(&startCoordinates[0], &startCoordinates[1]);
-//latIntPartLimits[0] = -100000000.0;
-//latIntPartLimits[1] = 100000000.0;
-//lonIntPartLimits[0] = -100000000.0;
-//lonIntPartLimits[1] = 100000000.0;
-//#endif
 #ifdef TransformCoords
 const double startCoordinates[] = { 5561520.0722118802, 22434924.431076400, 100.0 };
 #else

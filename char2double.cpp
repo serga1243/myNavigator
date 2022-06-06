@@ -1,12 +1,12 @@
-#include "char2int.h"
+#include "char2double.h"
 #include "utilitiesFuncs.h"
 
-static int val;
-static int a;
+static double val;
+static double a;
 static unsigned short i;
 static unsigned short power;
 
-int char2int(char str[], unsigned short strLen)
+double char2double(char str[], unsigned short strLen)
 {
 	val = 0;
 	a = 0;
@@ -59,7 +59,7 @@ int char2int(char str[], unsigned short strLen)
 			a = 0;
 			break;
 		}
-		val += a * intPower(10, strLen - power - 1);
+		val += a * pow(10, (double)(strLen - power) - 1.0);
 	}
 
 	return val;

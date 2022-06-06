@@ -39,7 +39,7 @@ void getGCS(struct MyNavigator* myNavigator)
 
 	// Перевод декодированного числа из целого в дробное
 	myNavigator->coordinates.lat.decodedPos.value = 
-		(double)char2int(&myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[0]] + 1],
+		char2double(&myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[0]] + 1],
 		myNavigator->coordinates.lat.decodedPos.length);
 
 	// Делим дробное число на 10 в степени цифр после запятой
@@ -86,7 +86,7 @@ void getGCS(struct MyNavigator* myNavigator)
 
 	// Перевод декодированного числа из целого в дробное
 	myNavigator->coordinates.lon.decodedPos.value =
-		(double)char2int(&myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[2]] + 1],
+		char2double(&myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[2]] + 1],
 		myNavigator->coordinates.lon.decodedPos.length);
 
 	// Делим дробное число на 10 в степени цифр после запятой
@@ -140,7 +140,7 @@ void getGCS(struct MyNavigator* myNavigator)
 
 		// Перевод декодированного числа из целого в дробное
 		myNavigator->coordinates.alt.decodedPos.value =
-			(double)char2int(&myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[4]] + 1],
+			char2double(&myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[4]] + 1],
 			myNavigator->coordinates.alt.decodedPos.length);
 
 		// Делим дробное число на 10 в степени цифр после запятой

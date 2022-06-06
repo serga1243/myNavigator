@@ -145,7 +145,7 @@
   <ItemGroup>
     <ClCompile Include="alphaBetaFilter.cpp" />
     <ClCompile Include="changeMsg.cpp" />
-    <ClCompile Include="char2int.cpp" />
+    <ClCompile Include="char2double.cpp" />
     <ClCompile Include="chooseId.cpp" />
     <ClCompile Include="geo2decart.cpp" />
     <ClCompile Include="findCommas.cpp" />
@@ -164,7 +164,7 @@
   <ItemGroup>
     <ClInclude Include="alphaBetaFilter.h" />
     <ClInclude Include="changeMsg.h" />
-    <ClInclude Include="char2int.h" />
+    <ClInclude Include="char2double.h" />
     <ClInclude Include="chooseId.h" />
     <ClInclude Include="decart2geo.h" />
     <ClInclude Include="findCommas.h" />

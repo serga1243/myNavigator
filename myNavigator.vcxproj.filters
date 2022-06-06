@@ -33,7 +33,7 @@
     <ClCompile Include="getGCS.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
-    <ClCompile Include="char2int.cpp">
+    <ClCompile Include="char2double.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
     <ClCompile Include="utilitiesFuncs.cpp">
@@ -83,7 +83,7 @@
     <ClInclude Include="getGCS.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="char2int.h">
+    <ClInclude Include="char2double.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="utilitiesFuncs.h">

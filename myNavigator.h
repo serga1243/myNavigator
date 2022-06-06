@@ -14,7 +14,7 @@
 #include "alphaBetaFilter.h"
 #include "changeMsg.h"
 #include "overwritePrevPos.h"
-#include "char2int.h"
+#include "char2double.h"
 #include "writeInROM.h"
 #include "geo2decart.h"
 #include "decart2geo.h"
@@ -37,13 +37,13 @@
 #define includeAlt
 
 // Параметры фильтра Калмана :
-#define kalmanFiltering
+//#define kalmanFiltering
 
 // Параметры медианного фильтра :
 //#define medianFiltering
 
 // Параметры квадратичного фильтра :
-//#define minQuadFiltering 
+#define minQuadFiltering 
 
 // Параметры альфа-бета фильтра :
 //#define alphaBetaFiltering

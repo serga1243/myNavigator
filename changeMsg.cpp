@@ -60,7 +60,7 @@ void changeMsg(struct MyNavigator* myNavigator)
 
 	// Высота
 #ifdef includeAlt
-	if (myNavigator->msgData.id[4] == 0)
+	if (myNavigator->msgData.id[4] != 0)
 	{
 		overwriteStr(&myNavigator->coordinates.alt, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[5]]);
 	}

@@ -16,11 +16,11 @@ void geo2decart(double* lat, double* lon)
 	L = myfabs(*lon);
 
 	// »з градусов-дес€тичных минут в дес€тичные градусы :
-	B = floor(B / 100.0);
+	B = floor(0.01 * B);
 	B = dm2degrees(B, myfabs(*lat) - B * 100.0);
 	B *= 0.017453292519943295;
 
-	L = floor(L / 100.0);
+	L = floor(0.01 * L);
 	L = dm2degrees(L, myfabs(*lon) - L * 100.0);
 
 	// ѕреобразование координат :

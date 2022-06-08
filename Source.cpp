@@ -14,7 +14,7 @@ int main()
 
 	 //ќбъ€вление фильтра :
 	struct MyNavigator mynavigator;
-	
+
 	while (true)
 	{
 		// —брос буфера вывода :

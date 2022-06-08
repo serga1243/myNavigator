@@ -96,8 +96,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lat, &myNavigator->coordinates.lat);
 	myNavigator->coordinates.lat.filteredPos.allFilteredValues[3] = myNavigator->coordinates.lat.filteredPos.value;
 
-	myNavigator->coordinates.lat.filteredPos.value = myNavigator->coordinates.lat.decodedPos.value;
-
 #elif defined( RELEASE )
 
 #if defined(kalmanFiltering)
@@ -149,8 +147,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lon, &myNavigator->coordinates.lon);
 	myNavigator->coordinates.lon.filteredPos.allFilteredValues[3] = myNavigator->coordinates.lon.filteredPos.value;
 
-	myNavigator->coordinates.lon.filteredPos.value = myNavigator->coordinates.lon.decodedPos.value;
-
 #elif defined( RELEASE )
 
 #if defined( kalmanFiltering )
@@ -190,7 +186,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 #if defined( DEBUG )
 
-	if (myNavigator->msgData.id[4] == 0)
+	if (myNavigator->msgData.id[4] != 0)
 	{
 		kalmanFilter(&myNavigator->filters.kalmanFilter.alt, &myNavigator->coordinates.alt);
 		myNavigator->coordinates.alt.filteredPos.allFilteredValues[0] = myNavigator->coordinates.alt.filteredPos.value;
@@ -274,7 +270,24 @@ void myNavigator(struct MyNavigator* myNavigator)
 	// Преобразование плоских прямоугольных координат в проекции Гаусса-Крюгера 
 	// на эллипсоиде Красовского в геодезические координаты :
 #ifdef TransformCoords
+
+#if defined( DEBUG )
+
+	decart2geo(&myNavigator->coordinates.lat.filteredPos.allFilteredValues[0], &myNavigator->coordinates.lon.filteredPos.allFilteredValues[0]);
+	decart2geo(&myNavigator->coordinates.lat.filteredPos.allFilteredValues[1], &myNavigator->coordinates.lon.filteredPos.allFilteredValues[1]);
+	decart2geo(&myNavigator->coordinates.lat.filteredPos.allFilteredValues[2], &myNavigator->coordinates.lon.filteredPos.allFilteredValues[2]);
+	decart2geo(&myNavigator->coordinates.lat.filteredPos.allFilteredValues[3], &myNavigator->coordinates.lon.filteredPos.allFilteredValues[3]);
+
+	decart2geo(&myNavigator->coordinates.lat.decodedPos.value, &myNavigator->coordinates.lon.decodedPos.value);
+	myNavigator->coordinates.lat.filteredPos.value = myNavigator->coordinates.lat.decodedPos.value;
+	myNavigator->coordinates.lon.filteredPos.value = myNavigator->coordinates.lon.decodedPos.value;
+
+#elif defined( RELEASE )
+
 	decart2geo(&myNavigator->coordinates.lat.filteredPos.value, &myNavigator->coordinates.lon.filteredPos.value);
+
+#endif
+
 #endif
 
 	// Запись в постоянную память координат :

@@ -21,8 +21,8 @@
 
 // Релиз с одним типом фильтра
 // или отладка со всеми фильтрами :
-#define RELEASE
-//#define DEBUG
+//#define RELEASE
+#define DEBUG
 
 #define TransformCoords					// если необходимо преобразовывать гео координаты в декартовы
 #define WriteCoordsInFlash				// записывать ли координаты во флеш память?
@@ -40,10 +40,10 @@
 //#define kalmanFiltering
 
 // Параметры медианного фильтра :
-//#define medianFiltering
+#define medianFiltering
 
 // Параметры квадратичного фильтра :
-#define minQuadFiltering 
+//#define minQuadFiltering 
 
 // Параметры альфа-бета фильтра :
 //#define alphaBetaFiltering

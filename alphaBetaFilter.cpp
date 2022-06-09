@@ -57,7 +57,7 @@ void alphaBetaFilterInit(struct AlphaBetaFilterCoordinate* alphaBetaFilterCoordi
     alphaBetaFilterCoordinate->Tob = T;
     L = Sp * alphaBetaFilterCoordinate->Tob * alphaBetaFilterCoordinate->Tob / Sn;
     r = (4.0 + L - sqrt(8.0 * L + L * L)) / 4.0;
-    alphaBetaFilterCoordinate->Step = 0.0;
+    alphaBetaFilterCoordinate->Step = 0;
     alphaBetaFilterCoordinate->Predel = 1.0 - r * r;
 
     alphaBetaFilterCoordinate->Ka = 0.0;

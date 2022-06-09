@@ -16,7 +16,7 @@ void getGCS(struct MyNavigator* myNavigator)
 	myNavigator->coordinates.lat.decodedPos.length = 0;
 	myNavigator->coordinates.lat.decodedPos.floatLength = 0;
 	myNavigator->coordinates.lat.decodedPos.intPosition = myNavigator->msgData.parId[myNavigator->msgData.id[0]] + 1;
-	myNavigator->coordinates.lat.decodedPos.floatPosition = myNavigator->msgData.parId[myNavigator->msgData.id[0]] + 1;
+	myNavigator->coordinates.lat.decodedPos.floatPosition = myNavigator->msgData.parId[myNavigator->msgData.id[0] + 1];
 
 	// Проходим по символам, где были обнаружены запятые и где должна быть координата
 	for (i = myNavigator->coordinates.lat.decodedPos.intPosition;
@@ -45,11 +45,27 @@ void getGCS(struct MyNavigator* myNavigator)
 	// Делим дробное число на 10 в степени цифр после запятой
 	myNavigator->coordinates.lat.decodedPos.floatLength = myNavigator->msgData.parId[myNavigator->msgData.id[0] + 1] -
 		myNavigator->coordinates.lat.decodedPos.floatPosition;
+	myNavigator->coordinates.lat.decodedPos.floatLength = 
+		myNavigator->coordinates.lat.decodedPos.floatLength >= 0 ?
+		myNavigator->coordinates.lat.decodedPos.floatLength :
+		0;
 	myNavigator->coordinates.lat.decodedPos.value *= pow(10.0, -myNavigator->coordinates.lat.decodedPos.floatLength);
 
-	// Если не север и не восток, то меняем знак на -
-	if (myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[1]] + 1] == 'S')
+	// Если не север, то меняем знак на -
+	switch (myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[1]] + 1])
+	{
+	case 'N':
+		if (false) {};
+		break;
+
+	case 'S':
 		myNavigator->coordinates.lat.decodedPos.value = -myNavigator->coordinates.lat.decodedPos.value;
+		break;
+
+	default:
+		myNavigator->coordinates.lat.decodedPos.value = myNavigator->coordinates.lat.previosPos.value[previosPosLen - 1];
+		break;
+	}
 
 #endif
 
@@ -63,7 +79,7 @@ void getGCS(struct MyNavigator* myNavigator)
 	myNavigator->coordinates.lon.decodedPos.length = 0;
 	myNavigator->coordinates.lon.decodedPos.floatLength = 0;
 	myNavigator->coordinates.lon.decodedPos.intPosition = myNavigator->msgData.parId[myNavigator->msgData.id[2]] + 1;
-	myNavigator->coordinates.lon.decodedPos.floatPosition = myNavigator->msgData.parId[myNavigator->msgData.id[2]] + 1;
+	myNavigator->coordinates.lon.decodedPos.floatPosition = myNavigator->msgData.parId[myNavigator->msgData.id[2] + 1];
 
 	// Проходим по символам, где были обнаружены запятые и где должна быть координата
 	for (i = myNavigator->coordinates.lon.decodedPos.intPosition;
@@ -92,11 +108,27 @@ void getGCS(struct MyNavigator* myNavigator)
 	// Делим дробное число на 10 в степени цифр после запятой
 	myNavigator->coordinates.lon.decodedPos.floatLength = myNavigator->msgData.parId[myNavigator->msgData.id[2] + 1] -
 		myNavigator->coordinates.lon.decodedPos.floatPosition;
+	myNavigator->coordinates.lon.decodedPos.floatLength =
+		myNavigator->coordinates.lon.decodedPos.floatLength >= 0 ?
+		myNavigator->coordinates.lon.decodedPos.floatLength :
+		0;
 	myNavigator->coordinates.lon.decodedPos.value *= pow(10.0, -myNavigator->coordinates.lon.decodedPos.floatLength);
 
-	// Если не север и не восток, то меняем знак на -
-	if (myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[3]] + 1] == 'W')
-		myNavigator->coordinates.lon.decodedPos.value = -myNavigator->coordinates.lon.decodedPos.value;	
+	// Если не восток, то меняем знак на -
+	switch (myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[3]] + 1])
+	{
+	case 'E':
+		if (false) {};
+		break;
+
+	case 'W':
+		myNavigator->coordinates.lat.decodedPos.value = -myNavigator->coordinates.lat.decodedPos.value;
+		break;
+
+	default:
+		myNavigator->coordinates.lat.decodedPos.value = myNavigator->coordinates.lat.previosPos.value[previosPosLen - 1];
+		break;
+	}
 
 #endif
 
@@ -146,6 +178,10 @@ void getGCS(struct MyNavigator* myNavigator)
 		// Делим дробное число на 10 в степени цифр после запятой
 		myNavigator->coordinates.alt.decodedPos.floatLength = myNavigator->msgData.parId[myNavigator->msgData.id[4] + 1] -
 			myNavigator->coordinates.alt.decodedPos.floatPosition;
+		myNavigator->coordinates.alt.decodedPos.floatLength =
+			myNavigator->coordinates.alt.decodedPos.floatLength >= 0 ?
+			myNavigator->coordinates.alt.decodedPos.floatLength :
+			0;
 		myNavigator->coordinates.alt.decodedPos.value *= pow(10.0, -myNavigator->coordinates.alt.decodedPos.floatLength);
 
 	}

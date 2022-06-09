@@ -8,6 +8,6 @@ struct Coordinate;
 
 void medianFilter(struct MedianFilterCoordinate*, struct Coordinate*);
 
-double findMedianNFast(double[], double, unsigned int*, unsigned int*);
+double findMedianNFast(double[], double, int*, int*);
 
 void medianFilterInit(struct MedianFilterCoordinate*, const double);

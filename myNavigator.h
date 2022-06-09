@@ -44,10 +44,10 @@
 //#define medianFiltering
 
 // Параметры квадратичного фильтра :
-#define minQuadFiltering 
+//#define minQuadFiltering 
 
 // Параметры альфа-бета фильтра :
-//#define alphaBetaFiltering
+#define alphaBetaFiltering
 
 // ##########################################################################################
 // 
@@ -211,8 +211,8 @@ typedef struct MedianFilterCoordinate
 	double normFunc[medianFilteringBufferLength - 2];
 	double normFuncSum;
 	unsigned short bufferCntrs[medianFilteringBufferLength - 2];
-	unsigned int bufferLens[medianFilteringBufferLength - 2];
-	unsigned int filterCntrs[medianFilteringBufferLength - 2];
+	int bufferLens[medianFilteringBufferLength - 2];
+	int filterCntrs[medianFilteringBufferLength - 2];
 } MedianFilterCoordinate;
 
 // Медианный фильтр :

@@ -38,7 +38,7 @@ void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct 
 }
 
 
-double findMedianNFast(double buffer[], double newVal, unsigned int* cntr, unsigned int* len)
+double findMedianNFast(double buffer[], double newVal, int* cntr, int* len)
 {
 	buff = 0.0;
 	buffer[*cntr] = newVal;

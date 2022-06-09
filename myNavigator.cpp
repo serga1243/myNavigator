@@ -348,33 +348,33 @@ void myNavigatorInit(struct MyNavigator* myNavigator)
 		myNavigator->msgData.id[0] = 0;
 	}
 
-	myNavigator->coordinates.lat.decodedPos.value = 0;
+	myNavigator->coordinates.lat.decodedPos.value = 0.0;
 	myNavigator->coordinates.lat.decodedPos.intPosition = 0;
 	myNavigator->coordinates.lat.decodedPos.floatPosition = 0;
 	myNavigator->coordinates.lat.decodedPos.length = 0;
 	myNavigator->coordinates.lat.decodedPos.intLength = 0;
 	myNavigator->coordinates.lat.decodedPos.floatLength = 0;
-	myNavigator->coordinates.lat.filteredPos.value = 0;
+	myNavigator->coordinates.lat.filteredPos.value = 0.0;
 	myNavigator->coordinates.lat.filteredPos.intLength = 0;
 	myNavigator->coordinates.lat.filteredPos.floatLength = 0;
 
-	myNavigator->coordinates.lon.decodedPos.value = 0;
+	myNavigator->coordinates.lon.decodedPos.value = 0.0;
 	myNavigator->coordinates.lon.decodedPos.intPosition = 0;
 	myNavigator->coordinates.lon.decodedPos.floatPosition = 0;
 	myNavigator->coordinates.lon.decodedPos.length = 0;
 	myNavigator->coordinates.lon.decodedPos.intLength = 0;
 	myNavigator->coordinates.lon.decodedPos.floatLength = 0;
-	myNavigator->coordinates.lon.filteredPos.value = 0;
+	myNavigator->coordinates.lon.filteredPos.value = 0.0;
 	myNavigator->coordinates.lon.filteredPos.intLength = 0;
 	myNavigator->coordinates.lon.filteredPos.floatLength = 0;
 
-	myNavigator->coordinates.alt.decodedPos.value = 0;
+	myNavigator->coordinates.alt.decodedPos.value = 0.0;
 	myNavigator->coordinates.alt.decodedPos.intPosition = 0;
 	myNavigator->coordinates.alt.decodedPos.floatPosition = 0;
 	myNavigator->coordinates.alt.decodedPos.length = 0;
 	myNavigator->coordinates.alt.decodedPos.intLength = 0;
 	myNavigator->coordinates.alt.decodedPos.floatLength = 0;
-	myNavigator->coordinates.alt.filteredPos.value = 0;
+	myNavigator->coordinates.alt.filteredPos.value = 0.0;
 	myNavigator->coordinates.alt.filteredPos.intLength = 0;
 	myNavigator->coordinates.alt.filteredPos.floatLength = 0;
 

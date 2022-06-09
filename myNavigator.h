@@ -21,8 +21,8 @@
 
 // Релиз с одним типом фильтра
 // или отладка со всеми фильтрами :
-//#define RELEASE
-#define DEBUG
+#define RELEASE
+//#define DEBUG
 
 #define TransformCoords					// если необходимо преобразовывать гео координаты в декартовы
 #define WriteCoordsInFlash				// записывать ли координаты во флеш память?
@@ -37,10 +37,10 @@
 #define includeAlt
 
 // Параметры фильтра Калмана :
-//#define kalmanFiltering
+#define kalmanFiltering
 
 // Параметры медианного фильтра :
-#define medianFiltering
+//#define medianFiltering
 
 // Параметры квадратичного фильтра :
 //#define minQuadFiltering 
@@ -77,7 +77,7 @@ const double altIntPartLimits[] = { 0.0, 99999.99 };
 const unsigned int medianFilteringBufferLength = 5;
 
 // Параметры фильтра Калмана :
-const double kalmanFilterR[] = { 50000.0, 50000.0 , 50000.0 };
+const double kalmanFilterR[] = { 50000.0, 50000.0, 50000.0 };
 
 // Параметры альфа-бета фильтра :
 const double alphaBetaFilterT[] = { 0.1, 0.1 , 0.1 };

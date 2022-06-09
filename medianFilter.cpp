@@ -20,7 +20,7 @@ void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct 
 
 #else
 
-	coordinate->filteredPos.value = 0;
+	coordinate->filteredPos.value = 0.0;
 	for (i = 0; i < medianFilteringBufferLength - 2; i++)
 	{
 		coordinate->filteredPos.value +=
@@ -40,7 +40,7 @@ void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct 
 
 double findMedianNFast(double buffer[], double newVal, unsigned int* cntr, unsigned int* len)
 {
-	buff = 0;
+	buff = 0.0;
 	buffer[*cntr] = newVal;
 	if ((*cntr < *len - 1) && (buffer[*cntr] > buffer[*cntr + 1])) {
 		for (ii = *cntr; ii < *len - 1; ii++) {
@@ -83,7 +83,7 @@ void medianFilterInit(struct MedianFilterCoordinate* medianFilterCoordinate, con
 		{
 			continue;
 		}
-		medianFilterCoordinate->normFunc[i] = pow(2, (double)i);
+		medianFilterCoordinate->normFunc[i] = pow(2.0, (double)i);
 		medianFilterCoordinate->normFuncSum += medianFilterCoordinate->normFunc[i];
 		medianFilterCoordinate->filterCntrs[i] = 0;
 		medianFilterCoordinate->bufferCntrs[i] = bufferCntrs;
@@ -92,6 +92,6 @@ void medianFilterInit(struct MedianFilterCoordinate* medianFilterCoordinate, con
 		
 
 	}
-	medianFilterCoordinate->normFuncSum = 1 / medianFilterCoordinate->normFuncSum;
+	medianFilterCoordinate->normFuncSum = 1.0 / medianFilterCoordinate->normFuncSum;
 	return;
 }

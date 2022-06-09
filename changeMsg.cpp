@@ -19,7 +19,7 @@ void changeMsg(struct MyNavigator* myNavigator)
 	overwriteStr(&myNavigator->coordinates.lat, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[1]]);
 
 	// Меняем направление координаты в зависимости от знака координаты
-	if (myNavigator->coordinates.lat.filteredPos.value < 0)
+	if (myNavigator->coordinates.lat.filteredPos.value < 0.0)
 	{
 		switch (myNavigator->msgOut.msg[myNavigator->msgData.parId[myNavigator->msgData.id[1]] + 1])
 		{
@@ -41,7 +41,7 @@ void changeMsg(struct MyNavigator* myNavigator)
 	overwriteStr(&myNavigator->coordinates.lon, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[3]]);
 
 	// Меняем направление координаты в зависимости от знака координаты
-	if (myNavigator->coordinates.lon.filteredPos.value < 0)
+	if (myNavigator->coordinates.lon.filteredPos.value < 0.0)
 	{
 		switch (myNavigator->msgOut.msg[myNavigator->msgData.parId[myNavigator->msgData.id[3]] + 1])
 		{

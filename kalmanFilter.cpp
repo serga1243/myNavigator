@@ -25,8 +25,8 @@ static unsigned short j;
 
 void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct Coordinate* coordinate)
 {
-    B = 0;
-    a = 0;
+    B = 0.0;
+    a = 0.0;
     for (i = 0; i < 3; i++) {
         d = 0.0;
         for (i1 = 0; i1 < 3; i1++) {

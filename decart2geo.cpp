@@ -1,7 +1,5 @@
 #include "decart2geo.h"
 
-static double x;
-static double y;
 static double n;
 static double beta;
 static double sin_beta;
@@ -18,13 +16,10 @@ static double Dfloor;
 
 void decart2geo(double* lat, double* lon)
 {
-	x = *lat;
-	y = *lon;
-
 	// Преобразование координат :
-	n = (double)((int)(y * 0.000001));
+	n = (double)((int)(*lon * 0.000001));
 
-	beta = x * 1.5704606412372143E-07;
+	beta = *lat * 1.5704606412372143E-07;
 	sin_beta = sin(beta);
 	sin_beta_pow2 = sin_beta * sin_beta;
 	sin_beta_pow4 = sin_beta_pow2 * sin_beta_pow2;
@@ -32,7 +27,7 @@ void decart2geo(double* lat, double* lon)
 	B0 = beta + sin(2.0 * beta) * (
 		0.00252588685 - 0.00001491860 * sin_beta_pow2 +
 		0.00000011904 * sin_beta_pow4);
-	z0 = (y - (10.0 * n + 5.0) * 100000.0) * 1.5678293950765453E-07 / cos(B0);
+	z0 = (*lon - (10.0 * n + 5.0) * 100000.0) * 1.5678293950765453E-07 / cos(B0);
 
 	z0_pow2 = pow(z0, 2.0);
 	sin_B0 = sin(B0);

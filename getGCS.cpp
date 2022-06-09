@@ -12,7 +12,7 @@ void getGCS(struct MyNavigator* myNavigator)
 #ifdef includeLat
 
 	// Обнуляем все
-	myNavigator->coordinates.lat.decodedPos.value = 0;
+	myNavigator->coordinates.lat.decodedPos.value = 0.0;
 	myNavigator->coordinates.lat.decodedPos.length = 0;
 	myNavigator->coordinates.lat.decodedPos.floatLength = 0;
 	myNavigator->coordinates.lat.decodedPos.intPosition = myNavigator->msgData.parId[myNavigator->msgData.id[0]] + 1;
@@ -45,7 +45,7 @@ void getGCS(struct MyNavigator* myNavigator)
 	// Делим дробное число на 10 в степени цифр после запятой
 	myNavigator->coordinates.lat.decodedPos.floatLength = myNavigator->msgData.parId[myNavigator->msgData.id[0] + 1] -
 		myNavigator->coordinates.lat.decodedPos.floatPosition;
-	myNavigator->coordinates.lat.decodedPos.value *= pow(10, -myNavigator->coordinates.lat.decodedPos.floatLength);
+	myNavigator->coordinates.lat.decodedPos.value *= pow(10.0, -myNavigator->coordinates.lat.decodedPos.floatLength);
 
 	// Если не север и не восток, то меняем знак на -
 	if (myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[1]] + 1] == 'S')
@@ -59,7 +59,7 @@ void getGCS(struct MyNavigator* myNavigator)
 #ifdef includeLon
 
 	// Обнуляем все
-	myNavigator->coordinates.lon.decodedPos.value = 0;
+	myNavigator->coordinates.lon.decodedPos.value = 0.0;
 	myNavigator->coordinates.lon.decodedPos.length = 0;
 	myNavigator->coordinates.lon.decodedPos.floatLength = 0;
 	myNavigator->coordinates.lon.decodedPos.intPosition = myNavigator->msgData.parId[myNavigator->msgData.id[2]] + 1;
@@ -92,7 +92,7 @@ void getGCS(struct MyNavigator* myNavigator)
 	// Делим дробное число на 10 в степени цифр после запятой
 	myNavigator->coordinates.lon.decodedPos.floatLength = myNavigator->msgData.parId[myNavigator->msgData.id[2] + 1] -
 		myNavigator->coordinates.lon.decodedPos.floatPosition;
-	myNavigator->coordinates.lon.decodedPos.value *= pow(10, -myNavigator->coordinates.lon.decodedPos.floatLength);
+	myNavigator->coordinates.lon.decodedPos.value *= pow(10.0, -myNavigator->coordinates.lon.decodedPos.floatLength);
 
 	// Если не север и не восток, то меняем знак на -
 	if (myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[3]] + 1] == 'W')
@@ -113,7 +113,7 @@ void getGCS(struct MyNavigator* myNavigator)
 	else
 	{
 		// Обнуляем все
-		myNavigator->coordinates.alt.decodedPos.value = 0;
+		myNavigator->coordinates.alt.decodedPos.value = 0.0;
 		myNavigator->coordinates.alt.decodedPos.length = 0;
 		myNavigator->coordinates.alt.decodedPos.floatLength = 0;
 		myNavigator->coordinates.alt.decodedPos.intPosition = myNavigator->msgData.parId[myNavigator->msgData.id[4]] + 1;
@@ -146,7 +146,7 @@ void getGCS(struct MyNavigator* myNavigator)
 		// Делим дробное число на 10 в степени цифр после запятой
 		myNavigator->coordinates.alt.decodedPos.floatLength = myNavigator->msgData.parId[myNavigator->msgData.id[4] + 1] -
 			myNavigator->coordinates.alt.decodedPos.floatPosition;
-		myNavigator->coordinates.alt.decodedPos.value *= pow(10, -myNavigator->coordinates.alt.decodedPos.floatLength);
+		myNavigator->coordinates.alt.decodedPos.value *= pow(10.0, -myNavigator->coordinates.alt.decodedPos.floatLength);
 
 	}
 

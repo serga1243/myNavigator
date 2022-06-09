@@ -12,14 +12,13 @@ static double SGN;
 
 void geo2decart(double* lat, double* lon)
 {
-	B = myfabs(*lat);
-	L = myfabs(*lon);
-
 	// »з градусов-дес€тичных минут в дес€тичные градусы :
+	B = myfabs(*lat);
 	B = floor(0.01 * B);
 	B = dm2degrees(B, myfabs(*lat) - B * 100.0);
 	B *= 0.017453292519943295;
 
+	L = myfabs(*lon);
 	L = floor(0.01 * L);
 	L = dm2degrees(L, myfabs(*lon) - L * 100.0);
 

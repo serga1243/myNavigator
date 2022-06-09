@@ -17,5 +17,5 @@ int intFactorial(unsigned short n)
 
 double myfabs(double x)
 {
-	return x < 0 ? -x : x;
+	return x < 0.0 ? -x : x;
 }

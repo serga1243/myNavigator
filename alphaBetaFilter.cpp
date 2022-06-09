@@ -11,14 +11,14 @@ void alphaBetaFilter(struct AlphaBetaFilterCoordinate* alphaBetaFilterCoordinate
 
     if (alphaBetaFilterCoordinate->Step == 1)
     {
-        alphaBetaFilterCoordinate->Vz = 120;
-        alphaBetaFilterCoordinate->Az = 0;
+        alphaBetaFilterCoordinate->Vz = 100.0;
+        alphaBetaFilterCoordinate->Az = 0.0;
         alphaBetaFilterCoordinate->fZ = coordinate->decodedPos.value;
     }
     else if (alphaBetaFilterCoordinate->Step == 2)
     {
         alphaBetaFilterCoordinate->Vz = (coordinate->decodedPos.value - alphaBetaFilterCoordinate->fZ) / alphaBetaFilterCoordinate->Tob;
-        alphaBetaFilterCoordinate->Az = 0;
+        alphaBetaFilterCoordinate->Az = 0.0;
         alphaBetaFilterCoordinate->fZ = coordinate->decodedPos.value;
     }
     else
@@ -27,7 +27,7 @@ void alphaBetaFilter(struct AlphaBetaFilterCoordinate* alphaBetaFilterCoordinate
             / (double)(alphaBetaFilterCoordinate->Step * (double)alphaBetaFilterCoordinate->Step + (double)alphaBetaFilterCoordinate->Step);
         if (alphaBetaFilterCoordinate->Ka < alphaBetaFilterCoordinate->Predel) alphaBetaFilterCoordinate->Ka = alphaBetaFilterCoordinate->Predel;
 
-        alphaBetaFilterCoordinate->Kb = 2.0 * (2.0 - alphaBetaFilterCoordinate->Ka) - 4 * sqrt(1.0 - alphaBetaFilterCoordinate->Ka);
+        alphaBetaFilterCoordinate->Kb = 2.0 * (2.0 - alphaBetaFilterCoordinate->Ka) - 4.0 * sqrt(1.0 - alphaBetaFilterCoordinate->Ka);
         alphaBetaFilterCoordinate->Kg = alphaBetaFilterCoordinate->Kb * alphaBetaFilterCoordinate->Kb / (2.0 * alphaBetaFilterCoordinate->Ka);
 
         Zeks = alphaBetaFilterCoordinate->fZ
@@ -35,7 +35,7 @@ void alphaBetaFilter(struct AlphaBetaFilterCoordinate* alphaBetaFilterCoordinate
             * alphaBetaFilterCoordinate->Tob
             + alphaBetaFilterCoordinate->Az
             * alphaBetaFilterCoordinate->Tob
-            * alphaBetaFilterCoordinate->Tob / 2;
+            * alphaBetaFilterCoordinate->Tob / 2.0;
         alphaBetaFilterCoordinate->fZ = Zeks + alphaBetaFilterCoordinate->Ka * (coordinate->decodedPos.value - Zeks);
         alphaBetaFilterCoordinate->Vz = alphaBetaFilterCoordinate->Vz
             + alphaBetaFilterCoordinate->Kb / alphaBetaFilterCoordinate->Tob * (coordinate->decodedPos.value - Zeks);//фильтрация скорости
@@ -55,17 +55,17 @@ void alphaBetaFilterInit(struct AlphaBetaFilterCoordinate* alphaBetaFilterCoordi
     //double Sn = 3.0;//дисперсия шума
     alphaBetaFilterCoordinate->Tob = T;
     L = Sp * alphaBetaFilterCoordinate->Tob * alphaBetaFilterCoordinate->Tob / Sn;
-    r = (4 + L - sqrt(8 * L + L * L)) / 4;
-    alphaBetaFilterCoordinate->Step = 0;
-    alphaBetaFilterCoordinate->Predel = 1 - r * r;
+    r = (4.0 + L - sqrt(8.0 * L + L * L)) / 4.0;
+    alphaBetaFilterCoordinate->Step = 0.0;
+    alphaBetaFilterCoordinate->Predel = 1.0 - r * r;
 
-    alphaBetaFilterCoordinate->Ka = 0;
-    alphaBetaFilterCoordinate->Kb = 0;
-    alphaBetaFilterCoordinate->Kg = 0;
+    alphaBetaFilterCoordinate->Ka = 0.0;
+    alphaBetaFilterCoordinate->Kb = 0.0;
+    alphaBetaFilterCoordinate->Kg = 0.0;
 
-    alphaBetaFilterCoordinate->Az = 0;
-    alphaBetaFilterCoordinate->Vz = 0;
-    alphaBetaFilterCoordinate->fZ = 0;
+    alphaBetaFilterCoordinate->Az = 0.0;
+    alphaBetaFilterCoordinate->Vz = 0.0;
+    alphaBetaFilterCoordinate->fZ = 0.0;
 
     return;
 }

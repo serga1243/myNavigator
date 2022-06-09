@@ -157,6 +157,7 @@
     <ClCompile Include="minQuadFilter.cpp" />
     <ClCompile Include="myNavigator.cpp" />
     <ClCompile Include="overwritePrevPos.cpp" />
+    <ClCompile Include="prePostFilter.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="utilitiesFuncs.cpp" />
     <ClCompile Include="writeInROM.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="minQuadFilter.h" />
     <ClInclude Include="myNavigator.h" />
     <ClInclude Include="overwritePrevPos.h" />
+    <ClInclude Include="prePostFilter.h" />
     <ClInclude Include="utilitiesFuncs.h" />
     <ClInclude Include="writeInROM.h" />
   </ItemGroup>

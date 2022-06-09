@@ -18,6 +18,7 @@
 #include "writeInROM.h"
 #include "geo2decart.h"
 #include "decart2geo.h"
+#include "prePostFilter.h"
 
 // Релиз с одним типом фильтра
 // или отладка со всеми фильтрами :
@@ -37,13 +38,13 @@
 #define includeAlt
 
 // Параметры фильтра Калмана :
-#define kalmanFiltering
+//#define kalmanFiltering
 
 // Параметры медианного фильтра :
 //#define medianFiltering
 
 // Параметры квадратичного фильтра :
-//#define minQuadFiltering 
+#define minQuadFiltering 
 
 // Параметры альфа-бета фильтра :
 //#define alphaBetaFiltering
@@ -53,6 +54,9 @@
 // -----------------------------------  Начальные условия  ----------------------------------
 // 
 // ##########################################################################################
+
+// Максимальная скорость объекта :
+const double objectMaxSpeed = 8000.0;
 
 #ifdef Cpp
 
@@ -80,8 +84,8 @@ const unsigned int medianFilteringBufferLength = 5;
 const double kalmanFilterR[] = { 50000.0, 50000.0, 50000.0 };
 
 // Параметры альфа-бета фильтра :
-const double alphaBetaFilterT[] = { 0.1, 0.1 , 0.1 };
-const double alphaBetaFilterSp[] = { 0.1, 0.1, 0.1 };
+const double alphaBetaFilterT[] = { 1.0, 1.0 , 1.0 };
+const double alphaBetaFilterSp[] = { 3.0, 3.0, 3.0 };
 const double alphaBetaFilterSn[] = { 3.0, 3.0, 3.0 };
 
 #endif
@@ -163,6 +167,7 @@ typedef struct Msg
 // Хранение :
 typedef struct MsgData
 {
+	double dT;
 	char checkData[2];
 	char checkDataCond[2];
 	char countryData[2];

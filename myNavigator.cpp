@@ -77,9 +77,21 @@ void myNavigator(struct MyNavigator* myNavigator)
 	isInvalidData(&myNavigator->coordinates.lon.decodedPos.value, lonIntPartLimits, &myNavigator->coordinates.lon.previosPos.value[previosPosLen - 1]);
 	isInvalidData(&myNavigator->coordinates.alt.decodedPos.value, altIntPartLimits, &myNavigator->coordinates.alt.previosPos.value[previosPosLen - 1]);
 
+	// Проверям, что декодированные координаты принадлежат стробу (не "слишком большие") :
+	prePostFilter(myNavigator, true);
+
+	// Если альфа-бета фильтр :
+#if defined( alphaBetaFiltering ) || defined( DEBUG )
+
+	myNavigator->filters.alphaBetaFilter.lat.Tob = myNavigator->msgData.dT;
+	myNavigator->filters.alphaBetaFilter.lon.Tob = myNavigator->msgData.dT;
+	myNavigator->filters.alphaBetaFilter.alt.Tob = myNavigator->msgData.dT;
+
+#endif
 
 
-	// Фильтрация широты:
+
+	// Фильтрация широты :
 #ifdef includeLat
 
 #if defined( DEBUG )
@@ -130,7 +142,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 
 
-	// Фильтрация долготы:
+	// Фильтрация долготы :
 #ifdef includeLon
 
 #if defined( DEBUG )
@@ -181,7 +193,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 
 
-	// Фильтрация высоты:
+	// Фильтрация высоты :
 #ifdef includeAlt
 
 #if defined( DEBUG )
@@ -267,6 +279,9 @@ void myNavigator(struct MyNavigator* myNavigator)
 	// Перезапись массива с предыдущими координатами :
 	overwritePrevPos(myNavigator);
 
+	// Проверям, что фильтрованные координаты в принадлежат стробу (не "слишком большие") :
+	prePostFilter(myNavigator, false);
+
 	// Преобразование плоских прямоугольных координат в проекции Гаусса-Крюгера 
 	// на эллипсоиде Красовского в геодезические координаты :
 #ifdef TransformCoords
@@ -331,6 +346,7 @@ void myNavigatorInit(struct MyNavigator* myNavigator)
 	}
 	myNavigator->msgIn.len = 0;
 	myNavigator->msgOut.len = 0;
+	myNavigator->msgData.dT = 0;
 	myNavigator->msgData.parIdLen = 0;
 
 	myNavigator->msgData.checkData[0] = '0';

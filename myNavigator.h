@@ -29,7 +29,7 @@
 #define WriteCoordsInFlash				// записывать ли координаты во флеш память?
 #define Cpp								// если язык c++, а не си
 #define msgMaxLen 1024					// максимальная длина сообщений
-#define previosPosLen 20				// число хранимых предыдущих значений
+#define previosPosLen 16				// число хранимых предыдущих значений
 #define logInfoArrLen 1					// длина массива логов
 
 // Какие координаты фильтровать? :
@@ -44,10 +44,10 @@
 //#define medianFiltering
 
 // Параметры квадратичного фильтра :
-//#define minQuadFiltering 
+#define minQuadFiltering 
 
 // Параметры альфа-бета фильтра :
-#define alphaBetaFiltering
+//#define alphaBetaFiltering
 
 // ##########################################################################################
 // 

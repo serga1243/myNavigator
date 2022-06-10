@@ -56,8 +56,7 @@ double char2double(char str[], unsigned short strLen)
 			continue;
 
 		default:
-			a = 0.0;
-			break;
+			continue;
 		}
 		val += a * pow(10.0, (double)(strLen - power) - 1.0);
 	}

@@ -6,7 +6,7 @@ void chooseId(struct MyNavigator* myNavigator)
 		myNavigator->msgData.idData[1] == 'U' &&
 		myNavigator->msgData.idData[2] == 'B')
 	{
-		if (myNavigator->msgData.parIdLen >= 7)
+		if (myNavigator->msgData.parIdLen > 6)
 		{
 			myNavigator->msgData.id[0] = 2;
 			myNavigator->msgData.id[1] = 3;
@@ -27,7 +27,7 @@ void chooseId(struct MyNavigator* myNavigator)
 		myNavigator->msgData.idData[1] == 'G' &&
 		myNavigator->msgData.idData[2] == 'A')
 	{
-		if (myNavigator->msgData.parIdLen >= 9)
+		if (myNavigator->msgData.parIdLen > 8)
 		{
 			myNavigator->msgData.id[0] = 1;
 			myNavigator->msgData.id[1] = 2;
@@ -48,7 +48,7 @@ void chooseId(struct MyNavigator* myNavigator)
 		myNavigator->msgData.idData[1] == 'L' &&
 		myNavigator->msgData.idData[2] == 'L')
 	{
-		if (myNavigator->msgData.parIdLen >= 5)
+		if (myNavigator->msgData.parIdLen > 4)
 		{
 			myNavigator->msgData.id[0] = 0;
 			myNavigator->msgData.id[1] = 1;
@@ -69,7 +69,7 @@ void chooseId(struct MyNavigator* myNavigator)
 		myNavigator->msgData.idData[1] == 'M' &&
 		myNavigator->msgData.idData[2] == 'A')
 	{
-		if (myNavigator->msgData.parIdLen >= 5)
+		if (myNavigator->msgData.parIdLen > 4)
 		{
 			myNavigator->msgData.id[0] = 1;
 			myNavigator->msgData.id[1] = 2;
@@ -90,7 +90,7 @@ void chooseId(struct MyNavigator* myNavigator)
 		myNavigator->msgData.idData[1] == 'M' &&
 		myNavigator->msgData.idData[2] == 'C')
 	{
-		if (myNavigator->msgData.parIdLen >= 6)
+		if (myNavigator->msgData.parIdLen > 5)
 		{
 			myNavigator->msgData.id[0] = 2;
 			myNavigator->msgData.id[1] = 3;
@@ -111,7 +111,7 @@ void chooseId(struct MyNavigator* myNavigator)
 		myNavigator->msgData.idData[1] == 'P' &&
 		myNavigator->msgData.idData[2] == 'L')
 	{
-		if (myNavigator->msgData.parIdLen >= 4)
+		if (myNavigator->msgData.parIdLen > 3)
 		{
 			myNavigator->msgData.id[0] = 0;
 			myNavigator->msgData.id[1] = 1;
@@ -132,7 +132,7 @@ void chooseId(struct MyNavigator* myNavigator)
 		myNavigator->msgData.idData[1] == 'M' &&
 		myNavigator->msgData.idData[2] == 'F')
 	{
-		if (myNavigator->msgData.parIdLen >= 9)
+		if (myNavigator->msgData.parIdLen > 8)
 		{
 			myNavigator->msgData.id[0] = 5;
 			myNavigator->msgData.id[1] = 6;
@@ -153,7 +153,7 @@ void chooseId(struct MyNavigator* myNavigator)
 		myNavigator->msgData.idData[1] == 'M' &&
 		myNavigator->msgData.idData[2] == 'I')
 	{
-		if (myNavigator->msgData.parIdLen >= 4)
+		if (myNavigator->msgData.parIdLen > 3)
 		{
 			myNavigator->msgData.id[0] = 0;
 			myNavigator->msgData.id[1] = 1;

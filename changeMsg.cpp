@@ -16,7 +16,7 @@ void changeMsg(struct MyNavigator* myNavigator)
 
 	// Ўирота
 #ifdef includeLat
-	overwriteStr(&myNavigator->coordinates.lat, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[1]]);
+	overwriteStr(&myNavigator->coordinates.lat, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[0] + 1]);
 
 	// ћен€ем направление координаты в зависимости от знака координаты
 	if (myNavigator->coordinates.lat.filteredPos.value < 0.0)
@@ -38,7 +38,7 @@ void changeMsg(struct MyNavigator* myNavigator)
 
 	// ƒолгота
 #ifdef includeLon
-	overwriteStr(&myNavigator->coordinates.lon, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[3]]);
+	overwriteStr(&myNavigator->coordinates.lon, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[2] + 1]);
 
 	// ћен€ем направление координаты в зависимости от знака координаты
 	if (myNavigator->coordinates.lon.filteredPos.value < 0.0)
@@ -62,7 +62,7 @@ void changeMsg(struct MyNavigator* myNavigator)
 #ifdef includeAlt
 	if (myNavigator->msgData.id[4] != 0)
 	{
-		overwriteStr(&myNavigator->coordinates.alt, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[5]]);
+		overwriteStr(&myNavigator->coordinates.alt, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[4] + 1]);
 	}
 #endif
 	

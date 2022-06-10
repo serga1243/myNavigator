@@ -16,7 +16,7 @@ void getGCS(struct MyNavigator* myNavigator)
 	myNavigator->coordinates.lat.decodedPos.length = 0;
 	myNavigator->coordinates.lat.decodedPos.floatLength = 0;
 	myNavigator->coordinates.lat.decodedPos.intPosition = myNavigator->msgData.parId[myNavigator->msgData.id[0]] + 1;
-	myNavigator->coordinates.lat.decodedPos.floatPosition = myNavigator->msgData.parId[myNavigator->msgData.id[0] + 1];
+	myNavigator->coordinates.lat.decodedPos.floatPosition = myNavigator->coordinates.lat.decodedPos.intPosition;
 
 	// ѕроходим по символам, где были обнаружены зап€тые и где должна быть координата
 	for (i = myNavigator->coordinates.lat.decodedPos.intPosition;
@@ -76,7 +76,7 @@ void getGCS(struct MyNavigator* myNavigator)
 	myNavigator->coordinates.lon.decodedPos.length = 0;
 	myNavigator->coordinates.lon.decodedPos.floatLength = 0;
 	myNavigator->coordinates.lon.decodedPos.intPosition = myNavigator->msgData.parId[myNavigator->msgData.id[2]] + 1;
-	myNavigator->coordinates.lon.decodedPos.floatPosition = myNavigator->msgData.parId[myNavigator->msgData.id[2] + 1];
+	myNavigator->coordinates.lon.decodedPos.floatPosition = myNavigator->coordinates.lon.decodedPos.intPosition;
 
 	// ѕроходим по символам, где были обнаружены зап€тые и где должна быть координата
 	for (i = myNavigator->coordinates.lon.decodedPos.intPosition;
@@ -143,7 +143,7 @@ void getGCS(struct MyNavigator* myNavigator)
 		myNavigator->coordinates.alt.decodedPos.length = 0;
 		myNavigator->coordinates.alt.decodedPos.floatLength = 0;
 		myNavigator->coordinates.alt.decodedPos.intPosition = myNavigator->msgData.parId[myNavigator->msgData.id[4]] + 1;
-		myNavigator->coordinates.alt.decodedPos.floatPosition = myNavigator->msgData.parId[myNavigator->msgData.id[4]] + 1;
+		myNavigator->coordinates.alt.decodedPos.floatPosition = myNavigator->coordinates.alt.decodedPos.intPosition;
 
 		// ѕроходим по символам, где были обнаружены зап€тые и где должна быть координата
 		for (i = myNavigator->coordinates.alt.decodedPos.intPosition;

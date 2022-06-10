@@ -59,7 +59,6 @@ int main()
 			
 			// Считаем, что разница во времени между сообщениями примерно 1 сек. :
 			mynavigator.msgData.dT = 0.001 * (double)(rand() % 2000 + 10);
-			mynavigator.msgData.dT = 1;
 			myNavigator(&mynavigator);
 
 #ifdef MSG // MSG

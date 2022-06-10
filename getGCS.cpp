@@ -23,17 +23,15 @@ void getGCS(struct MyNavigator* myNavigator)
 		i < myNavigator->msgData.parId[myNavigator->msgData.id[0] + 1];
 		i++, myNavigator->coordinates.lat.decodedPos.length++)
 	{
+		// Если пошли дальше сообщения
+		if (i >= msgMaxLen) { break; }
+
 		// Если обнаружили точку
 		if (myNavigator->msgIn.msg[i] == '.')
 		{
 			myNavigator->coordinates.lat.decodedPos.length--;
 			myNavigator->coordinates.lat.decodedPos.floatPosition = i + 1;
 			continue;
-		}
-		// Если пошли дальше сообщения
-		else if (i >= msgMaxLen)
-		{
-			return;
 		}
 	}
 
@@ -55,7 +53,6 @@ void getGCS(struct MyNavigator* myNavigator)
 	switch (myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[1]] + 1])
 	{
 	case 'N':
-		if (false) {};
 		break;
 
 	case 'S':
@@ -86,17 +83,15 @@ void getGCS(struct MyNavigator* myNavigator)
 		i < myNavigator->msgData.parId[myNavigator->msgData.id[2] + 1];
 		i++, myNavigator->coordinates.lon.decodedPos.length++)
 	{
+		// Если пошли дальше сообщения
+		if (i >= msgMaxLen) { break; }
+
 		// Если обнаружили точку
 		if (myNavigator->msgIn.msg[i] == '.')
 		{
 			myNavigator->coordinates.lon.decodedPos.length--;
 			myNavigator->coordinates.lon.decodedPos.floatPosition = i + 1;
 			continue;
-		}
-		// Если пошли дальше сообщения
-		else if (i >= msgMaxLen)
-		{
-			return;
 		}
 	}
 
@@ -118,7 +113,6 @@ void getGCS(struct MyNavigator* myNavigator)
 	switch (myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[3]] + 1])
 	{
 	case 'E':
-		if (false) {};
 		break;
 
 	case 'W':
@@ -156,17 +150,15 @@ void getGCS(struct MyNavigator* myNavigator)
 			i < myNavigator->msgData.parId[myNavigator->msgData.id[4] + 1];
 			i++, myNavigator->coordinates.alt.decodedPos.length++)
 		{
+			// Если пошли дальше сообщения
+			if (i >= msgMaxLen) { break; }
+
 			// Если обнаружили точку
 			if (myNavigator->msgIn.msg[i] == '.')
 			{
 				myNavigator->coordinates.alt.decodedPos.length--;
 				myNavigator->coordinates.alt.decodedPos.floatPosition = i + 1;
 				continue;
-			}
-			// Если пошли дальше сообщения
-			else if (i >= msgMaxLen)
-			{
-				return;
 			}
 		}
 

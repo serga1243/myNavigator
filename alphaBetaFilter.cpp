@@ -8,6 +8,10 @@ void alphaBetaFilter(struct AlphaBetaFilterCoordinate* alphaBetaFilterCoordinate
 {
     Zeks = 0;
 
+    L = alphaBetaFilterCoordinate->Sp * alphaBetaFilterCoordinate->Tob * alphaBetaFilterCoordinate->Tob * alphaBetaFilterCoordinate->Sn;
+    r = 0.25 * (4.0 + L - sqrt(L * (8.0 + L)));
+    alphaBetaFilterCoordinate->Predel = 1.0 - r * r;
+
     switch (++alphaBetaFilterCoordinate->Step)
     {
     case 1:
@@ -46,6 +50,7 @@ void alphaBetaFilter(struct AlphaBetaFilterCoordinate* alphaBetaFilterCoordinate
     }
 
     coordinate->filteredPos.value = alphaBetaFilterCoordinate->fZ;
+    alphaBetaFilterCoordinate->Tob = 0;
 
     return;
 }
@@ -54,6 +59,8 @@ void alphaBetaFilterInit(struct AlphaBetaFilterCoordinate* alphaBetaFilterCoordi
 {
     //double Sp = 0.1;//дисперсия координаты
     //double Sn = 3.0;//дисперсия шума
+    alphaBetaFilterCoordinate->Sp = Sp;
+    alphaBetaFilterCoordinate->Sn = 1.0 / Sn;
     alphaBetaFilterCoordinate->Tob = T;
     L = Sp * alphaBetaFilterCoordinate->Tob * alphaBetaFilterCoordinate->Tob / Sn;
     r = (4.0 + L - sqrt(8.0 * L + L * L)) / 4.0;

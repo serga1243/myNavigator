@@ -12,9 +12,30 @@ void myNavigator(struct MyNavigator* myNavigator)
 	// Логи :
 	myNavigator->logInfo[0] = 85;
 
+	// Время между сообщениями :
+	myNavigator->msgData.dT += myNavigator->msgData.dt;
+
 	// Выходное сообщение :
 	myNavigator->msgOut.len = myNavigator->msgIn.len < msgMaxLen ? myNavigator->msgIn.len : msgMaxLen;
 	memcpy(myNavigator->msgOut.msg, myNavigator->msgIn.msg, myNavigator->msgOut.len);
+
+	// Если альфа-бета фильтр :
+#if defined( alphaBetaFiltering ) || defined( DEBUG )
+
+	if (myNavigator->filters.alphaBetaFilter.lat.Step == 0 &&
+		myNavigator->filters.alphaBetaFilter.lon.Step == 0 &&
+		myNavigator->filters.alphaBetaFilter.alt.Step == 0)
+	{
+		myNavigator->filters.alphaBetaFilter.lat.Tob = 0;
+		myNavigator->filters.alphaBetaFilter.lon.Tob = 0;
+		myNavigator->filters.alphaBetaFilter.alt.Tob = 0;
+	}
+
+	myNavigator->filters.alphaBetaFilter.lat.Tob += myNavigator->msgData.dT;
+	myNavigator->filters.alphaBetaFilter.lon.Tob += myNavigator->msgData.dT;
+	myNavigator->filters.alphaBetaFilter.alt.Tob += myNavigator->msgData.dT;
+
+#endif
 
 	// Получение координат из сообщения :
 	// Проверка сообщения на стандарт NMEA-0183 :
@@ -79,15 +100,6 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 	// Проверям, что декодированные координаты принадлежат стробу (не "слишком большие") :
 	prePostFilter(myNavigator, true);
-
-	// Если альфа-бета фильтр :
-#if defined( alphaBetaFiltering ) || defined( DEBUG )
-
-	myNavigator->filters.alphaBetaFilter.lat.Tob = myNavigator->msgData.dT;
-	myNavigator->filters.alphaBetaFilter.lon.Tob = myNavigator->msgData.dT;
-	myNavigator->filters.alphaBetaFilter.alt.Tob = myNavigator->msgData.dT;
-
-#endif
 
 
 
@@ -316,6 +328,8 @@ void myNavigator(struct MyNavigator* myNavigator)
 	// Вычисление новой КС для измененного сообщения :
 	getXOR(&myNavigator->msgOut.msg[1], &myNavigator->msgOut.msg[myNavigator->msgOut.len - 4], myNavigator->msgOut.len - 6);
 
+	myNavigator->msgData.dT = 0;
+
 	return;
 }
 
@@ -346,6 +360,7 @@ void myNavigatorInit(struct MyNavigator* myNavigator)
 	}
 	myNavigator->msgIn.len = 0;
 	myNavigator->msgOut.len = 0;
+	myNavigator->msgData.dt = 0;
 	myNavigator->msgData.dT = 0;
 	myNavigator->msgData.parIdLen = 0;
 

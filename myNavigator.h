@@ -44,10 +44,10 @@
 //#define medianFiltering
 
 // Параметры квадратичного фильтра :
-#define minQuadFiltering 
+//#define minQuadFiltering 
 
 // Параметры альфа-бета фильтра :
-//#define alphaBetaFiltering
+#define alphaBetaFiltering
 
 // ##########################################################################################
 // 
@@ -78,7 +78,7 @@ const double lonIntPartLimits[] = { -18000.00000, 18000.00000 };
 const double altIntPartLimits[] = { 0.0, 99999.99 };
 
 // Параметры медианного фильтра :
-const unsigned int medianFilteringBufferLength = 5;
+const unsigned int medianFilteringBufferLength = 6;
 
 // Параметры фильтра Калмана :
 const double kalmanFilterR[] = { 50000.0, 50000.0, 50000.0 };
@@ -167,6 +167,7 @@ typedef struct Msg
 // Хранение :
 typedef struct MsgData
 {
+	double dt;
 	double dT;
 	char checkData[2];
 	char checkDataCond[2];
@@ -251,6 +252,8 @@ typedef struct AlphaBetaFilterCoordinate
 	double Az;
 	double Vz;
 	double fZ;
+	double Sp;
+	double Sn;
 } AlphaBetaFilterCoordinate;
 
 // Альфа-бета фильтр :

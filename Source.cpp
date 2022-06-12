@@ -58,7 +58,7 @@ int main()
 			mynavigator.msgIn.len++;
 			
 			// Считаем, что разница во времени между сообщениями примерно 1 сек. :
-			mynavigator.msgData.dT = 0.001 * (double)(rand() % 2000 + 10);
+			mynavigator.msgData.dt = 0.001 * (double)(rand() % 2000 + 10);
 			myNavigator(&mynavigator);
 
 #ifdef MSG // MSG
@@ -74,7 +74,7 @@ int main()
 			{
 				cout << (int)mynavigator.logInfo[i] << " " << ends;
 			}
-			cout << "     Время с предыдущего сообщения: " << mynavigator.msgData.dT << " сек." << ends;
+			cout << "     Время с предыдущего сообщения с координатами: " << mynavigator.msgData.dt << " сек." << ends;
 			cout << "\n" << endl;
 #endif
 		}

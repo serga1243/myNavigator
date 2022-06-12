@@ -18,9 +18,9 @@ void prePostFilter(struct MyNavigator* myNavigator, bool preFiltering)
 	}
 	else
 	{
-		if (pow(myNavigator->coordinates.lat.filteredPos.value - myNavigator->coordinates.lat.decodedPos.value, 2.0) +
-			pow(myNavigator->coordinates.lon.filteredPos.value - myNavigator->coordinates.lon.decodedPos.value, 2.0) +
-			pow(myNavigator->coordinates.alt.filteredPos.value - myNavigator->coordinates.alt.decodedPos.value, 2.0) >
+		if (pow(myNavigator->coordinates.lat.filteredPos.value - myNavigator->coordinates.lat.previosPos.value[previosPosLen - 1], 2.0) +
+			pow(myNavigator->coordinates.lon.filteredPos.value - myNavigator->coordinates.lon.previosPos.value[previosPosLen - 1], 2.0) +
+			pow(myNavigator->coordinates.alt.filteredPos.value - myNavigator->coordinates.alt.previosPos.value[previosPosLen - 1], 2.0) >
 			pow(myNavigator->msgData.dT * objectMaxSpeed, 2.0))
 		{
 			myNavigator->coordinates.lat.filteredPos.value = myNavigator->coordinates.lat.decodedPos.value;

@@ -1,3 +1,5 @@
+// Ќова€ ветка с точно определенными типами данных
+
 #include <iostream>
 #include <ctime>
 #include "myNavigator.h"

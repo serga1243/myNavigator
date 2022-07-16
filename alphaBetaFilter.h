@@ -2,7 +2,7 @@
 
 #include "myNavigator.h"
 
-struct KalmanFilterCoordinate;
+struct AlphaBetaFilterCoordinate;
 struct Coordinate;
 
 void alphaBetaFilter(struct AlphaBetaFilterCoordinate*, struct Coordinate*);

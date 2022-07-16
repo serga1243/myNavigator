@@ -5,6 +5,7 @@
 #define MSG true
 using namespace std;
 
+void someFunc(unsigned int a, unsigned int b, unsigned long long int c);
 
 int main()
 {
@@ -24,13 +25,13 @@ int main()
 		if (isRestart)
 		{
 			// Инициализация функции фильтрации :
-			myNavigatorInit(&mynavigator);
+			myNavigatorInit(&mynavigator, &someFunc);
 			isRestart = false;
 		}
 
 #ifdef MSG
 		cout << "На фильтр: " << ends;
-#endif // DEBUG
+#endif // myNavigator_DEBUG
 
 		p = fgets(buf, msgMaxLen, stdin);
 		if (p) {
@@ -85,4 +86,11 @@ int main()
 
 	// Выход
 	return 0;
+}
+
+
+// функция симулярующая запись во флеш память 
+void someFunc(unsigned int a, unsigned int b, unsigned long long int c)
+{
+	short d = a + b + c;
 }

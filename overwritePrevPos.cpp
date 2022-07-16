@@ -1,7 +1,5 @@
 #include "overwritePrevPos.h"
 
-static unsigned short i;
-
 void overwritePrevPos(struct MyNavigator* myNavigator)
 {
 #ifdef includeLat

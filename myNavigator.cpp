@@ -20,7 +20,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 	memcpy(myNavigator->msgOut.msg, myNavigator->msgIn.msg, myNavigator->msgOut.len);
 
 	// Если альфа-бета фильтр :
-#if defined( alphaBetaFiltering ) || defined( DEBUG )
+#if defined( alphaBetaFiltering ) || defined( myNavigator_DEBUG )
 
 	if (myNavigator->filters.alphaBetaFilter.lat.Step == 0 &&
 		myNavigator->filters.alphaBetaFilter.lon.Step == 0 &&
@@ -106,7 +106,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 	// Фильтрация широты :
 #ifdef includeLat
 
-#if defined( DEBUG )
+#if defined( myNavigator_DEBUG )
 
 	kalmanFilter(&myNavigator->filters.kalmanFilter.lat, &myNavigator->coordinates.lat);
 	myNavigator->coordinates.lat.filteredPos.allFilteredValues[0] = myNavigator->coordinates.lat.filteredPos.value;
@@ -120,7 +120,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lat, &myNavigator->coordinates.lat);
 	myNavigator->coordinates.lat.filteredPos.allFilteredValues[3] = myNavigator->coordinates.lat.filteredPos.value;
 
-#elif defined( RELEASE )
+#elif defined( myNavigator_RELEASE )
 
 #if defined(kalmanFiltering)
 	// Фильтр Калмана :
@@ -157,7 +157,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 	// Фильтрация долготы :
 #ifdef includeLon
 
-#if defined( DEBUG )
+#if defined( myNavigator_DEBUG )
 
 	kalmanFilter(&myNavigator->filters.kalmanFilter.lon, &myNavigator->coordinates.lon);
 	myNavigator->coordinates.lon.filteredPos.allFilteredValues[0] = myNavigator->coordinates.lon.filteredPos.value;
@@ -171,7 +171,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 	alphaBetaFilter(&myNavigator->filters.alphaBetaFilter.lon, &myNavigator->coordinates.lon);
 	myNavigator->coordinates.lon.filteredPos.allFilteredValues[3] = myNavigator->coordinates.lon.filteredPos.value;
 
-#elif defined( RELEASE )
+#elif defined( myNavigator_RELEASE )
 
 #if defined( kalmanFiltering )
 	// Фильтр Калмана :
@@ -208,7 +208,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 	// Фильтрация высоты :
 #ifdef includeAlt
 
-#if defined( DEBUG )
+#if defined( myNavigator_DEBUG )
 
 	if (myNavigator->msgData.id[4] != 0)
 	{
@@ -226,7 +226,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 	}
 	myNavigator->coordinates.alt.filteredPos.value = myNavigator->coordinates.alt.decodedPos.value;
 
-#elif defined( RELEASE )
+#elif defined( myNavigator_RELEASE )
 
 #if defined( kalmanFiltering )
 	// Фильтр Калмана :
@@ -298,7 +298,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 	// на эллипсоиде Красовского в геодезические координаты :
 #ifdef TransformCoords
 
-#if defined( DEBUG )
+#if defined( myNavigator_DEBUG )
 
 	decart2geo(&myNavigator->coordinates.lat.filteredPos.allFilteredValues[0], &myNavigator->coordinates.lon.filteredPos.allFilteredValues[0]);
 	decart2geo(&myNavigator->coordinates.lat.filteredPos.allFilteredValues[1], &myNavigator->coordinates.lon.filteredPos.allFilteredValues[1]);
@@ -309,7 +309,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 	myNavigator->coordinates.lat.filteredPos.value = myNavigator->coordinates.lat.decodedPos.value;
 	myNavigator->coordinates.lon.filteredPos.value = myNavigator->coordinates.lon.decodedPos.value;
 
-#elif defined( RELEASE )
+#elif defined( myNavigator_RELEASE )
 
 	decart2geo(&myNavigator->coordinates.lat.filteredPos.value, &myNavigator->coordinates.lon.filteredPos.value);
 
@@ -319,7 +319,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 	// Запись в постоянную память координат :
 #if defined( WriteCoordsInFlash )
-	writeInROM(&myNavigator->coordinates);
+	writeInROM(myNavigator);
 #endif
 
 	// Перезапись сообщения с новыми координатами :
@@ -334,9 +334,9 @@ void myNavigator(struct MyNavigator* myNavigator)
 }
 
 
-void myNavigatorInit(struct MyNavigator* myNavigator)
+void myNavigatorInit(struct MyNavigator* myNavigator, void (*flashFunc)(unsigned int, unsigned int, unsigned long long int))
 {
-#ifdef DEBUG
+#ifdef myNavigator_DEBUG
 	for (i = 0; i < 4; i++)
 	{
 		myNavigator->coordinates.lat.filteredPos.allFilteredValues[i] = 0;
@@ -344,6 +344,12 @@ void myNavigatorInit(struct MyNavigator* myNavigator)
 		myNavigator->coordinates.alt.filteredPos.allFilteredValues[i] = 0;
 	}
 #endif
+
+#ifdef WriteCoordsInFlash
+	myNavigator->writeInFlash.adress = WriteInFlashStartAdress;
+	myNavigator->writeInFlash.flashFunc = flashFunc;
+#endif
+
 
 	for (i = 0; i < previosPosLen; i++)
 	{
@@ -358,6 +364,9 @@ void myNavigatorInit(struct MyNavigator* myNavigator)
 		myNavigator->msgOut.msg[i] = '0';
 		myNavigator->msgData.parId[i] = 0;
 	}
+
+	myNavigator->myNavigatorExeTime = 0;
+
 	myNavigator->msgIn.len = 0;
 	myNavigator->msgOut.len = 0;
 	myNavigator->msgData.dt = 0;

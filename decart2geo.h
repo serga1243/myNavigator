@@ -4,4 +4,4 @@
 
 void decart2geo(double*, double*);
 
-inline double degrees2dm(double);
+double degrees2dm(double);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdlib.h>
+#include <stdbool.h>
 #include <math.h>
 #include <string.h>
 #include "utilitiesFuncs.h"
@@ -22,8 +23,8 @@
 
 // Релиз с одним типом фильтра
 // или отладка со всеми фильтрами :
-#define RELEASE
-//#define DEBUG
+//#define myNavigator_RELEASE
+#define myNavigator_DEBUG
 
 #define TransformCoords					// если необходимо преобразовывать гео координаты в декартовы
 #define WriteCoordsInFlash				// записывать ли координаты во флеш память?
@@ -58,7 +59,6 @@
 // Максимальная скорость объекта :
 const double objectMaxSpeed = 8000.0;
 
-#ifdef Cpp
 
 // Начальные координаты :
 #ifdef TransformCoords
@@ -78,7 +78,7 @@ const double lonIntPartLimits[] = { -18000.00000, 18000.00000 };
 const double altIntPartLimits[] = { 0.0, 99999.99 };
 
 // Параметры медианного фильтра :
-const unsigned int medianFilteringBufferLength = 6;
+#define medianFilteringBufferLength 6
 
 // Параметры фильтра Калмана :
 const double kalmanFilterR[] = { 50000.0, 50000.0, 50000.0 };
@@ -88,13 +88,20 @@ const double alphaBetaFilterT[] = { 1.0, 1.0 , 1.0 };
 const double alphaBetaFilterSp[] = { 3.0, 3.0, 3.0 };
 const double alphaBetaFilterSn[] = { 3.0, 3.0, 3.0 };
 
-#endif
 
-#ifdef RELEASE
+#ifdef myNavigator_RELEASE
 
 #undef WriteCoordsInFlash
 
 #endif
+
+#ifdef WriteCoordsInFlash
+
+#define WriteInFlashStartAdress 0x08010000
+#define WriteInFlashEndAdress 0x080DFF9C
+
+#endif
+
 
 
 // ##########################################################################################
@@ -128,7 +135,7 @@ typedef struct FilteredPos
 	unsigned short intLength;
 	unsigned short floatLength;
 	// Если тестируем все фильтры одновременно :
-#ifdef DEBUG
+#ifdef myNavigator_DEBUG
 	double allFilteredValues[4];
 #endif
 } FilteredPos;
@@ -177,6 +184,21 @@ typedef struct MsgData
 	unsigned short parIdLen;
 	unsigned short id[6];
 } MsgData;
+
+
+// ##########################################################################################
+// 
+// -------------------------------------  Запись во флеш ------------------------------------
+// 
+// ##########################################################################################
+
+
+// Данные для возможности записи во флеш :
+typedef struct WriteInFlash
+{
+	unsigned int adress;
+	void (*flashFunc)(unsigned int, unsigned int, unsigned long long int);
+} WriteInFlash;
 
 
 // ##########################################################################################
@@ -289,11 +311,17 @@ typedef struct MyNavigator
 	Filters filters;
 	Coordinates coordinates;
 	MsgData msgData;
+
+#ifdef WriteCoordsInFlash
+	WriteInFlash writeInFlash;
+#endif
+
 	unsigned char logInfo[logInfoArrLen];
+	unsigned short myNavigatorExeTime;
 } MyNavigator;
 
 
 // Прототипы функции :
-void myNavigatorInit(struct MyNavigator*);
+void myNavigatorInit(struct MyNavigator*, void (*)(unsigned int, unsigned int, unsigned long long int));
 void myNavigator(struct MyNavigator*);
-inline void isInvalidData(double*, const double[], double*);
+void isInvalidData(double*, const double[], double*);

@@ -2,6 +2,6 @@
 
 #include "myNavigator.h"
 
-struct Coordinates;
+struct MyNavigator;
 
-void writeInROM(struct Coordinates*);
+void writeInROM(struct MyNavigator*);

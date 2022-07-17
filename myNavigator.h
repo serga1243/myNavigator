@@ -291,6 +291,6 @@ typedef struct MyNavigator
 
 
 // Прототипы функции :
-void myNavigatorInit(struct MyNavigator*, void (*)(unsigned int, unsigned int, unsigned long long int));
+void myNavigatorInit(struct MyNavigator*, void (*)(uint32_t, uint32_t, uint64_t));
 void myNavigator(struct MyNavigator*);
 void isInvalidData(double*, const double[], double*);

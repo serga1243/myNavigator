@@ -60,10 +60,10 @@ void writeInROM(struct MyNavigator* myNavigator)
 		myNavigator->writeInFlash.adress += 8;
 
 		// Время с прошлого сообщения и время выполнения функции myNavigator :
-		(*myNavigator->writeInFlash.flashFunc)(0x00000001U, myNavigator->writeInFlash.adress, (unsigned short)(myNavigator->msgData.dT * 1000));
+		(*myNavigator->writeInFlash.flashFunc)(0x00000001U, myNavigator->writeInFlash.adress, (uint16_t)(myNavigator->msgData.dT * 1000));
 		myNavigator->writeInFlash.adress += 2;
 
-		(*myNavigator->writeInFlash.flashFunc)(0x00000001U, myNavigator->writeInFlash.adress, myNavigator->myNavigatorExeTime);
+		(*myNavigator->writeInFlash.flashFunc)(0x00000001U, myNavigator->writeInFlash.adress, (uint16_t)myNavigator->myNavigatorExeTime);
 		myNavigator->writeInFlash.adress += 2;
 
 	}

@@ -7,7 +7,7 @@
 #define MSG true
 using namespace std;
 
-void someFunc(unsigned int a, unsigned int b, unsigned long long int c);
+void someFunc(uint32_t, uint32_t, uint64_t);
 
 int main()
 {
@@ -92,7 +92,7 @@ int main()
 
 
 // функци€ симул€рующа€ запись во флеш пам€ть 
-void someFunc(unsigned int a, unsigned int b, unsigned long long int c)
+void someFunc(uint32_t a, uint32_t b, uint64_t c)
 {
 	short d = a + b + c;
 }

@@ -1,11 +1,40 @@
 #include "myNavigator.h"
 
-extern const double latIntPartLimits[];
-extern const double lonIntPartLimits[];
-extern const double altIntPartLimits[];
-extern const double startCoordinates[];
+// ##########################################################################################
+// 
+// -----------------------------------  Начальные условия  ----------------------------------
+// 
+// ##########################################################################################
 
+// Начальные координаты :
+#ifdef TransformCoords
+const double startCoordinates[] = { 5561520.0722118802, 22434924.431076400, 100.0 };
+#else
+const double startCoordinates[] = { 5010.88431, 12805.33476, 100.0 };
+#endif
+
+// Пределы значений геодезических координат :
+#ifdef TransformCoords
+const double latIntPartLimits[] = { -100000000.0, 100000000.0 };
+const double lonIntPartLimits[] = { -100000000.0, 100000000.0 };
+#else
+const double latIntPartLimits[] = { -9000.00000, 9000.00000 };
+const double lonIntPartLimits[] = { -18000.00000, 18000.00000 };
+#endif
+const double altIntPartLimits[] = { 0.0, 99999.99 };
+
+// Параметры фильтра Калмана :
+const double kalmanFilterR[] = { 50000.0, 50000.0, 50000.0 };
+
+// Параметры альфа-бета фильтра :
+const double alphaBetaFilterT[] = { 1.0, 1.0 , 1.0 };
+const double alphaBetaFilterSp[] = { 3.0, 3.0, 3.0 };
+const double alphaBetaFilterSn[] = { 3.0, 3.0, 3.0 };
+
+// Статическая переменная :
 static unsigned short i;
+
+
 
 void myNavigator(struct MyNavigator* myNavigator)
 {
@@ -334,7 +363,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 }
 
 
-void myNavigatorInit(struct MyNavigator* myNavigator, void (*flashFunc)(unsigned int, unsigned int, unsigned long long int))
+void myNavigatorInit(struct MyNavigator* myNavigator, void (*flashFunc)(uint32_t, uint32_t, uint64_t))
 {
 #ifdef myNavigator_DEBUG
 	for (i = 0; i < 4; i++)

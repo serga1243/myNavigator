@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdbool.h>
 #include <math.h>
 #include <string.h>
@@ -20,6 +21,7 @@
 #include "geo2decart.h"
 #include "decart2geo.h"
 #include "prePostFilter.h"
+
 
 // Релиз с одним типом фильтра
 // или отладка со всеми фильтрами :
@@ -42,52 +44,16 @@
 //#define kalmanFiltering
 
 // Параметры медианного фильтра :
-//#define medianFiltering
+#define medianFiltering
 
 // Параметры квадратичного фильтра :
 //#define minQuadFiltering 
 
 // Параметры альфа-бета фильтра :
-#define alphaBetaFiltering
-
-// ##########################################################################################
-// 
-// -----------------------------------  Начальные условия  ----------------------------------
-// 
-// ##########################################################################################
-
-// Максимальная скорость объекта :
-const double objectMaxSpeed = 8000.0;
-
-
-// Начальные координаты :
-#ifdef TransformCoords
-const double startCoordinates[] = { 5561520.0722118802, 22434924.431076400, 100.0 };
-#else
-const double startCoordinates[] = { 5010.88431, 12805.33476, 100.0 };
-#endif
-
-// Пределы значений геодезических координат :
-#ifdef TransformCoords
-const double latIntPartLimits[] = { -100000000.0, 100000000.0 };
-const double lonIntPartLimits[] = { -100000000.0, 100000000.0 };
-#else
-const double latIntPartLimits[] = { -9000.00000, 9000.00000 };
-const double lonIntPartLimits[] = { -18000.00000, 18000.00000 };
-#endif
-const double altIntPartLimits[] = { 0.0, 99999.99 };
+//#define alphaBetaFiltering
 
 // Параметры медианного фильтра :
 #define medianFilteringBufferLength 6
-
-// Параметры фильтра Калмана :
-const double kalmanFilterR[] = { 50000.0, 50000.0, 50000.0 };
-
-// Параметры альфа-бета фильтра :
-const double alphaBetaFilterT[] = { 1.0, 1.0 , 1.0 };
-const double alphaBetaFilterSp[] = { 3.0, 3.0, 3.0 };
-const double alphaBetaFilterSn[] = { 3.0, 3.0, 3.0 };
-
 
 #ifdef myNavigator_RELEASE
 
@@ -97,7 +63,10 @@ const double alphaBetaFilterSn[] = { 3.0, 3.0, 3.0 };
 
 #ifdef WriteCoordsInFlash
 
+// Начальный адресс во флеш-памяти для записи данных
 #define WriteInFlashStartAdress 0x08010000
+
+// Конечный адресс во флеш-памяти для записи данных
 #define WriteInFlashEndAdress 0x080DFF9C
 
 #endif
@@ -196,8 +165,8 @@ typedef struct MsgData
 // Данные для возможности записи во флеш :
 typedef struct WriteInFlash
 {
-	unsigned int adress;
-	void (*flashFunc)(unsigned int, unsigned int, unsigned long long int);
+	uint32_t adress;
+	void (*flashFunc)(uint32_t, uint32_t, uint64_t);
 } WriteInFlash;
 
 

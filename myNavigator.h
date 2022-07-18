@@ -25,8 +25,8 @@
 
 // Релиз с одним типом фильтра
 // или отладка со всеми фильтрами :
-#define myNavigator_RELEASE
-//#define myNavigator_DEBUG
+//#define myNavigator_RELEASE
+#define myNavigator_DEBUG
 
 #define TransformCoords					// если необходимо преобразовывать гео координаты в декартовы
 #define WriteCoordsInFlash				// записывать ли координаты во флеш память?
@@ -169,6 +169,8 @@ typedef struct MsgData
 typedef struct WriteInFlash
 {
 	uint32_t adress;
+	bool isUnlockedFlash;
+	void (*flashLockFunc)(void);
 	void (*flashFunc)(uint32_t, uint32_t, uint64_t);
 } WriteInFlash;
 
@@ -293,5 +295,5 @@ typedef struct MyNavigator
 
 
 // Прототипы функции :
-void myNavigatorInit(struct MyNavigator*, void (*)(uint32_t, uint32_t, uint64_t));
+void myNavigatorInit(struct MyNavigator*, void (*)(uint32_t, uint32_t, uint64_t), void (*)(void));
 void myNavigator(struct MyNavigator*);

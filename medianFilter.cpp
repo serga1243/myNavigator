@@ -72,7 +72,7 @@ void medianFilterInit(struct MedianFilterCoordinate* medianFilterCoordinate, con
 {
 	bufferCntr = 0;
 	bufferCntrs = 0;
-	medianFilterCoordinate->normFuncSum = 0;
+	medianFilterCoordinate->normFuncSum = 0.0;
 	for (i = 0; i < medianFilteringBufferLength; i++)
 	{
 		for (j = 0; j < medianFilteringBufferLength; j++)

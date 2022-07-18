@@ -385,7 +385,7 @@ void myNavigator(struct MyNavigator* myNavigator)
 }
 
 
-void myNavigatorInit(struct MyNavigator* myNavigator, void (*flashFunc)(uint32_t, uint32_t, uint64_t))
+void myNavigatorInit(struct MyNavigator* myNavigator, void (*flashFunc)(uint32_t, uint32_t, uint64_t), void (*flashLockFunc)(void))
 {
 #ifdef myNavigator_DEBUG
 	for (i = 0; i < 4; i++)
@@ -398,6 +398,8 @@ void myNavigatorInit(struct MyNavigator* myNavigator, void (*flashFunc)(uint32_t
 
 #ifdef WriteCoordsInFlash
 	myNavigator->writeInFlash.adress = WriteInFlashStartAdress;
+	myNavigator->writeInFlash.isUnlockedFlash = true;
+	myNavigator->writeInFlash.flashLockFunc = flashLockFunc;
 	myNavigator->writeInFlash.flashFunc = flashFunc;
 #endif
 

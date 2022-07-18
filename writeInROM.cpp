@@ -67,6 +67,14 @@ void writeInROM(struct MyNavigator* myNavigator)
 		myNavigator->writeInFlash.adress += 2;
 
 	}
+	else
+	{
+		if (myNavigator->writeInFlash.isUnlockedFlash)
+		{
+			(*myNavigator->writeInFlash.flashLockFunc)();
+			myNavigator->writeInFlash.isUnlockedFlash = false;
+		}
+	}
 
 #endif
 

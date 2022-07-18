@@ -27,7 +27,7 @@ int main()
 		if (isRestart)
 		{
 			// Инициализация функции фильтрации :
-			myNavigatorInit(&mynavigator, &someFunc);
+			myNavigatorInit(&mynavigator, &someFunc, NULL);
 			isRestart = false;
 		}
 

@@ -16,18 +16,18 @@ void changeMsg(struct MyNavigator* myNavigator)
 
 	// Ўирота
 #ifdef includeLat
-	overwriteStr(&myNavigator->coordinates.lat, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[0] + 1]);
+	overwriteStr(&myNavigator->coordinates.lat, myNavigator->msgIn.msg, myNavigator->msgData.parId[myNavigator->msgData.id[0] + 1]);
 
 	// ћен€ем направление координаты в зависимости от знака координаты
 	if (myNavigator->coordinates.lat.filteredPos.value < 0.0)
 	{
-		switch (myNavigator->msgOut.msg[myNavigator->msgData.parId[myNavigator->msgData.id[1]] + 1])
+		switch (myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[1]] + 1])
 		{
 		case 'N':
-			myNavigator->msgOut.msg[myNavigator->msgData.parId[myNavigator->msgData.id[1]] + 1] = 'S';
+			myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[1]] + 1] = 'S';
 			break;
 		case 'S':
-			myNavigator->msgOut.msg[myNavigator->msgData.parId[myNavigator->msgData.id[1]] + 1] = 'N';
+			myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[1]] + 1] = 'N';
 			break;
 		default:
 			break;
@@ -38,18 +38,18 @@ void changeMsg(struct MyNavigator* myNavigator)
 
 	// ƒолгота
 #ifdef includeLon
-	overwriteStr(&myNavigator->coordinates.lon, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[2] + 1]);
+	overwriteStr(&myNavigator->coordinates.lon, myNavigator->msgIn.msg, myNavigator->msgData.parId[myNavigator->msgData.id[2] + 1]);
 
 	// ћен€ем направление координаты в зависимости от знака координаты
 	if (myNavigator->coordinates.lon.filteredPos.value < 0.0)
 	{
-		switch (myNavigator->msgOut.msg[myNavigator->msgData.parId[myNavigator->msgData.id[3]] + 1])
+		switch (myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[3]] + 1])
 		{
 		case 'E':
-			myNavigator->msgOut.msg[myNavigator->msgData.parId[myNavigator->msgData.id[3]] + 1] = 'W';
+			myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[3]] + 1] = 'W';
 			break;
 		case 'W':
-			myNavigator->msgOut.msg[myNavigator->msgData.parId[myNavigator->msgData.id[3]] + 1] = 'E';
+			myNavigator->msgIn.msg[myNavigator->msgData.parId[myNavigator->msgData.id[3]] + 1] = 'E';
 			break;
 		default:
 			break;
@@ -62,7 +62,7 @@ void changeMsg(struct MyNavigator* myNavigator)
 #ifdef includeAlt
 	if (myNavigator->msgData.id[4] != 0)
 	{
-		overwriteStr(&myNavigator->coordinates.alt, myNavigator->msgOut.msg, myNavigator->msgData.parId[myNavigator->msgData.id[4] + 1]);
+		overwriteStr(&myNavigator->coordinates.alt, myNavigator->msgIn.msg, myNavigator->msgData.parId[myNavigator->msgData.id[4] + 1]);
 	}
 #endif
 	
@@ -138,7 +138,7 @@ void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endP
 }
 
 
-unsigned short getNumLen(char dataBuffer[])
+inline unsigned short getNumLen(char dataBuffer[])
 {
 	len = 0;
 	for (i = 0; i < 12; i++)

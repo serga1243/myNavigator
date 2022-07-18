@@ -25,8 +25,8 @@
 
 // Релиз с одним типом фильтра
 // или отладка со всеми фильтрами :
-//#define myNavigator_RELEASE
-#define myNavigator_DEBUG
+#define myNavigator_RELEASE
+//#define myNavigator_DEBUG
 
 #define TransformCoords					// если необходимо преобразовывать гео координаты в декартовы
 #define WriteCoordsInFlash				// записывать ли координаты во флеш память?
@@ -54,6 +54,9 @@
 
 // Параметры медианного фильтра :
 #define medianFilteringBufferLength 6
+
+// Максимальная скорость объекта :
+#define objectMaxSpeed 8000.0
 
 #ifdef myNavigator_RELEASE
 
@@ -276,7 +279,6 @@ typedef struct Filters
 typedef struct MyNavigator
 {
 	Msg msgIn;
-	Msg msgOut;
 	Filters filters;
 	Coordinates coordinates;
 	MsgData msgData;
@@ -293,4 +295,3 @@ typedef struct MyNavigator
 // Прототипы функции :
 void myNavigatorInit(struct MyNavigator*, void (*)(uint32_t, uint32_t, uint64_t));
 void myNavigator(struct MyNavigator*);
-void isInvalidData(double*, const double[], double*);

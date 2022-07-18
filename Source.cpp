@@ -67,9 +67,9 @@ int main()
 #ifdef MSG // MSG
 			cout << "С фильтра: " << ends;
 #endif
-			for (unsigned int i = 0; i < mynavigator.msgOut.len; i++)
+			for (unsigned int i = 0; i < mynavigator.msgIn.len; i++)
 			{
-				cout << mynavigator.msgOut.msg[i] << ends;
+				cout << mynavigator.msgIn.msg[i] << ends;
 			}
 #ifdef MSG // MSG
 			cout << "Логи     : " << ends;

@@ -1,5 +1,7 @@
 #include "myNavigator.h"
 
+
+
 // ##########################################################################################
 // 
 // -----------------------------------  Начальные условия  ----------------------------------
@@ -36,6 +38,24 @@ static unsigned short i;
 
 
 
+// ##########################################################################################
+// 
+// ----------------------------------- Прототипы функций ------------------------------------
+// 
+// ##########################################################################################
+
+extern inline unsigned short findCommas(struct MyNavigator*);
+extern inline void chooseId(struct MyNavigator*);
+extern inline void getGCS(struct MyNavigator*);
+extern inline void overwritePrevPos(struct MyNavigator*);
+extern inline void changeMsg(struct MyNavigator*);
+extern inline void writeInROM(struct MyNavigator*);
+extern inline void decart2geo(double*, double*);
+extern inline void geo2decart(double*, double*);
+extern void isInvalidData(double*, const double[], double*);
+
+
+
 void myNavigator(struct MyNavigator* myNavigator)
 {
 	// Логи :
@@ -45,8 +65,8 @@ void myNavigator(struct MyNavigator* myNavigator)
 	myNavigator->msgData.dT += myNavigator->msgData.dt;
 
 	// Выходное сообщение :
-	myNavigator->msgOut.len = myNavigator->msgIn.len < msgMaxLen ? myNavigator->msgIn.len : msgMaxLen;
-	memcpy(myNavigator->msgOut.msg, myNavigator->msgIn.msg, myNavigator->msgOut.len);
+	if (myNavigator->msgIn.len > msgMaxLen)
+		myNavigator->msgIn.len = msgMaxLen;
 
 	// Если альфа-бета фильтр :
 #if defined( alphaBetaFiltering ) || defined( myNavigator_DEBUG )
@@ -55,9 +75,9 @@ void myNavigator(struct MyNavigator* myNavigator)
 		myNavigator->filters.alphaBetaFilter.lon.Step == 0 &&
 		myNavigator->filters.alphaBetaFilter.alt.Step == 0)
 	{
-		myNavigator->filters.alphaBetaFilter.lat.Tob = 0;
-		myNavigator->filters.alphaBetaFilter.lon.Tob = 0;
-		myNavigator->filters.alphaBetaFilter.alt.Tob = 0;
+		myNavigator->filters.alphaBetaFilter.lat.Tob = 0.0;
+		myNavigator->filters.alphaBetaFilter.lon.Tob = 0.0;
+		myNavigator->filters.alphaBetaFilter.alt.Tob = 0.0;
 	}
 
 	myNavigator->filters.alphaBetaFilter.lat.Tob += myNavigator->msgData.dT;
@@ -68,26 +88,26 @@ void myNavigator(struct MyNavigator* myNavigator)
 
 	// Получение координат из сообщения :
 	// Проверка сообщения на стандарт NMEA-0183 :
-	if (myNavigator->msgOut.msg[0] == '$' &&
-		myNavigator->msgOut.msg[myNavigator->msgOut.len - 1] == '\n' &&
-		myNavigator->msgOut.msg[myNavigator->msgOut.len - 2] == '\r' &&
-		myNavigator->msgOut.msg[myNavigator->msgOut.len - 5] == '*')
+	if (myNavigator->msgIn.msg[0] == '$' &&
+		myNavigator->msgIn.msg[myNavigator->msgIn.len - 1] == '\n' &&
+		myNavigator->msgIn.msg[myNavigator->msgIn.len - 2] == '\r' &&
+		myNavigator->msgIn.msg[myNavigator->msgIn.len - 5] == '*')
 	{
 		// контрольная сумма :
-		myNavigator->msgData.checkData[0] = myNavigator->msgOut.msg[myNavigator->msgOut.len - 4];
-		myNavigator->msgData.checkData[1] = myNavigator->msgOut.msg[myNavigator->msgOut.len - 3];
+		myNavigator->msgData.checkData[0] = myNavigator->msgIn.msg[myNavigator->msgIn.len - 4];
+		myNavigator->msgData.checkData[1] = myNavigator->msgIn.msg[myNavigator->msgIn.len - 3];
 
 		// инфо о стране спутниковой ГНСС :
-		myNavigator->msgData.countryData[0] = myNavigator->msgOut.msg[1];
-		myNavigator->msgData.countryData[1] = myNavigator->msgOut.msg[2];
+		myNavigator->msgData.countryData[0] = myNavigator->msgIn.msg[1];
+		myNavigator->msgData.countryData[1] = myNavigator->msgIn.msg[2];
 
 		// идентификатор строки :
-		myNavigator->msgData.idData[0] = myNavigator->msgOut.msg[3];
-		myNavigator->msgData.idData[1] = myNavigator->msgOut.msg[4];
-		myNavigator->msgData.idData[2] = myNavigator->msgOut.msg[5];
+		myNavigator->msgData.idData[0] = myNavigator->msgIn.msg[3];
+		myNavigator->msgData.idData[1] = myNavigator->msgIn.msg[4];
+		myNavigator->msgData.idData[2] = myNavigator->msgIn.msg[5];
 
 		// условие, что сообщение пришло верно :
-		getXOR(&myNavigator->msgOut.msg[1], myNavigator->msgData.checkDataCond, myNavigator->msgOut.len - 6);
+		getXOR(&myNavigator->msgIn.msg[1], myNavigator->msgData.checkDataCond, myNavigator->msgIn.len - 6);
 
 		// сравнение дешифрованной КС и полученной :
 		if (myNavigator->msgData.checkDataCond[0] == myNavigator->msgData.checkData[0] &&
@@ -120,7 +140,9 @@ void myNavigator(struct MyNavigator* myNavigator)
 	getGCS(myNavigator);
 
 	// Перевод координат из геовида в прямоугольный :
+#ifdef TransformCoords
 	geo2decart(&myNavigator->coordinates.lat.decodedPos.value, &myNavigator->coordinates.lon.decodedPos.value);
+#endif
 
 	// Проверям, что декодированные координаты в реальном диапазоне :
 	isInvalidData(&myNavigator->coordinates.lat.decodedPos.value, latIntPartLimits, &myNavigator->coordinates.lat.previosPos.value[previosPosLen - 1]);
@@ -355,9 +377,9 @@ void myNavigator(struct MyNavigator* myNavigator)
 	changeMsg(myNavigator);
 
 	// Вычисление новой КС для измененного сообщения :
-	getXOR(&myNavigator->msgOut.msg[1], &myNavigator->msgOut.msg[myNavigator->msgOut.len - 4], myNavigator->msgOut.len - 6);
+	getXOR(&myNavigator->msgIn.msg[1], &myNavigator->msgIn.msg[myNavigator->msgIn.len - 4], myNavigator->msgIn.len - 6);
 
-	myNavigator->msgData.dT = 0;
+	myNavigator->msgData.dT = 0.0;
 
 	return;
 }
@@ -390,16 +412,16 @@ void myNavigatorInit(struct MyNavigator* myNavigator, void (*flashFunc)(uint32_t
 	for (i = 0; i < msgMaxLen; i++)
 	{
 		myNavigator->msgIn.msg[i] = '0';
-		myNavigator->msgOut.msg[i] = '0';
+		myNavigator->msgIn.msg[i] = '0';
 		myNavigator->msgData.parId[i] = 0;
 	}
 
 	myNavigator->myNavigatorExeTime = 0;
 
 	myNavigator->msgIn.len = 0;
-	myNavigator->msgOut.len = 0;
+	myNavigator->msgIn.len = 0;
 	myNavigator->msgData.dt = 0;
-	myNavigator->msgData.dT = 0;
+	myNavigator->msgData.dT = 0.0;
 	myNavigator->msgData.parIdLen = 0;
 
 	myNavigator->msgData.checkData[0] = '0';
@@ -470,9 +492,3 @@ void myNavigatorInit(struct MyNavigator* myNavigator, void (*flashFunc)(uint32_t
 	return;
 }
 
-
-inline void isInvalidData(double* data, const double limits[], double* correctData)
-{
-	*data = (*data > limits[0]) && (*data < limits[1]) ? *data : *correctData;
-	return;
-}

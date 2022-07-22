@@ -7,7 +7,11 @@
 #define MSG true
 using namespace std;
 
+void someFunc(void);
+void someFunc(uint8_t);
 void someFunc(uint32_t, uint32_t, uint64_t);
+
+
 
 int main()
 {
@@ -27,7 +31,7 @@ int main()
 		if (isRestart)
 		{
 			// Инициализация функции фильтрации :
-			myNavigatorInit(&mynavigator, &someFunc, NULL);
+			myNavigatorInit(&mynavigator, FuncsPointrs{&someFunc, &someFunc, &someFunc});
 			isRestart = false;
 		}
 
@@ -92,7 +96,6 @@ int main()
 
 
 // функция симулярующая запись во флеш память 
-void someFunc(uint32_t a, uint32_t b, uint64_t c)
-{
-	short d = a + b + c;
-}
+void someFunc(void) {}
+void someFunc(uint8_t a) {}
+void someFunc(uint32_t a, uint32_t b, uint64_t c) {}

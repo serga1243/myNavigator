@@ -25,14 +25,14 @@
 
 // Релиз с одним типом фильтра
 // или отладка со всеми фильтрами :
-//#define myNavigator_RELEASE
-#define myNavigator_DEBUG
+#define myNavigator_RELEASE
+//#define myNavigator_DEBUG
 
 #define TransformCoords					// если необходимо преобразовывать гео координаты в декартовы
 #define WriteCoordsInFlash				// записывать ли координаты во флеш память?
 #define Cpp								// если язык c++, а не си
 #define msgMaxLen 1024					// максимальная длина сообщений
-#define previosPosLen 16				// число хранимых предыдущих значений
+#define previosPosLen 20				// число хранимых предыдущих значений
 #define logInfoArrLen 1					// длина массива логов
 
 // Какие координаты фильтровать? :
@@ -160,18 +160,30 @@ typedef struct MsgData
 
 // ##########################################################################################
 // 
-// -------------------------------------  Запись во флеш ------------------------------------
+// ---------------------------------- Указатели на функции ----------------------------------
 // 
 // ##########################################################################################
 
+// Хранилище указателей на функции :
+typedef struct FuncsPointrs
+{
+	void (*flashLockFunc)(void);
+	void (*LEDaction)(uint8_t);
+	void (*flashFunc)(uint32_t, uint32_t, uint64_t);
+} FuncsPointrs;
+
+
+// ##########################################################################################
+// 
+// -------------------------------------  Запись во флеш ------------------------------------
+// 
+// ##########################################################################################
 
 // Данные для возможности записи во флеш :
 typedef struct WriteInFlash
 {
 	uint32_t adress;
 	bool isUnlockedFlash;
-	void (*flashLockFunc)(void);
-	void (*flashFunc)(uint32_t, uint32_t, uint64_t);
 } WriteInFlash;
 
 
@@ -284,6 +296,7 @@ typedef struct MyNavigator
 	Filters filters;
 	Coordinates coordinates;
 	MsgData msgData;
+	FuncsPointrs funcsPointrs;
 
 #ifdef WriteCoordsInFlash
 	WriteInFlash writeInFlash;
@@ -295,5 +308,5 @@ typedef struct MyNavigator
 
 
 // Прототипы функции :
-void myNavigatorInit(struct MyNavigator*, void (*)(uint32_t, uint32_t, uint64_t), void (*)(void));
+void myNavigatorInit(struct MyNavigator*, struct FuncsPointrs);
 void myNavigator(struct MyNavigator*);

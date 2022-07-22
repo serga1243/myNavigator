@@ -136,6 +136,9 @@ void myNavigator(struct MyNavigator* myNavigator)
 		return;
 	}
 
+	// Сигнализируем, что пришло сообщение с координатами (Уряяя!) :
+	(*myNavigator->funcsPointrs.LEDaction)(5);
+
 	// Перевод координат из символьного вида в числовой :
 	getGCS(myNavigator);
 
@@ -379,13 +382,16 @@ void myNavigator(struct MyNavigator* myNavigator)
 	// Вычисление новой КС для измененного сообщения :
 	getXOR(&myNavigator->msgIn.msg[1], &myNavigator->msgIn.msg[myNavigator->msgIn.len - 4], myNavigator->msgIn.len - 6);
 
+	// Сигнализируем, что функция фильтрации выполнена успешно :
+	(*myNavigator->funcsPointrs.LEDaction)(5);
+
 	myNavigator->msgData.dT = 0.0;
 
 	return;
 }
 
 
-void myNavigatorInit(struct MyNavigator* myNavigator, void (*flashFunc)(uint32_t, uint32_t, uint64_t), void (*flashLockFunc)(void))
+void myNavigatorInit(struct MyNavigator* myNavigator, struct FuncsPointrs funcsPointrs)
 {
 #ifdef myNavigator_DEBUG
 	for (i = 0; i < 4; i++)
@@ -399,10 +405,11 @@ void myNavigatorInit(struct MyNavigator* myNavigator, void (*flashFunc)(uint32_t
 #ifdef WriteCoordsInFlash
 	myNavigator->writeInFlash.adress = WriteInFlashStartAdress;
 	myNavigator->writeInFlash.isUnlockedFlash = true;
-	myNavigator->writeInFlash.flashLockFunc = flashLockFunc;
-	myNavigator->writeInFlash.flashFunc = flashFunc;
 #endif
 
+	myNavigator->funcsPointrs.flashLockFunc = funcsPointrs.flashLockFunc;
+	myNavigator->funcsPointrs.LEDaction = funcsPointrs.LEDaction;
+	myNavigator->funcsPointrs.flashFunc = funcsPointrs.flashFunc;
 
 	for (i = 0; i < previosPosLen; i++)
 	{

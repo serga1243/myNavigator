@@ -136,8 +136,8 @@ void myNavigator(struct MyNavigator* myNavigator)
 		return;
 	}
 
-	// —игнализируем, что пришло сообщение с координатами (”р€€€!) :
-	(*myNavigator->funcsPointrs.LEDaction)(5);
+	// —игнализируем, что пришло сообщение с координатами (включением синего светодиода) (”р€€€!) :
+	(*myNavigator->funcsPointrs.LEDaction)(6);
 
 	// ѕеревод координат из символьного вида в числовой :
 	getGCS(myNavigator);
@@ -382,8 +382,8 @@ void myNavigator(struct MyNavigator* myNavigator)
 	// ¬ычисление новой  — дл€ измененного сообщени€ :
 	getXOR(&myNavigator->msgIn.msg[1], &myNavigator->msgIn.msg[myNavigator->msgIn.len - 4], myNavigator->msgIn.len - 6);
 
-	// —игнализируем, что функци€ фильтрации выполнена успешно :
-	(*myNavigator->funcsPointrs.LEDaction)(5);
+	// —игнализируем, что функци€ фильтрации выполнена успешно (выключением синего светодиода) :
+	(*myNavigator->funcsPointrs.LEDaction)(7);
 
 	myNavigator->msgData.dT = 0.0;
 

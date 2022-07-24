@@ -25,8 +25,8 @@
 
 // Релиз с одним типом фильтра
 // или отладка со всеми фильтрами :
-#define myNavigator_RELEASE
-//#define myNavigator_DEBUG
+//#define myNavigator_RELEASE
+#define myNavigator_DEBUG
 
 #define TransformCoords					// если необходимо преобразовывать гео координаты в декартовы
 #define WriteCoordsInFlash				// записывать ли координаты во флеш память?

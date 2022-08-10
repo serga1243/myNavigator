@@ -4,7 +4,7 @@ extern const double latIntPartLimits[];
 extern const double lonIntPartLimits[];
 extern const double altIntPartLimits[];
 
-static unsigned short i;
+static uint16_t i;
 
 void getGCS(struct MyNavigator* myNavigator)
 {
@@ -43,10 +43,10 @@ void getGCS(struct MyNavigator* myNavigator)
 	// Делим дробное число на 10 в степени цифр после запятой
 	myNavigator->coordinates.lat.decodedPos.floatLength = myNavigator->msgData.parId[myNavigator->msgData.id[0] + 1] -
 		myNavigator->coordinates.lat.decodedPos.floatPosition;
-	myNavigator->coordinates.lat.decodedPos.floatLength = 
-		myNavigator->coordinates.lat.decodedPos.floatLength >= 0 ?
-		myNavigator->coordinates.lat.decodedPos.floatLength :
-		0;
+
+	if (myNavigator->coordinates.lat.decodedPos.floatLength < 0)
+		myNavigator->coordinates.lat.decodedPos.floatLength = 0;
+
 	myNavigator->coordinates.lat.decodedPos.value *= pow(10.0, -myNavigator->coordinates.lat.decodedPos.floatLength);
 
 	// Если не север, то меняем знак на -
@@ -103,10 +103,10 @@ void getGCS(struct MyNavigator* myNavigator)
 	// Делим дробное число на 10 в степени цифр после запятой
 	myNavigator->coordinates.lon.decodedPos.floatLength = myNavigator->msgData.parId[myNavigator->msgData.id[2] + 1] -
 		myNavigator->coordinates.lon.decodedPos.floatPosition;
-	myNavigator->coordinates.lon.decodedPos.floatLength =
-		myNavigator->coordinates.lon.decodedPos.floatLength >= 0 ?
-		myNavigator->coordinates.lon.decodedPos.floatLength :
-		0;
+
+	if (myNavigator->coordinates.lon.decodedPos.floatLength < 0)
+		myNavigator->coordinates.lon.decodedPos.floatLength = 0;
+
 	myNavigator->coordinates.lon.decodedPos.value *= pow(10.0, -myNavigator->coordinates.lon.decodedPos.floatLength);
 
 	// Если не восток, то меняем знак на -
@@ -170,10 +170,10 @@ void getGCS(struct MyNavigator* myNavigator)
 		// Делим дробное число на 10 в степени цифр после запятой
 		myNavigator->coordinates.alt.decodedPos.floatLength = myNavigator->msgData.parId[myNavigator->msgData.id[4] + 1] -
 			myNavigator->coordinates.alt.decodedPos.floatPosition;
-		myNavigator->coordinates.alt.decodedPos.floatLength =
-			myNavigator->coordinates.alt.decodedPos.floatLength >= 0 ?
-			myNavigator->coordinates.alt.decodedPos.floatLength :
-			0;
+
+		if (myNavigator->coordinates.alt.decodedPos.floatLength < 0)
+			myNavigator->coordinates.alt.decodedPos.floatLength = 0;
+
 		myNavigator->coordinates.alt.decodedPos.value *= pow(10.0, -myNavigator->coordinates.alt.decodedPos.floatLength);
 
 	}

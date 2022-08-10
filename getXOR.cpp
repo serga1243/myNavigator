@@ -1,10 +1,10 @@
 #include "getXOR.h"
 
-static char dataArr[4];
-static unsigned char hash;
-static unsigned short i;
+static uint8_t dataArr[4];
+static uint8_t hash;
+static uint16_t i;
 
-void getXOR(char data[], char XORarray[], unsigned short length)
+void getXOR(uint8_t data[], uint8_t XORarray[], uint16_t length)
 {
 	hash = 0x00;
 	i = 0;
@@ -16,9 +16,9 @@ void getXOR(char data[], char XORarray[], unsigned short length)
 
 	// Получаем КС
 #ifdef Cpp
-	_itoa_s(hash, dataArr, 4, 16);
+	_itoa_s(hash, (char*)dataArr, 4, 16);
 #else
-	itoa(hash, dataArr, 16);
+	itoa(hash, (char*)dataArr, 16);
 #endif
 
 	// Перезаписываем массив с КС

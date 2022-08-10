@@ -3,10 +3,10 @@
 
 static double val;
 static double a;
-static unsigned short i;
-static unsigned short power;
+static uint16_t i;
+static uint16_t power;
 
-double char2double(char str[], unsigned short strLen)
+double char2double(uint8_t str[], uint16_t strLen)
 {
 	val = 0.0;
 	a = 0.0;

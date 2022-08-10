@@ -22,15 +22,21 @@
 #include "decart2geo.h"
 #include "prePostFilter.h"
 
+// Если язык c++, а не си
+#define Cpp								
 
 // Релиз с одним типом фильтра
 // или отладка со всеми фильтрами :
-//#define myNavigator_RELEASE
-#define myNavigator_DEBUG
+#define myNavigator_RELEASE
+//#define myNavigator_DEBUG
+
+#define startLat 5010.88431
+#define startLon 12805.33476
+#define startAlt 100.0
+
 
 #define TransformCoords					// если необходимо преобразовывать гео координаты в декартовы
 #define WriteCoordsInFlash				// записывать ли координаты во флеш память?
-#define Cpp								// если язык c++, а не си
 #define msgMaxLen 1024					// максимальная длина сообщений
 #define previosPosLen 20				// число хранимых предыдущих значений
 #define logInfoArrLen 1					// длина массива логов
@@ -52,11 +58,17 @@
 // Параметры альфа-бета фильтра :
 //#define alphaBetaFiltering
 
+// Начальный адресс во флеш-памяти для записи данных
+#define WriteInFlashStartAdress 0x08010000
+
+// Конечный адресс во флеш-памяти для записи данных
+#define WriteInFlashEndAdress 0x080DFF9C
+
+// Максимальная скорость объекта в м/с :
+#define objectMaxSpeed 8000.0
+
 // Параметры медианного фильтра :
 #define medianFilteringBufferLength 6
-
-// Максимальная скорость объекта :
-#define objectMaxSpeed 8000.0
 
 #ifdef myNavigator_RELEASE
 
@@ -64,15 +76,6 @@
 
 #endif
 
-#ifdef WriteCoordsInFlash
-
-// Начальный адресс во флеш-памяти для записи данных
-#define WriteInFlashStartAdress 0x08010000
-
-// Конечный адресс во флеш-памяти для записи данных
-#define WriteInFlashEndAdress 0x080DFF9C
-
-#endif
 
 
 
@@ -93,19 +96,19 @@ typedef struct PreviosPos
 typedef struct DecodedPos
 {
 	double value;
-	unsigned short intPosition;
-	unsigned short floatPosition;
-	unsigned short length;
-	unsigned short intLength;
-	unsigned short floatLength;
+	uint16_t intPosition;
+	uint16_t floatPosition;
+	uint16_t length;
+	uint16_t intLength;
+	uint16_t floatLength;
 } DecodedPos;
 
 // Фильтрованная координата из сообщения :
 typedef struct FilteredPos
 {
 	double value;
-	unsigned short intLength;
-	unsigned short floatLength;
+	uint16_t intLength;
+	uint16_t floatLength;
 	// Если тестируем все фильтры одновременно :
 #ifdef myNavigator_DEBUG
 	double allFilteredValues[4];
@@ -123,9 +126,17 @@ typedef struct Coordinate
 // Все координаты :
 typedef struct Coordinates
 {
+#ifdef includeLat
 	Coordinate lat;
+#endif
+
+#ifdef includeLon
 	Coordinate lon;
+#endif
+
+#ifdef includeAlt
 	Coordinate alt;
+#endif
 } Coordinates;
 
 
@@ -139,8 +150,8 @@ typedef struct Coordinates
 // Сообщения :
 typedef struct Msg
 {
-	char msg[msgMaxLen];
-	unsigned short len;
+	uint8_t msg[msgMaxLen];
+	uint16_t len;
 } Msg;
 
 // Хранение :
@@ -148,13 +159,13 @@ typedef struct MsgData
 {
 	double dt;
 	double dT;
-	char checkData[2];
-	char checkDataCond[2];
-	char countryData[2];
-	char idData[3];
-	unsigned short parId[msgMaxLen];
-	unsigned short parIdLen;
-	unsigned short id[6];
+	uint8_t checkData[2];
+	uint8_t checkDataCond[2];
+	uint8_t countryData[2];
+	uint8_t idData[3];
+	uint16_t parId[msgMaxLen];
+	uint16_t parIdLen;
+	uint16_t id[6];
 } MsgData;
 
 
@@ -219,9 +230,9 @@ typedef struct MedianFilterCoordinate
 	double buffer[medianFilteringBufferLength * medianFilteringBufferLength];
 	double normFunc[medianFilteringBufferLength - 2];
 	double normFuncSum;
-	unsigned short bufferCntrs[medianFilteringBufferLength - 2];
-	int bufferLens[medianFilteringBufferLength - 2];
-	int filterCntrs[medianFilteringBufferLength - 2];
+	uint16_t bufferCntrs[medianFilteringBufferLength - 2];
+	int32_t bufferLens[medianFilteringBufferLength - 2];
+	int32_t filterCntrs[medianFilteringBufferLength - 2];
 } MedianFilterCoordinate;
 
 // Медианный фильтр :
@@ -251,7 +262,7 @@ typedef struct KalmanFilter
 // Альфа-бета фильтр для 1 координаты :
 typedef struct AlphaBetaFilterCoordinate
 {
-	unsigned int Step;
+	uint32_t Step;
 	double Tob;
 	double Predel;
 	double Kb;
@@ -302,8 +313,8 @@ typedef struct MyNavigator
 	WriteInFlash writeInFlash;
 #endif
 
-	unsigned char logInfo[logInfoArrLen];
-	unsigned short myNavigatorExeTime;
+	uint8_t logInfo[logInfoArrLen];
+	uint16_t myNavigatorExeTime;
 } MyNavigator;
 
 

@@ -2,9 +2,9 @@
 
 static const double c_a[9] = { 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.5, 1.0, 1.0 };
 static const double dv[9] = { 1.0, 1.0, 0.5, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0 };
-static const signed char Q[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
-static const signed char d_a[3] = { 1, 0, 0 };
-static const signed char iv[3] = { 1, 0, 0 };
+static const int8_t Q[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
+static const int8_t d_a[3] = { 1, 0, 0 };
+static const int8_t iv[3] = { 1, 0, 0 };
 
 static double b_a[9];
 static double p_prd[9];
@@ -16,12 +16,12 @@ static double d1;
 static double d2;
 static double d3;
 static double d4;
-static int x_prd_tmp;
+static int32_t x_prd_tmp;
 static double B;
 static double a;
-static unsigned short i;
-static unsigned short i1;
-static unsigned short j;
+static uint16_t i;
+static uint16_t i1;
+static uint16_t j;
 
 void kalmanFilter(struct KalmanFilterCoordinate* kalmanFilterCoordinate, struct Coordinate* coordinate)
 {

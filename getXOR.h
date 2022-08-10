@@ -3,4 +3,4 @@
 
 struct MyNavigator;
 
-void getXOR(char[], char[], unsigned short);
+void getXOR(uint8_t[], uint8_t[], uint16_t);

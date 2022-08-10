@@ -9,11 +9,7 @@
 // ##########################################################################################
 
 // Начальные координаты :
-#ifdef TransformCoords
-const double startCoordinates[] = { 5561520.0722118802, 22434924.431076400, 100.0 };
-#else
-const double startCoordinates[] = { 5010.88431, 12805.33476, 100.0 };
-#endif
+double startCoordinates[] = { startLat, startLon, startAlt };
 
 // Пределы значений геодезических координат :
 #ifdef TransformCoords
@@ -34,7 +30,7 @@ const double alphaBetaFilterSp[] = { 3.0, 3.0, 3.0 };
 const double alphaBetaFilterSn[] = { 3.0, 3.0, 3.0 };
 
 // Статическая переменная :
-static unsigned short i;
+static uint16_t i;
 
 
 
@@ -44,7 +40,7 @@ static unsigned short i;
 // 
 // ##########################################################################################
 
-extern inline unsigned short findCommas(struct MyNavigator*);
+extern inline uint16_t findCommas(struct MyNavigator*);
 extern inline void chooseId(struct MyNavigator*);
 extern inline void getGCS(struct MyNavigator*);
 extern inline void overwritePrevPos(struct MyNavigator*);
@@ -68,17 +64,15 @@ void myNavigator(struct MyNavigator* myNavigator)
 	if (myNavigator->msgIn.len > msgMaxLen)
 		myNavigator->msgIn.len = msgMaxLen;
 
-	// Если альфа-бета фильтр :
+	// Время между сообщениями :
 #if defined( alphaBetaFiltering ) || defined( myNavigator_DEBUG )
 
-	if (myNavigator->filters.alphaBetaFilter.lat.Step == 0 &&
-		myNavigator->filters.alphaBetaFilter.lon.Step == 0 &&
-		myNavigator->filters.alphaBetaFilter.alt.Step == 0)
-	{
+	if (myNavigator->filters.alphaBetaFilter.lat.Step == 0)
 		myNavigator->filters.alphaBetaFilter.lat.Tob = 0.0;
+	if (myNavigator->filters.alphaBetaFilter.lon.Step == 0)
 		myNavigator->filters.alphaBetaFilter.lon.Tob = 0.0;
+	if (myNavigator->filters.alphaBetaFilter.alt.Step == 0)
 		myNavigator->filters.alphaBetaFilter.alt.Tob = 0.0;
-	}
 
 	myNavigator->filters.alphaBetaFilter.lat.Tob += myNavigator->msgData.dT;
 	myNavigator->filters.alphaBetaFilter.lon.Tob += myNavigator->msgData.dT;
@@ -410,6 +404,10 @@ void myNavigatorInit(struct MyNavigator* myNavigator, struct FuncsPointrs funcsP
 	myNavigator->funcsPointrs.flashLockFunc = funcsPointrs.flashLockFunc;
 	myNavigator->funcsPointrs.LEDaction = funcsPointrs.LEDaction;
 	myNavigator->funcsPointrs.flashFunc = funcsPointrs.flashFunc;
+
+#ifdef TransformCoords
+	geo2decart(&startCoordinates[0], &startCoordinates[1]);
+#endif
 
 	for (i = 0; i < previosPosLen; i++)
 	{

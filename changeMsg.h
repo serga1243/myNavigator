@@ -8,6 +8,6 @@ struct Coordinate;
 
 void changeMsg(struct MyNavigator*);
 
-void overwriteStr(struct Coordinate*, char[], unsigned short);
+void overwriteStr(struct Coordinate*, uint8_t[], uint16_t);
 
-unsigned short getNumLen(char[]);
+uint16_t getNumLen(uint8_t[]);

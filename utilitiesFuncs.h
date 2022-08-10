@@ -4,9 +4,9 @@
 
 void isInvalidData(double*, const double[], double*);
 
-int intPower(unsigned short, unsigned short);
+int32_t intPower(uint16_t, uint16_t);
 
-int intFactorial(unsigned short);
+int32_t intFactorial(uint16_t);
 
 double myfabs(double);
 

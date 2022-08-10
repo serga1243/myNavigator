@@ -2,4 +2,4 @@
 
 #include "myNavigator.h"
 
-double char2double(char[], unsigned short);
+double char2double(uint8_t[], uint16_t);

@@ -1,15 +1,15 @@
 #include "changeMsg.h"
 
-static unsigned short i;
-static unsigned short j;
-static unsigned short k;
-static short l;
-static short len;
+static uint16_t i;
+static uint16_t j;
+static uint16_t k;
+static int16_t l;
+static int16_t len;
 static double valueIntPart;
 static double valuefloatPartBig;
 static double valuefloatPartSmall;
-static char dataBufferInt[12];
-static char dataBufferFlo[12];
+static uint8_t dataBufferInt[12];
+static uint8_t dataBufferFlo[12];
 
 void changeMsg(struct MyNavigator* myNavigator)
 {
@@ -70,7 +70,7 @@ void changeMsg(struct MyNavigator* myNavigator)
 }
 
 
-void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endPos)
+void overwriteStr(struct Coordinate* coordinate, uint8_t str[], uint16_t endPos)
 {
 	i = 0;
 	j = 0;
@@ -82,17 +82,17 @@ void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endP
 
 	// Целая часть числа
 #ifdef Cpp
-	_itoa_s((int)valueIntPart, dataBufferInt, 12, 10);
+	_itoa_s((int32_t)valueIntPart, (char*)dataBufferInt, 12, 10);
 #else
-	itoa((int)valueIntPart, dataBufferInt, 10);
+	itoa((int32_t)valueIntPart, (char*)dataBufferInt, 10);
 #endif
 	coordinate->filteredPos.intLength = getNumLen(dataBufferInt);
 
 	// Дробная часть числа
 #ifdef Cpp
-	_itoa_s((int)valuefloatPartBig, dataBufferFlo, 12, 10);
+	_itoa_s((int32_t)valuefloatPartBig, (char*)dataBufferFlo, 12, 10);
 #else
-	itoa((int)valuefloatPartBig, dataBufferFlo, 10);
+	itoa((int32_t)valuefloatPartBig, (char*)dataBufferFlo, 10);
 #endif
 	coordinate->filteredPos.floatLength = getNumLen(dataBufferFlo);
 
@@ -138,7 +138,7 @@ void overwriteStr(struct Coordinate* coordinate, char str[], unsigned short endP
 }
 
 
-inline unsigned short getNumLen(char dataBuffer[])
+inline uint16_t getNumLen(uint8_t dataBuffer[])
 {
 	len = 0;
 	for (i = 0; i < 12; i++)

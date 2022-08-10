@@ -1,6 +1,6 @@
 #include "minQuadFilter.h"
 
-static unsigned short i;
+static uint16_t i;
 
 void minQuadFilter(struct MinQuadFilterCoordinate* minQuadFilterCoordinate, struct Coordinate* coordinate)
 {

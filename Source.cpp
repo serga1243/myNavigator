@@ -17,7 +17,7 @@ void someFunc(uint32_t, uint32_t, uint64_t);
 
 
 
-int main()
+int32_t main()
 {
 	setlocale(LC_ALL, "Russian_Russia.1251");
 
@@ -62,8 +62,8 @@ int main()
 				continue;
 			}
 			// Записываем строку в входной массив :
-			memcpy(mynavigator.msgIn.msg, buf, len);
-			mynavigator.msgIn.len = (unsigned int)len;
+			memcpy(mynavigator.msgIn.msg, (uint8_t*)buf, len);
+			mynavigator.msgIn.len = (uint32_t)len;
 			mynavigator.msgIn.msg[mynavigator.msgIn.len] = '\n';
 			mynavigator.msgIn.msg[mynavigator.msgIn.len - 1] = '\r';
 			mynavigator.msgIn.len++;
@@ -75,15 +75,15 @@ int main()
 #ifdef MSG // MSG
 			cout << "С фильтра: " << ends;
 #endif
-			for (unsigned int i = 0; i < mynavigator.msgIn.len; i++)
+			for (uint32_t i = 0; i < mynavigator.msgIn.len; i++)
 			{
 				cout << mynavigator.msgIn.msg[i] << ends;
 			}
 #ifdef MSG // MSG
 			cout << "Логи     : " << ends;
-			for (unsigned int i = 0; i < logInfoArrLen; i++)
+			for (uint32_t i = 0; i < logInfoArrLen; i++)
 			{
-				cout << (int)mynavigator.logInfo[i] << " " << ends;
+				cout << (int32_t)mynavigator.logInfo[i] << " " << ends;
 			}
 			cout << "     Время с предыдущего сообщения с координатами: " << mynavigator.msgData.dt << " сек." << ends;
 			cout << "\n" << endl;

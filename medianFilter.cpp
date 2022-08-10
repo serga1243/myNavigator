@@ -1,11 +1,11 @@
 #include "medianFilter.h"
 
 static double buff;
-static unsigned short bufferCntr = 0;
-static unsigned short bufferCntrs = 0;
-static int i;
-static int ii;
-static unsigned short j;
+static uint16_t bufferCntr = 0;
+static uint16_t bufferCntrs = 0;
+static int32_t i;
+static int32_t ii;
+static uint16_t j;
 
 void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct Coordinate* coordinate)
 {
@@ -38,7 +38,7 @@ void medianFilter(struct MedianFilterCoordinate* medianFilterCoordinate, struct 
 }
 
 
-double findMedianNFast(double buffer[], double newVal, int* cntr, int* len)
+double findMedianNFast(double buffer[], double newVal, int32_t* cntr, int32_t* len)
 {
 	buff = 0.0;
 	buffer[*cntr] = newVal;
@@ -87,7 +87,7 @@ void medianFilterInit(struct MedianFilterCoordinate* medianFilterCoordinate, con
 		medianFilterCoordinate->normFuncSum += medianFilterCoordinate->normFunc[i];
 		medianFilterCoordinate->filterCntrs[i] = 0;
 		medianFilterCoordinate->bufferCntrs[i] = bufferCntrs;
-		medianFilterCoordinate->bufferLens[i] = (int)medianFilteringBufferLength - i;
+		medianFilterCoordinate->bufferLens[i] = (int32_t)medianFilteringBufferLength - i;
 		bufferCntrs += medianFilterCoordinate->bufferLens[i];
 		
 

@@ -17,7 +17,7 @@ static double Dfloor;
 void decart2geo(double* lat, double* lon)
 {
 	// Преобразование координат :
-	n = (double)((int)(*lon * 0.000001));
+	n = (double)((int32_t)(*lon * 0.000001));
 
 	beta = *lat * 1.5704606412372143E-07;
 	sin_beta = sin(beta);

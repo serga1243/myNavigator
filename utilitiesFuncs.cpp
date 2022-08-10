@@ -6,7 +6,7 @@ void isInvalidData(double* data, const double limits[], double* correctData)
 	return;
 }
 
-int intPower(unsigned short x, unsigned short n)
+int32_t intPower(uint16_t x, uint16_t n)
 {
 	if (n <= 0) return 1;
 	if (n >= 1000000000) return 1000000000;
@@ -14,7 +14,7 @@ int intPower(unsigned short x, unsigned short n)
 }
 
 
-int intFactorial(unsigned short n)
+int32_t intFactorial(uint16_t n)
 {
 	if (n == 0) return 1;
 	return n * intFactorial(n - 1);
